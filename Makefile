@@ -6,7 +6,7 @@
 #    By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/18 11:10:47 by elehtora          #+#    #+#              #
-#    Updated: 2022/06/18 13:30:24 by elehtora         ###   ########.fr        #
+#    Updated: 2022/06/18 20:14:22 by elehtora         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,7 @@ $(RM)		= /bin/rm -rf
 
 
 ### RULES ###
-.PHONY : clean fclean
+.PHONY : clean fclean re
 
 all : $(BIN)
 
