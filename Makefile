@@ -6,41 +6,42 @@
 #    By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/18 11:10:47 by elehtora          #+#    #+#              #
-#    Updated: 2022/06/18 20:14:22 by elehtora         ###   ########.fr        #
+#    Updated: 2022/06/19 20:02:04 by elehtora         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 ### VARIABLES ###
 
-ROOT		= /home/elehtora/printf
-BIN			= libftprintf.a
+ROOT		:= /home/elehtora/printf
+BIN			:= libftprintf.a
 
-SRC			= \
+SRC			:= \
 			  ft_printf.c
-SRCDIR		= sources
+SRCDIR		:= sources
 
-OBJ			:= $(SRCDIR/SRC:.o=.c)
-OBJDIR		= objects
+OBJ			:= $(SRCDIR)/$(SRC:.c=.o)
+OBJDIR		:= objects
 
-TESTDIR		= tests
-TESTSRC		= testmain.c
+TESTDIR		:= tests
+TESTSRC		:= testmain.c
+TESTBIN		:= printf
 
-INCL		= includes
+INCL		:= includes
 
-LIB			= ft
-LIBBIN		= libft.a
-LIBDIR		= lib
+LIB			:= ftprintf
+LIBDIR		:= lib
 
-CC			= gcc
-$(RM)		= /bin/rm -rf
+CC			:= gcc
+CFLAGS		:= -Wall -Werror -Wextra
+RM			:= /bin/rm -rf
 
 
 ### RULES ###
-.PHONY : clean fclean re
+.PHONY : test clean fclean re
 
 all : $(BIN)
 
-$(BIN) : $(OBJ) $(LIBBIN)
+$(BIN) : $(OBJ)
 	ar -rcs $@ $<
 
 $(OBJDIR)/%.o : $(SRCDIR)/%.c $(OBJDIR)
@@ -49,11 +50,11 @@ $(OBJDIR)/%.o : $(SRCDIR)/%.c $(OBJDIR)
 $(OBJDIR) :
 	-mkdir $(OBJDIR)
 
-$(LIBBIN) :
-	cd $(LIBDIR) && $(MAKE) $@ && cd ..
+test : $(BIN)
+	$(CC) $(CFLAGS) -L$(LIBDIR) -l$(LIB) -o $(TESTBIN)
 
 clean :
-	$(RM) $(OBJDIR)
+	$(RM) $(OBJDIR) *.dSYM
 
 fclean : clean
 	$(RM) $(BIN)

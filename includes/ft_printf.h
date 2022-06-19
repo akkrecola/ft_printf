@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 17:00:21 by elehtora          #+#    #+#             */
-/*   Updated: 2022/06/18 23:26:13 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/06/19 21:30:22 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 # define FT_PRINTF_H
 
 # include <stdarg.h>
-# include "libft.h"
-# include "libftprintf.h"
+# include <stdint.h>
+# include <string.h>
 // Following bit positions act as indices, so the range for uint64_t is 0-63.
 // (C)onversion specifiers as bit flags. These are all mutually EXCLUSIVE.
 // Since the conversion specification read stops when first specifier is found,
@@ -63,7 +63,7 @@ typedef struct s_fstring
 	uint32_t			format;
 	const uint32_t		field_width;
 	const uint32_t		precision;
-	const char			*result;
+	const char			*string;
 	struct s_fstring	*next;
 }	t_fstring;
 
@@ -75,7 +75,5 @@ typedef enum e_errors
 const char	g_errors[] = {
 	"Conversion specifier not valid or found.",
 };
-
-t_string	*init_fstring(uint64_t format);
-uint64_t	parse_format(const char *inputstr);
+int			error(int messageid);
 #endif
