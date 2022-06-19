@@ -6,14 +6,14 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 19:18:37 by elehtora          #+#    #+#             */
-/*   Updated: 2022/06/18 19:48:14 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/06/19 21:24:27 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 /*
- * Locates first occurance of any char in string 'charset' in the string 's', and returns
- * a pointer to the character located.
+ * Locates first occurance of any char in string 'charset' in the string 's',
+ * and returns a pointer to the character located.
  *
  * If either 'charset' or 's' are not valid C strings (null terminated), the
  * behavior is undefined.

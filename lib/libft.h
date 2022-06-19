@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/03 16:00:26 by elehtora          #+#    #+#             */
-/*   Updated: 2022/06/19 21:08:03 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/06/19 21:24:11 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ size_t	ft_strdlen(const char *s, const char delim);
 size_t	ft_strnlen(const char *s, size_t maxlen);
 char	*ft_strdup(const char *s);
 char	*ft_strndup(const char *s, size_t n);
+char	*ft_strddup(const char *s, char d);
 char	*ft_strcpy(char *dst, const char *src);
 char	*ft_strdcpy(char *dst, const char *src, char d);
 char	*ft_strncpy(char *dst, const char *src, size_t len);
