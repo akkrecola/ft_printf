@@ -1,37 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strpbrk.c                                       :+:      :+:    :+:   */
+/*   ft_strappend.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/18 19:18:37 by elehtora          #+#    #+#             */
-/*   Updated: 2022/06/18 19:48:14 by elehtora         ###   ########.fr       */
+/*   Created: 2022/06/21 12:00:16 by elehtora          #+#    #+#             */
+/*   Updated: 2022/06/21 12:21:32 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-/*
- * Locates first occurance of any char in string 'charset' in the string 's', and returns
- * a pointer to the character located.
- *
- * If either 'charset' or 's' are not valid C strings (null terminated), the
- * behavior is undefined.
- */
-char	*ft_strpbrk(const char *s, const char *charset)
-{
-	unsigned char	i;
 
-	while (*s != 0)
+/*
+ * Append a character to a string. It's assumed that the string has sufficient
+ * space to fit the character, otherwise you're dealing with a buffer overflow.
+ *
+ * Returns a pointer to the string appended to.
+ */
+char	*ft_strappend(char *str, char append)
+{
+	char	*atnull = ft_strchr(str, '\0');
+
+	if (atnull)
 	{
-		i = 0;
-		while (charset[i] != 0)
-		{
-			if (*s == charset[i])
-				return ((char *)s);
-			i++;
-		}
-		s++;
+		*atnull = append;
+		*(atnull + 1) = '\0';
 	}
-	return (NULL);
+	return (str);
 }

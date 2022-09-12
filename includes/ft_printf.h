@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 17:00:21 by elehtora          #+#    #+#             */
-/*   Updated: 2022/06/19 21:30:22 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/13 01:48:04 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <stdarg.h>
 # include <stdint.h>
 # include <string.h>
+# include "libft.h"
 // Following bit positions act as indices, so the range for uint64_t is 0-63.
 // (C)onversion specifiers as bit flags. These are all mutually EXCLUSIVE.
 // Since the conversion specification read stops when first specifier is found,
@@ -51,6 +52,7 @@
 // Limits
 # define MAX_FIELD_WIDTH 2147483646 // INT_MAX - 1
 # define MAX_PRECISION 2147483646 //FLOAT IS THIS - 2? wut
+//# define DEFAULT_FORMAT // precision is 6 by default
 // fstring list node represents the two types of directives:
 // 1. ordinary characters (non-converted literal strings)
 // 2. conversion specifications built from arguments.
@@ -67,13 +69,5 @@ typedef struct s_fstring
 	struct s_fstring	*next;
 }	t_fstring;
 
-typedef enum e_errors
-{
-	INVALID_DELIMS,
-}	t_error;
-
-const char	g_errors[] = {
-	"Conversion specifier not valid or found.",
-};
-int			error(int messageid);
+int	ft_printf(const char *format, ...);
 #endif
