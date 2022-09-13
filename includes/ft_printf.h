@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 17:00:21 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/13 01:48:04 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/14 02:45:34 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,15 @@
 
 # include <stdarg.h>
 # include <stdint.h>
+# include <stdlib.h>
 # include <string.h>
+# include <unistd.h>
 # include "libft.h"
 // Following bit positions act as indices, so the range for uint64_t is 0-63.
 // (C)onversion specifiers as bit flags. These are all mutually EXCLUSIVE.
 // Since the conversion specification read stops when first specifier is found,
 // there won't (shouldn't) ever be multiple specifiers set.
+# define FORMAT_ERROR 0xFFFFFFFF
 // [d|i]uoxX (bit positions 0-4)
 # define C_SDEC 0x1
 # define C_UDEC 0x2
@@ -32,6 +35,7 @@
 # define C_STRING 0x40
 # define C_VOIDHEX 0x80
 # define C_FLOAT 0x100
+# define C_INIT 0x200
 // padding until bit position 12
 // Conversion (F)lags. Some of these are mutually exclusive.
 // #0-(space)+' bit positions 12-16
@@ -60,13 +64,15 @@
 // A literal string has format value of 0.
 // A conversion specification has format values at least at the bit area that
 // is appointed to holding the (mandatory) conversion specifier.
+
+#define SPEC_TYPES "diouxXfcsp%"
+
 typedef struct s_fstring
 {
 	uint32_t			format;
 	const uint32_t		field_width;
 	const uint32_t		precision;
 	const char			*string;
-	struct s_fstring	*next;
 }	t_fstring;
 
 int	ft_printf(const char *format, ...);

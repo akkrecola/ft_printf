@@ -6,137 +6,96 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 11:10:19 by elehtora          #+#    #+#             */
-/*   Updated: 2022/06/19 21:30:25 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/14 02:57:09 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/ft_printf.h"
+#include "ft_printf.h"
 
-/*
- * Appends an fstring list item to a list. If the list is empty, 'new'
- * is made the head of the list. Otherwise, 'new' is appended as the tail of
- * the list.
- */
-static void	append_fstring(t_fstring *new, t_fstring **head)
+static uint32_t		get_type(const char *type)
 {
-	if (*head == NULL)
-		*head = new;
-	else
+	if (type == NULL)
+		return (FORMAT_ERROR); // Error
+	else if (*type == 'd' || *type == 'i')
+		return (C_SDEC);
+	else if (*type == 'o')
+		return (C_UOCT);
+	else if (*type == 'u')
+		return (C_UDEC);
+	else if (*type == 'x')
+		return (C_UHEX_LOW);
+	else if (*type == 'X')
+		return (C_UHEX_CAP);
+	else if (*type == 'f')
+		return (C_FLOAT);
+	else if (*type == 'c')
+		return (C_CHAR);
+	else if (*type == 's')
+		return (C_STRING);
+	else if (*type == 's')
+		return (C_STRING);
+	else if (*type == 'p')
+		return (C_VOIDHEX);
+	else if (*type == '%')
+		return (C_INIT);
+	return (FORMAT_ERROR);
+}
+
+// Gets the formatting information for the next argument, read from the format
+// string.
+static t_fstring	*get_next_format(const char *initializer)
+{
+	t_fstring	*fstring;
+	const char	*type = ft_strpbrk(initializer + 1, SPEC_TYPES);
+
+	fstring = malloc(sizeof(t_fstring));
+	if (fstring == NULL)
+		return (NULL);
+	fstring->format |= get_type(type);
+
+	return (fstring);
+}
+
+int					ft_printf(const char *format, ...)
+{
+	va_list		ap; // Variable arguments list (see: man stdarg)
+	char		*initializer; // Pointer to % character that inits conversion
+	size_t		printed; // Bytes printed
+	t_fstring	*fstring;
+
+	// Start the variable argument list
+	va_start(ap, format);
+	initializer = NULL;
+	printed = 0;
+	fstring = NULL;
+
+	// Print/format through the format string until we hit null byte
+	while (1)
 	{
-		while ((*head)->next != NULL)
-			head++;
-		(*head)->next = new;
-	}
-}
-
-/*
- * Matches the conversion specifier character and returns it's corresponding
- * bit flag. The order is supposed to be optimised for the most common use:
- * fewer calls are made to octal 'o' than string 's', etc.
- *
- * Total of 10.
- */
-static void	set_specifier(const char delim)
-{
-	if (delim == 'd' || delim == 'i') // they're the same thing
-		*format |= C_SDEC;
-	else if (delim == 'u')
-		*format |= C_UDEC;
-	else if (delim == 's')
-		*format |= C_STRING;
-	else if (delim == 'c')
-		*format |= C_CHAR;
-	else if (delim == 'p')
-		*format |= C_VOIDHEX;
-	else if (delim == 'x')
-		*format |= C_UHEX_LOW;
-	else if (delim == 'X')
-		*format |= C_UHEX_CAP;
-	else if (delim == 'f')
-		*format |= C_FLOAT;
-	else if (delim == 'o')
-		*format |= C_UOCT;
-}
-
-static void	set_flags(uint32_t *format, const char *specifier, const char *delim)
-{
-
-}
-
-/*
- * TODO This can't happen straight away, since we don't know the string size
- * before expanding the specifications.
- *
- * TODO OR can we? Struct is just storing a pointer to char, not the actual string.
- */
-static t_fstring	*init_fstring(const char *specifier, const char *delim)
-{
-	t_fstring	fstring;
-
-	fstring.format = 0;
-	fstring.next = NULL;
-	if (*specifier != '%')										// (1) literal string
-		fstring.string = ft_strddup(specifier, *delim);
-	else														// (2) conversion
-	{
-		if (*delim == '%')
-			fstring.format |= set_specifier(*delim);
-		if (!fstring.format)
-			return (NULL);
-		set_flags(&fstring.format, spec, *delim);
-		/*TODO Check for overlapping flags with bitmasking*/
-	}
-}
-
-/*
- * Identifying the (1) literal strings and (2) conversion specifications and
- * iterating a constructor for fstring structs.
- */
-/*
- * TODO Split this into a driver function and a parser per fstring. Clearer in
- * terms of the division into literal strings and conversion specs.
- */
-static char	*parse_fstrings(const char *format, t_fstring **p_fstring)
-{
-	const char	*conv_specs = "diouxXfFcsp%";
-	char		current;
-	char		*specifier;
-	char		*delim;
-	uint32_t	i;
-
-	i = 0;
-	while (format[i] != '\0')
-	{
-		specifier = ft_strpbrk(format, "%\0");
-		if (specifier == NULL) // this happens only when 'format' is not null terminated.
-			return (NULL);
-		if (*specifier == '%')
+		// Look for a format initializer
+		initializer = ft_strchr(format, '%');
+		// Print until initializer or null byte
+		if (initializer != NULL)
 		{
-			delim = ft_strpbrk(specifier + 1, conv_specs);
-			if (&format[i] != specifier)
-				append_fstring(init_fstring(&format[i], specifier));	//literal string
-			append_fstring(init_fstring(specifier, delim);
-					return (specifier);
-					}
-					else if (*specifier == '\0') // 'unnecessary' check but brings clarity
-					return (specifier); // check in caller if we reached the end of format
-					i += ft_strdlen(&format[i], delim); //Index to the character after delimiter (can be null, checked by parent while)
-					}
-					}
+			// Write until format initializer
+			printed += write(1, format, initializer - format);
+			// Free and save formatting information to a struct
+			free(fstring);
+			fstring = get_next_format(initializer);
+			if (fstring == NULL)
+				return (-1);
+			format += printed + 1;
+		}
+		else
+		{
+			// If no format initializer, print the rest of the string, then break.
+			printed += write(1, format, ft_strlen(format));
+			free(fstring);
+			break;
+		}
+		// Get the formatting information by filtering through format string
+	}
 
-					/*
-					 * Reading could be delimited by newlines instead of buffering the entire format
-					 * for one-time reading. For a (stupidly) big format string with multiple
-					 * newlines this should prove to be more efficient than just powering through
-					 */
-					int	ft_printf(const char *format, ...) // see if 'restrict'
-					{
-					va_list		ap;
-					t_fstring	*fstrings; // HEAD
-					size_t		ret;
-
-					fstrings = NULL;
-					parse_fstrings(format, &fstrings);	// parse format string before variadic stuff
-					va_start(ap, format);
-					va_end(ap);
-					}
+	// Return number of characters printed
+	return (printed);
+}

@@ -6,7 +6,7 @@
 #    By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/18 11:10:47 by elehtora          #+#    #+#              #
-#    Updated: 2022/09/13 01:44:50 by elehtora         ###   ########.fr        #
+#    Updated: 2022/09/14 02:58:33 by elehtora         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ BIN_LIB		:= $(subst lib,,$(basename $(NAME)))
 
 LIBDIR		:= lib
 
-SRCS		:= test.c # TODO Placeholder source function
+SRCS		:= ft_printf.c
 SRCDIR		:= sources
 
 LIBFT_SRCS	:= $(notdir $(wildcard $(LIBDIR)/*.c))
@@ -70,7 +70,7 @@ re : fclean all
 
 # Testing utilities
 TEST_DIR	:= tests
-TEST_SRCS	:= testmain.c
+TEST_SRCS	:= print_until_specifier.c
 TEST_SRCS	:= $(addprefix $(TEST_DIR)/,$(TEST_SRCS))
 TEST_NAME	:= printf.out
 
