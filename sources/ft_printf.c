@@ -6,54 +6,31 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 11:10:19 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/14 02:57:09 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/14 19:04:36 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static uint32_t		get_type(const char *type)
-{
-	if (type == NULL)
-		return (FORMAT_ERROR); // Error
-	else if (*type == 'd' || *type == 'i')
-		return (C_SDEC);
-	else if (*type == 'o')
-		return (C_UOCT);
-	else if (*type == 'u')
-		return (C_UDEC);
-	else if (*type == 'x')
-		return (C_UHEX_LOW);
-	else if (*type == 'X')
-		return (C_UHEX_CAP);
-	else if (*type == 'f')
-		return (C_FLOAT);
-	else if (*type == 'c')
-		return (C_CHAR);
-	else if (*type == 's')
-		return (C_STRING);
-	else if (*type == 's')
-		return (C_STRING);
-	else if (*type == 'p')
-		return (C_VOIDHEX);
-	else if (*type == '%')
-		return (C_INIT);
-	return (FORMAT_ERROR);
-}
-
 // Gets the formatting information for the next argument, read from the format
 // string.
 static t_fstring	*get_next_format(const char *initializer)
 {
-	t_fstring	*fstring;
-	const char	*type = ft_strpbrk(initializer + 1, SPEC_TYPES);
+	const char		*type = ft_strpbrk(initializer + 1, SPEC_TYPES);
+	t_fstring		*fstring;
 
 	fstring = malloc(sizeof(t_fstring));
-	if (fstring == NULL)
+	if (!fstring || !type)
 		return (NULL);
-	fstring->format |= get_type(type);
+	fstring->type = type;
 
 	return (fstring);
+}
+
+static int			convert_fstring(t_fstring *fstring)
+{
+	fstring = fstring;
+	return (1);
 }
 
 int					ft_printf(const char *format, ...)
@@ -82,9 +59,9 @@ int					ft_printf(const char *format, ...)
 			// Free and save formatting information to a struct
 			free(fstring);
 			fstring = get_next_format(initializer);
-			if (fstring == NULL)
+			if (!fstring || !convert_fstring(fstring))
 				return (-1);
-			format += printed + 1;
+			format = fstring->type + 1;
 		}
 		else
 		{
@@ -95,7 +72,6 @@ int					ft_printf(const char *format, ...)
 		}
 		// Get the formatting information by filtering through format string
 	}
-
 	// Return number of characters printed
 	return (printed);
 }
