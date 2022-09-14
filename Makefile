@@ -6,7 +6,7 @@
 #    By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/18 11:10:47 by elehtora          #+#    #+#              #
-#    Updated: 2022/09/14 19:23:22 by elehtora         ###   ########.fr        #
+#    Updated: 2022/09/15 00:21:14 by elehtora         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,11 @@ BIN_LIB		:= $(subst lib,,$(basename $(NAME)))
 
 LIBDIR		:= lib
 
-SRCS		:= ft_printf.c
+SRCS		:= ft_printf.c \
+			   integer.c \
+			   chars.c \
+			   float.c \
+			   hex.c
 SRCDIR		:= sources
 
 LIBFT_SRCS	:= $(notdir $(wildcard $(LIBDIR)/*.c))
@@ -73,10 +77,9 @@ TEST_DIR	:= tests
 TEST_SRCS	:= print_test.c
 TEST_SRCS	:= $(addprefix $(TEST_DIR)/,$(TEST_SRCS))
 TEST_INCL	:= -I$(TEST_DIR)
-TEST_NAME	:= printf.out
+TEST_NAME	:= printf.test
 
-test : all
+test : re
 	$(CC) $(CFLAGS) $(TEST_SRCS) $(INCL) $(TEST_INCL) \
 		-L. -l$(BIN_LIB) -o $(TEST_NAME)
-
 
