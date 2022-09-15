@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 17:00:21 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/15 05:24:48 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/15 07:01:26 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ typedef struct s_fstring
 	char		*string;
 }	t_fstring;
 
-int	ft_printf(const char *format, ...);
+int	ft_printf(const char *format, ...) __attribute__ ((format (printf, 1, 2)));
 
 // Conversion handlers
 int	convert_signed_int(t_fstring *fstring, long arg);

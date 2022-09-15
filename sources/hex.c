@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 00:20:05 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/15 06:41:12 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/15 07:09:05 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #define HEX_BUFSIZE 32
 
 // Adds the correct hex prefix to a string
-static void	add_buf_prefix(char *buf, char type)
+static void	add_hex_prefix(char *buf, char type)
 {
 	char	prefix[2];
 
@@ -61,7 +61,7 @@ char	*format_hex(unsigned long arg, t_fstring *fstring)
 	char	*rev_base;
 
 	ft_bzero(buf, HEX_BUFSIZE);
-	add_buf_prefix(&buf[0], *fstring->type);
+	add_hex_prefix(&buf[0], *fstring->type);
 	rev_base = build_hex(arg, &buf[2], (fstring->format & C_UHEX_CAP));
 	ft_strcpy(&buf[2], rev_base);
 	free(rev_base);
