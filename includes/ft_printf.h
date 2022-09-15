@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 17:00:21 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/14 18:50:49 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/15 05:24:48 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,17 @@
 # define C_UDEC 0x2
 # define C_UOCT 0x4
 # define C_UHEX_LOW 0x8
-# define C_UHEX_CAP 0X10
+# define C_UHEX_CAP 0x10
+// Masks
+# define CMASK_HEX 0x18
+# define CMASK_UDEC 0x1F
 // cspf, (bit positions 5-8)
 # define C_CHAR 0x20
 # define C_STRING 0x40
 # define C_VOIDHEX 0x80
 # define C_FLOAT 0x100
 # define C_INIT 0x200
+# define CMASK_CHAR 0x220
 // padding until bit position 12
 // Conversion (F)lags. Some of these are mutually exclusive.
 // #0-(space)+' bit positions 12-16
@@ -57,24 +61,32 @@
 # define MAX_FIELD_WIDTH 2147483646 // INT_MAX - 1
 # define MAX_PRECISION 2147483646 //FLOAT IS THIS - 2? wut
 //# define DEFAULT_FORMAT // precision is 6 by default
-// fstring list node represents the two types of directives:
-// 1. ordinary characters (non-converted literal strings)
-// 2. conversion specifications built from arguments.
-//
-// A literal string has format value of 0.
+
+
+# define SPEC_TYPES "diouxXfcsp%"
+# define FLAG_CHARS "#0- +"
+
 // A conversion specification has format values at least at the bit area that
 // is appointed to holding the (mandatory) conversion specifier.
-
-#define SPEC_TYPES "diouxXfcsp%"
-
 typedef struct s_fstring
 {
-	uint32_t			format;
-	const uint32_t		field_width;
-	const uint32_t		precision;
-	const char			*type;
-	const char			*string;
+	uint32_t	format;
+	uint32_t	field_width;
+	uint32_t	precision;
+	char		*type;
+	char		*string;
 }	t_fstring;
 
 int	ft_printf(const char *format, ...);
+
+// Conversion handlers
+int	convert_signed_int(t_fstring *fstring, long arg);
+int	convert_unsigned_int(t_fstring *fstring, unsigned long arg);
+int	convert_string(t_fstring *fstring, const char *arg);
+int	convert_char(t_fstring *fstring, unsigned char arg);
+int	convert_double(t_fstring *fstring, double arg);
+int	convert_void(t_fstring *fstring, void *arg);
+
+char	*format_hex(unsigned long arg, t_fstring *fstring);
+
 #endif

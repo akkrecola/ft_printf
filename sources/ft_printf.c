@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 11:10:19 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/15 00:28:49 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/15 06:36:28 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,6 @@ static int			convert_fstring(t_fstring *fstring, va_list *ap)
 		status = convert_string(fstring, va_arg(*ap, const char *));
 	else if (fstring->format & C_VOIDHEX)
 		status = convert_void(fstring, va_arg(*ap, void *));
-	ft_putnbr(status);
 	return (status);
 }
 
@@ -131,6 +130,7 @@ int					ft_printf(const char *format, ...)
 			fstring = get_next_format(initializer);
 			if (!fstring || !convert_fstring(fstring, &ap))
 				return (-1);
+			write(1, fstring->string, ft_strlen(fstring->string)); //output formatted
 			format = fstring->type + 1;
 		}
 		else
