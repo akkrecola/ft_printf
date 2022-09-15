@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 21:39:27 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/15 05:44:55 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/15 19:48:40 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	convert_unsigned_int(t_fstring *fstring, unsigned long arg)
 	/*else if (fstring->format & C_UOCT)*/
 		/*format_oct(arg, fstring);*/
 	else
-		fstring->string = ft_itol_unsigned(arg);
+		fstring->string = ft_ltoa_unsigned(arg);
 	return (2);
 }
 

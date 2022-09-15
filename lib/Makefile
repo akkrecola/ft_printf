@@ -6,7 +6,7 @@
 #    By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/03 15:27:40 by elehtora          #+#    #+#              #
-#    Updated: 2022/09/15 05:23:37 by elehtora         ###   ########.fr        #
+#    Updated: 2022/09/15 21:13:01 by elehtora         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,7 @@ SRCS	=	ft_atoi.c			\
 			ft_iswhite.c		\
 			ft_arechars.c		\
 			ft_itoa.c			\
-			ft_itol.c			\
+			ft_ltoa.c			\
 			ft_lstadd.c			\
 			ft_lstcpyone.c		\
 			ft_lstdel.c			\
@@ -79,6 +79,7 @@ SRCS	=	ft_atoi.c			\
 			ft_striter.c		\
 			ft_striteri.c		\
 			ft_strjoin.c		\
+			ft_strdjoin.c		\
 			ft_strlen.c			\
 			ft_strdlen.c		\
 			ft_strmap.c			\
@@ -108,11 +109,8 @@ SRCS	=	ft_atoi.c			\
 OBJDIR	:= ../objects
 OBJS	:= $(addprefix $(OBJDIR)/,$(SRCS:.c=.o))
 
-NAME	:= libft.a
-
-CC		:= clang
+CC		:= gcc
 CFLAGS	:= -Wall -Wextra -Werror
-LIB		:= ar rcs
 RM		:= /bin/rm -rf
 
 # RULES
