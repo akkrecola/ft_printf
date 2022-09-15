@@ -1,32 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strappend.c                                     :+:      :+:    :+:   */
+/*   ft_strrev.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/21 12:00:16 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/12 21:59:35 by elehtora         ###   ########.fr       */
+/*   Created: 2022/09/15 03:10:34 by elehtora          #+#    #+#             */
+/*   Updated: 2022/09/15 03:38:47 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-/*
- * Append a character to a string. It's assumed that the string has sufficient
- * space to fit the character, otherwise you're dealing with a buffer overflow.
- *
- * Returns a pointer to the string appended to.
- */
-char	*ft_strappend(char *str, char append)
+// Reverses a string 'str'.
+char	*ft_strrev(const char *str)
 {
-	char	*atnull;
+	size_t	len;
+	char	*rev;
+	char	*tmp;
 
-	atnull = ft_strchr(str, '\0');
-	if (atnull)
-	{
-		*atnull = append;
-		*(atnull + 1) = '\0';
-	}
-	return (str);
+	len = ft_strlen(str);
+	rev = ft_strnew(len);
+	tmp = rev;
+	while (len-- > 0)
+		*tmp++ = str[len];
+	return (rev);
 }

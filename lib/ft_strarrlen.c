@@ -1,32 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strappend.c                                     :+:      :+:    :+:   */
+/*   ft_strarrlen.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/21 12:00:16 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/12 21:59:35 by elehtora         ###   ########.fr       */
+/*   Created: 2022/09/14 16:47:20 by elehtora          #+#    #+#             */
+/*   Updated: 2022/09/14 17:08:15 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include <string.h>
 
 /*
- * Append a character to a string. It's assumed that the string has sufficient
- * space to fit the character, otherwise you're dealing with a buffer overflow.
+ * Gets the length of a string array (array of char *). The counting is done
+ * until a NULL pointer is found, therefore the array MUST be NULL terminated.
  *
- * Returns a pointer to the string appended to.
+ * Returns the amount of strings found.
  */
-char	*ft_strappend(char *str, char append)
+int	ft_strarrlen(char **str_array)
 {
-	char	*atnull;
+	int	count;
 
-	atnull = ft_strchr(str, '\0');
-	if (atnull)
+	count = 0;
+	while (*str_array != NULL)
 	{
-		*atnull = append;
-		*(atnull + 1) = '\0';
+		count++;
+		str_array++;
 	}
-	return (str);
+	return (count);
 }
