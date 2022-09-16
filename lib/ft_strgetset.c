@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 11:10:23 by elehtora          #+#    #+#             */
-/*   Updated: 2022/06/21 12:46:12 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/17 20:29:19 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
  * terminated. 's' must be a valid string at least in case 'maxlen' is less
  * than the length of 's'.
  */
-char	*ft_strgetset(char *s, char *targetset, char *delimset, size_t maxlen)
+char	*ft_strgetset(const char *s, char *targetset, char *delimset, size_t maxlen)
 {
 	size_t	i;
 	char	*resultset;

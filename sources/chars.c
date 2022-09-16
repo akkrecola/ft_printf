@@ -6,21 +6,27 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 22:37:42 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/15 00:08:00 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/18 04:22:39 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int	convert_string(t_fstring *fstring, const char *arg)
+int	convert_string(t_fstring *fs, const char *arg)
 {
-	fstring->string = ft_strdup(arg);
+	fs->string = ft_strdup(arg);
 	return (3);
 }
 
-int	convert_char(t_fstring *fstring, unsigned char arg)
+int	convert_char(t_fstring *fs, unsigned char arg)
 {
-	fstring->string = ft_strnew(1);
-	*fstring->string = arg;
+	fs->string = ft_strnew(1);
+	*fs->string = arg;
 	return (4);
+}
+
+int	give_percent(t_fstring *fs)
+{
+	fs->string = ft_strdup("%");
+	return (7);
 }
