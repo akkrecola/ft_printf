@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/03 16:00:26 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/17 20:29:53 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/19 03:38:39 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void		*ft_memmove(void *dst, const void *src, size_t len);
 void		*ft_memchr(const void *s, int c, size_t n);
 void		*ft_memrchr(const void *s, int c, size_t n);
 int			ft_memcmp(const void *s1, const void *s2, size_t n);
-char		*ft_strappend(char *str, char append);
+char		*ft_charappend(char *str, char append);
 size_t		ft_strlen(const char *s);
 size_t		ft_strdlen(const char *s, const char delim);
 size_t		ft_strnlen(const char *s, size_t maxlen);
@@ -80,8 +80,8 @@ void		ft_striter(char *s, void (*f)(char *));
 void		ft_striteri(char *s, void (*f)(unsigned int, char *));
 char		*ft_strmap(char const *s, char (*f)(char));
 char		*ft_strmapi(char const *s, char (*f)(unsigned int, char));
-char		*ft_strgetset(\
-		const char *s, char *targetset, char *delimset, size_t len);
+char		*ft_strgetset(const char *s, char *targetset,\
+		char *delimset, size_t len);
 int			ft_strequ(char const *s1, char const *s2);
 int			ft_strnequ(char const *s1, char const *s2, size_t n);
 char		*ft_strsub(char const *s, unsigned int start, size_t len);
@@ -104,6 +104,7 @@ void		ft_putbits(void *var, uint8_t bytes);
 
 /* Math */
 uint64_t	ft_pow(unsigned base, unsigned exponent);
+int			ft_abs(int x);
 
 /* Bonus part function prototypes */
 t_list		*ft_lstnew(void const *content, size_t content_size);

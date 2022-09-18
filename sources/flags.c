@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/17 23:54:27 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/18 04:42:55 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/19 05:25:40 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,16 +37,18 @@ int	expand_to_field_width(t_fstring *fs)
 		expanded = ft_strnew(fs->field_width);
 		if (!expanded)
 			return (-1);
-		if (fs->format & F_ZERO_PAD)
+		if (fs->format & F_ZERO_PAD && !(fs->format & EXPL_PRECISION)) // any precision overrides zero flag (GNU printf)
 			ft_memset(expanded, '0', fs->field_width);
 		else
-			ft_memset(expanded, ' ', fs->field_width); //FIXME set to <space>
+			ft_memset(expanded, ' ', fs->field_width);
 		if (fs->format & F_LEFT_ALIGN)
 			align_left(fs, expanded);
 		else
+		{
 			ft_strcpy(expanded + (fs->field_width - ft_strlen(fs->string)), fs->string);
-		free(fs->string);
-		fs->string = expanded;
+			free(fs->string);
+			fs->string = expanded;
+		}
 	}
 	return (0);
 }

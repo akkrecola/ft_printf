@@ -6,12 +6,13 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 17:00:21 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/18 04:24:04 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/19 05:23:16 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_PRINTF_H
 # define FT_PRINTF_H
+// # define DEBUG
 
 # include <stdarg.h>
 # include <stdint.h>
@@ -56,10 +57,10 @@
 # define M_SHORT 0x2000000
 # define M_LONG 0x4000000
 # define M_LONGLONG 0x8000000
-// Padding until 28
 # define EXPL_FIELD_WIDTH 0x10000000 //low prio
 # define EXPL_PRECISION 0x20000000
 # define EXPL_FLAGS 0x40000000
+# define EXPL_EXPAND_PRECISION 0x80000000
 // Limits
 # define MAX_FIELD_WIDTH 2147483647 // INT_MAX
 # define MAX_PRECISION 2147483647 // INT_MAX
@@ -70,12 +71,13 @@
 # define FLAGS "#0- +"
 # define FWIDTH_DIGITS "123456789"
 // Delimiting characters for each format parser function (set_*())
-# define FLAG_DELIMS "123456789.lhL"
-# define FWIDTH_DELIMS ".lhL" // Precision id + length mods
+# define FLAG_DELIMS "123456789.lhLdiouxXfcsp%"
+# define FWIDTH_DELIMS ".lhLdiouxXfcsp%" // Precision id + length mods
 
 // Default values for format information
 # define DEFAULT_PRECISION 0
 # define DEFAULT_FLOAT_PRECISION 6
+# define DEFAULT_FWIDTH 0
 
 // A conversion specification has format values at least at the bit area that
 // is appointed to holding the (mandatory) conversion specifier.
@@ -83,19 +85,19 @@ typedef struct s_fstring
 {
 	char		*type;
 	char		*string;
+	char		*sign; // Used to adjust field width
 	uint32_t	format;
 	uint32_t	field_width;
 	uint32_t	precision;
-	uint8_t		sign; // Used to adjust field widths
 }	t_fstring;
 
 int	ft_printf(const char *format, ...) __attribute__ ((format (printf, 1, 2)));
 
 // Format string parsers and data collectors
 uint32_t	set_type(const char *type); // FIXME Unify with other setting functions
-const char	*set_flags(const char *iterator, t_fstring *fs);
-const char	*set_field_width(const char *iterator, t_fstring *fs);
-const char	*set_precision(const char *iterator, t_fstring *fs);
+void		set_flags(const char *init, const char *delim, t_fstring *fs);
+char		*set_field_width(const char *init, const char *delim, t_fstring *fs);
+char		*set_precision(const char *init, const char *delim, t_fstring *fs);
 
 // Conversion handlers
 int	convert_signed_int(t_fstring *fs, long long int arg);
@@ -106,9 +108,9 @@ int	convert_double(t_fstring *fs, double arg);
 int	convert_void(t_fstring *fs, void *arg);
 int	give_percent(t_fstring *fs);
 
-char	*format_hex(unsigned long arg, t_fstring *fs);
+char	*format_hex(unsigned long long arg, t_fstring *fs);
 
-int	align_left(t_fstring *fs, char *left_adjusted_str);
-int	expand_to_field_width(t_fstring *fs);
-
+int		align_left(t_fstring *fs, char *left_adjusted_str);
+int		expand_to_field_width(t_fstring *fs);
+void	prepend_sign(t_fstring *fs);
 #endif

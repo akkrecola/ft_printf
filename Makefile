@@ -6,7 +6,7 @@
 #    By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/18 11:10:47 by elehtora          #+#    #+#              #
-#    Updated: 2022/09/17 23:56:51 by elehtora         ###   ########.fr        #
+#    Updated: 2022/09/19 04:21:31 by elehtora         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,7 +46,7 @@ RM			:= /bin/rm -rf
 
 
 ### RULES ###
-.PHONY : build libft test clean fclean re
+.PHONY : build libft test clean fclean re debug flags
 
 all : build $(NAME)
 
@@ -86,4 +86,3 @@ TEST_NAME	:= printf.test
 test : all
 	$(CC) $(CFLAGS) $(TEST_SRCS) $(INCL) $(TEST_INCL) \
 		-L. -l$(BIN_LIB) -o $(TEST_NAME)
-

@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 11:10:23 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/17 20:29:19 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/19 03:44:19 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,35 +19,26 @@
  * 'delims', length 'maxlen' or the null byte is met. If 'maxlen' is set to
  * 0, the entire string 's' is searched. Null byte cannot be found.
  *
- * This function is exponentially taxing if either 'targetset' or 'delimset'
+ * This function is exponentially taxing if either 'tset' or 'dset'
  * is expanded, and linearily when 's' is expanded, so use it with caution.
  *
- * Note: 'targetset' and 'delimset' must be valid C strings, i.e. null
+ * Note: 'tset' and 'dset' must be valid C strings, i.e. null
  * terminated. 's' must be a valid string at least in case 'maxlen' is less
  * than the length of 's'.
  */
-char	*ft_strgetset(const char *s, char *targetset, char *delimset, size_t maxlen)
+#define GETSET_BUFSIZE 256
+char	*ft_strgetset(const char *s, char *tset, char *dset, size_t maxlen)
 {
-	size_t	i;
-	char	*resultset;
-	char	*target;
+	char			resultset[GETSET_BUFSIZE];
 
-	resultset = ft_strnew(ft_strlen(targetset));
-	if (!resultset)
+	if (!s)
 		return (NULL);
-	i = 0;
-	while (s[i] && (i < maxlen || maxlen == 0) && !ft_strchr(delimset, s[i]))
+	ft_bzero(&resultset[0], GETSET_BUFSIZE);
+	while (*s && !ft_strchr(dset, *s) && maxlen--)
 	{
-		target = NULL;
-		target = ft_strchr(targetset, s[i]);
-		if (target && !ft_strchr(resultset, *target))
-			ft_strappend(resultset, *target);
-		i++;
+		if (ft_strchr(tset, *s))
+			ft_charappend(&resultset[0], *s);
+		s++;
 	}
-	if (!(*resultset))
-	{
-		free(resultset);
-		return (NULL);
-	}
-	return (resultset);
+	return (ft_strdup(&resultset[0]));
 }

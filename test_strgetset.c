@@ -1,32 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strappend.c                                     :+:      :+:    :+:   */
+/*   test_strgetset.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/21 12:00:16 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/12 21:59:35 by elehtora         ###   ########.fr       */
+/*   Created: 2022/09/19 03:47:58 by elehtora          #+#    #+#             */
+/*   Updated: 2022/09/19 03:52:37 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdlib.h>
 
-/*
- * Append a character to a string. It's assumed that the string has sufficient
- * space to fit the character, otherwise you're dealing with a buffer overflow.
- *
- * Returns a pointer to the string appended to.
- */
-char	*ft_strappend(char *str, char append)
+int	main()
 {
-	char	*atnull;
-
-	atnull = ft_strchr(str, '\0');
-	if (atnull)
-	{
-		*atnull = append;
-		*(atnull + 1) = '\0';
-	}
-	return (str);
+	const char	*set = ft_strgetset("abcde", "cd", "", 5);
+	ft_putstr(set);
+	free((char *)set);
 }

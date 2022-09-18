@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 00:20:05 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/16 01:26:15 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/19 03:43:45 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static char	*build_hex(unsigned long arg, char *buf, int is_upper)
 		}
 		else
 			current = remainder + '0'; // 9 -> 7
-		ft_strappend(buf, current);
+		ft_charappend(buf, current);
 		arg /= HEX_DIVIDEND; // NOTE: integer division
 	}
 	return (ft_strrev(buf));
@@ -55,7 +55,7 @@ static char	*build_hex(unsigned long arg, char *buf, int is_upper)
 
 // Convert a clean integer value to a hex format string.
 // First one to call on hex conversions (before precision and fwidth)
-char	*format_hex(unsigned long arg, t_fstring *fstring)
+char	*format_hex(unsigned long long arg, t_fstring *fstring)
 {
 	char	buf[HEX_BUFSIZE]; // max hex format length is about 16 bytes
 	char	*rev_base;
@@ -74,6 +74,7 @@ int	convert_void(t_fstring *fstring, void *arg)
 {
 	const long long	address = (long long)*((long long *)arg);
 
+	printf("\nAddress:\n\tOwn:\t0x%llx\n\tActual:\t%p\n", address, arg);
 	fstring->string = format_hex(address, fstring);
 	ft_putstr(fstring->string);
 	printf("\nAddress:\n\tOwn:\t0x%llx\n\tActual:\t%p\n", address, arg);

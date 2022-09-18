@@ -6,7 +6,7 @@
 #    By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/03 15:27:40 by elehtora          #+#    #+#              #
-#    Updated: 2022/09/15 21:13:01 by elehtora         ###   ########.fr        #
+#    Updated: 2022/09/19 03:38:58 by elehtora         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,7 @@
 #
 
 SRCS	=	ft_atoi.c			\
+			ft_abs.c			\
 			ft_bzero.c			\
 			ft_del.c			\
 			ft_count_digs.c		\
@@ -61,7 +62,7 @@ SRCS	=	ft_atoi.c			\
 			ft_putstr_fd.c		\
 			ft_putbits.c		\
 			ft_pow.c			\
-			ft_strappend.c		\
+			ft_charappend.c		\
 			ft_strarrlen.c		\
 			ft_strcat.c			\
 			ft_strchr.c			\

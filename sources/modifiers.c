@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 01:18:59 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/18 04:49:19 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/19 05:16:36 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,14 +39,15 @@ uint32_t	set_type(const char *type)
 	return (FORMAT_ERROR);
 }
 
-const char	*set_flags(const char *iterator, t_fstring *fs)
+void	set_flags(const char *init, const char *delim, t_fstring *fs)
 {
-	const char	*first_flag = ft_strpbrk(iterator, FLAGS);
-	const char	*flagset = ft_strgetset(\
-			iterator, FLAGS, FLAG_DELIMS, fs->type - iterator);
+	const char	*flagset = ft_strgetset(init, FLAGS, "", delim - init);
 
-	if (!first_flag || !flagset) // TODO Check if flagset gets freed in strgetset on NULL return
-		return (iterator);
+	if (!flagset) // strgetset returns with malloc
+		return ;
+#ifdef DEBUG
+	ft_putstr(flagset);
+#endif
 	// Setting formatting bitmap
 	if (ft_strchr(flagset, '#'))
 		fs->format ^= F_ALT_FORM;
@@ -58,54 +59,86 @@ const char	*set_flags(const char *iterator, t_fstring *fs)
 		fs->format ^= F_FORCE_SIGN;
 	if (ft_strchr(flagset, ' ') && !(fs->format & F_FORCE_SIGN))
 		fs->format ^= F_SPACE_SIGN;
-	// FIXME Check if needed
 	if (fs->format & MASK_FLAGS)
 		fs->format ^= EXPL_FLAGS;
+#ifdef DEBUG
+	if (fs->format & MASK_FLAGS) // FIXME Debug
+		ft_putstr("Flags set.\n");
+	if (fs->format & F_ALT_FORM)
+		ft_putstr("ALT FORM FLAG set.\n");
+	if (fs->format & F_LEFT_ALIGN)
+		ft_putstr("LEFT ALIGN FLAG set.\n");
+	if (fs->format & F_ZERO_PAD)
+		ft_putstr("ZERO PAD FLAG set.\n");
+	if (fs->format & F_FORCE_SIGN)
+		ft_putstr("FORCE SIGN FLAG set.\n");
+	if (fs->format & F_SPACE_SIGN)
+		ft_putstr("SPACE SIGN FLAG set.\n");
+#endif
 	free((char *)flagset);
-	return (iterator); // FIXME Return a usable stepping value
 }
 
 // TODO
 #define FWIDTH_MAXCHARS 10
-const char	*set_field_width(const char *iterator, t_fstring *fs)
+char	*set_field_width(const char *init, const char *delim, t_fstring *fs)
 {
-	const char	*delimiter = ft_strpbrk(iterator, FWIDTH_DELIMS);
+	const char	*iterator = ft_strpbrk(init, FWIDTH_DIGITS); // Find a starting digit (nonzero)
 	char		buf[FWIDTH_MAXCHARS]; // INT_MAX is 10 in length
 	uint8_t		i;
 
+	if (!iterator)
+		return ((char *)delim); // No field width
 	ft_bzero(&buf[0], FWIDTH_MAXCHARS);
-	iterator += 1; // Clear the possible '0' flag at '*iterator'
 	i = 0;
-	while (ft_isdigit(*iterator) && iterator != delimiter)
+	while (ft_isdigit(*iterator) && iterator != delim)
 		buf[i++] = *iterator++;
-	fs->field_width = ft_atoi(&buf[0]);
-	return (iterator - i);
+	if (buf[0] != 0) // fwidth catched
+	{
+		fs->field_width = ft_atoi(&buf[0]);
+		fs->format ^= EXPL_FIELD_WIDTH;
+#ifdef DEBUG
+	ft_putstr("Field width:\t");
+	ft_putnbr(fs->field_width);
+	ft_putchar('\n');
+	if (fs->format & EXPL_FIELD_WIDTH)
+		ft_putstr("Explicit field width SET\n");
+#endif
+	}
+#ifdef DEBUG
+	ft_putstr("Set_field_width returns: ");
+	ft_putstr((char *)iterator - i);
+	ft_putchar('\n');
+#endif
+	return ((char *)iterator - i); // first digit
 }
 
 #define PRECISION_BUF_SIZE 10 // TODO Check if this can be overflown
 // Sets the precision for a format string.
 // Returns a pointer to character after the last digit.
-const char	*set_precision(const char *iterator, t_fstring *fs)
+char	*set_precision(const char *init, const char *delim, t_fstring *fs)
 {
-	char		*current;
+	char		*dot;
 	char		precision_str[PRECISION_BUF_SIZE];
-	uint64_t	precision_val;
+	uint32_t	precision_val;
 	uint32_t	i;
 
-	current = ft_memchr(iterator, '.', fs->type - iterator);
-	if (!current || *(current + 1) == '-') // No dot or negative input
-		return (iterator);
-	else
-		fs->format ^= EXPL_PRECISION; // FIXME Check the XOR assignment
+	dot = ft_memchr(init, '.', delim - init);
+	if (!dot || *(dot + 1) == '-') // No dot or negative input == omit
+		return ((char *)delim); // fs->type
+	fs->format ^= EXPL_PRECISION;
+#ifdef DEBUG
+	if (fs->format & EXPL_PRECISION)
+		ft_putstr("EXPL_PRECISION SET\n");
+#endif
 	ft_bzero(&precision_str[0], PRECISION_BUF_SIZE);
-	i = 1;
-	while (ft_isdigit(current[i]) && i < PRECISION_BUF_SIZE)
+	i = 1; // Skip dot
+	while (ft_isdigit(dot[i]) && i < PRECISION_BUF_SIZE)
 	{
-		precision_str[i - 1] = current[i];
+		precision_str[i - 1] = dot[i];
 		i++;
 	}
-	precision_val = (uint64_t)ft_atoi(&precision_str[0]); // FIXME Need to (create and) use atol()
+	precision_val = (uint64_t)ft_atoi(&precision_str[0]); // FIXME atol()
 	if (precision_val < MAX_PRECISION)
 		fs->precision = precision_val;
-	return (&current[i]);
+	return (dot); // Dot
 }

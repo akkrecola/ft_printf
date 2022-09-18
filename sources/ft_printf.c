@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 11:10:19 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/18 04:20:25 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/19 02:45:01 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static t_fstring	*init_fstring(void)
 	fs->field_width = 0;
 	fs->precision = DEFAULT_PRECISION;
 	fs->string = NULL;
-	fs->sign = 0;
+	fs->sign = NULL;
 
 	return (fs);
 }
@@ -47,7 +47,7 @@ static void	free_fstring(t_fstring *fs)
 static t_fstring	*get_next_format(const char *initializer)
 {
 	const char	*type = ft_strpbrk(initializer + 1, SPEC_TYPES);
-	const char	*iterator;
+	const char	*delimiter;
 	t_fstring	*fs;
 
 	fs = init_fstring();
@@ -55,15 +55,9 @@ static t_fstring	*get_next_format(const char *initializer)
 		return (NULL);
 	fs->format |= set_type(type); // TODO add error check (if format == FORMAT_ERROR)
 	fs->type = (char *)type;
-	iterator = (char *)initializer;
-	if (!(fs->format & EXPL_FLAGS))
-		iterator = set_flags(iterator, fs);
-	/*if (iterator == initializer)*/
-		/*ft_putstr("Iterator is Initializer.");*/
-	if (!fs->field_width)
-		iterator = set_field_width(iterator, fs);
-	if (!fs->precision)
-		iterator = set_precision(iterator, fs);
+	delimiter = set_precision(initializer, type, fs);
+	delimiter = set_field_width(initializer, delimiter, fs); // FIXME hex segfault
+	set_flags(initializer, delimiter, fs);
 	return (fs);
 }
 

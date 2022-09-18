@@ -6,52 +6,62 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 21:39:27 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/18 03:54:43 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/19 05:17:02 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
 //FIXME Not aligning right by default?
-static void	reformat_sign(t_fstring *fs)
+void	prepend_sign(t_fstring *fs)
 {
-	char	*sign;
-	char	*sign_prepended_str;
+	char		*sign_prepended_str;
 
-	sign = ft_strchr(fs->string, '-'); // Check if negative
-	sign_prepended_str = ft_strnew(ft_strlen(fs->string) + 1);
-	if (!sign) // Not negative (or some crazy error where a wild '-' appears)
+	if (!fs->sign) // Not negative (or some crazy error where a wild '-' appears)
 	{
+		sign_prepended_str = ft_strnew(ft_strlen(fs->string) + 1);
 		if (fs->format & F_FORCE_SIGN)
 			sign_prepended_str[0] = '+';
 		else if (fs->format & F_SPACE_SIGN)
 			sign_prepended_str[0] = ' ';
+		ft_strcpy(sign_prepended_str + 1, fs->string);
+		free(fs->string);
+		fs->string = sign_prepended_str;
 	}
-	else // Number is negative and padded somehow, so realign '-'
-	{
-		*sign = *(sign - 1); // Clone previous '-' as previous neighbor char
-		sign_prepended_str[0] = '-';
-	}
-	ft_strcpy(sign_prepended_str + 1, fs->string);
-	free(fs->string);
-	fs->string = sign_prepended_str;
 }
 
 // Applies a precision greater than the number, i.e. left pads the number with 0's.
+// Forced signs come only after this, so we only account for negative sign.
 static void	pad_integer_precision(t_fstring *fs)
 {
 	const size_t	initial_len = ft_strlen(fs->string);
+	size_t			corrected_precision;
 	char			*str_expanded;
+	uint8_t			sign;
 
+	/*(void)corrected_precision;*/
 	str_expanded = NULL;
-	if (initial_len < fs->precision)
+	sign = 0;
+	if (fs->sign)
+		sign = 1;
+	corrected_precision = fs->precision + sign;
+	if (fs->precision > initial_len - sign)
 	{
-		str_expanded = ft_strnew(fs->precision);
-		ft_memset(str_expanded, '0', fs->precision);
-		ft_memmove(str_expanded + (fs->precision - initial_len),\
+		if (sign)
+			fs->string[0] = '0'; // Swap out minus (precision pad always 0)
+		fs->format ^= EXPL_EXPAND_PRECISION;
+#ifdef DEBUG
+	if (fs->format & EXPL_EXPAND_PRECISION)
+		ft_putstr("EXPL_EXPAND_PRECISION SET\n");
+#endif
+		str_expanded = ft_strnew(corrected_precision);
+		ft_memset(str_expanded, '0', corrected_precision);
+		ft_memmove(str_expanded + (corrected_precision - initial_len),\
 				fs->string, initial_len);
 		free(fs->string);
 		fs->string = str_expanded;
+		if (sign)
+			fs->string[0] = '-'; // Prepend minus
 	}
 }
 
@@ -65,7 +75,8 @@ int	convert_unsigned_int(t_fstring *fs, unsigned long long int arg)
 	else
 		fs->string = ft_ltoa_unsigned(arg);
 	pad_integer_precision(fs);
-	fs->field_width = (uint32_t)ft_strlen(fs->string);
+	if (fs->field_width > ft_strlen(fs->string))
+		expand_to_field_width(fs);
 	return (2);
 }
 
@@ -73,16 +84,15 @@ int	convert_unsigned_int(t_fstring *fs, unsigned long long int arg)
 int	convert_signed_int(t_fstring *fs, long long int arg)
 {
 	// TODO
-	if (arg < 0)
-		fs->sign = 1;
 	fs->string = ft_ltoa(arg);
+	if (arg < 0)
+		fs->sign = fs->string; // Pointer to the sign char
 	pad_integer_precision(fs);
 	if (fs->format & (F_FORCE_SIGN + F_SPACE_SIGN))
-		reformat_sign(fs);
-	/*if (ft_strchr(fs->string, '-') && F_LEFT_PAD)*/
-		/*reformat_sign(fs);*/
+		prepend_sign(fs);
 	// TODO Field width
 	if (fs->field_width > ft_strlen(fs->string))
 		expand_to_field_width(fs);
+	/*correct_sign(fs, ft_strpbrk(fs->string, "-+ "));*/ //TODO Decide fate
 	return (1);
 }
