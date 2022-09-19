@@ -6,24 +6,26 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 21:39:27 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/19 05:17:02 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/19 10:17:25 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-//FIXME Not aligning right by default?
+// Adds a sign for a '+' flag signed conversion.
 void	prepend_sign(t_fstring *fs)
 {
 	char		*sign_prepended_str;
 
-	if (!fs->sign) // Not negative (or some crazy error where a wild '-' appears)
+	if (!fs->sign)
 	{
 		sign_prepended_str = ft_strnew(ft_strlen(fs->string) + 1);
 		if (fs->format & F_FORCE_SIGN)
 			sign_prepended_str[0] = '+';
 		else if (fs->format & F_SPACE_SIGN)
 			sign_prepended_str[0] = ' ';
+		else if (fs->format & (F_ALT_FORM + C_UOCT))
+			sign_prepended_str[0] = '0'; // Octal
 		ft_strcpy(sign_prepended_str + 1, fs->string);
 		free(fs->string);
 		fs->string = sign_prepended_str;
@@ -68,13 +70,29 @@ static void	pad_integer_precision(t_fstring *fs)
 // TODO
 int	convert_unsigned_int(t_fstring *fs, unsigned long long int arg)
 {
-	if (fs->format & CMASK_HEX)
+	if (arg == 0)
+	{
+		if (fs->format & EXPL_PRECISION && fs->precision == 0)
+			fs->string = ft_strdup("");
+		else
+			fs->string = ft_strdup("0");
+	}
+	else if (fs->format & CMASK_HEX)
 		fs->string = format_hex(arg, fs);
-	/*else if (fs->format & C_UOCT)*/
-		/*fs->string = format_oct(arg, fs);*/
+	else if (fs->format & C_UOCT)
+		fs->string = format_oct(arg, fs); // Sets fs->string inside
 	else
 		fs->string = ft_ltoa_unsigned(arg);
+	if (!fs->string)
+		return (0);
+#ifdef DEBUG
+	ft_putstr("Initial fstring: ");
+	ft_putstr(fs->string);
+	ft_putstr("\n");
+#endif
 	pad_integer_precision(fs);
+	if (fs->format & MASK_HEX_PREFIX && !(fs->format & C_UOCT) && arg != 0)
+		add_hex_prefix(fs);
 	if (fs->field_width > ft_strlen(fs->string))
 		expand_to_field_width(fs);
 	return (2);

@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/17 23:54:27 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/19 05:25:40 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/19 08:27:24 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	expand_to_field_width(t_fstring *fs)
 		expanded = ft_strnew(fs->field_width);
 		if (!expanded)
 			return (-1);
-		if (fs->format & F_ZERO_PAD && !(fs->format & EXPL_PRECISION)) // any precision overrides zero flag (GNU printf)
+		if (fs->format & F_ZERO_PAD) // any precision overrides zero flag (GNU printf) TODO TEST THE EXPL_PRECISION CHECK MOVE TO MODIFIERS.C
 			ft_memset(expanded, '0', fs->field_width);
 		else
 			ft_memset(expanded, ' ', fs->field_width);

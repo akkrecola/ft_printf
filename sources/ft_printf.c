@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 11:10:19 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/19 02:45:01 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/19 07:21:03 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ static int			convert_fstring(t_fstring *fs, va_list *ap)
 	else if (fs->format & CMASK_UDEC)
 		status = convert_unsigned_int(fs, va_arg(*ap, unsigned long long int));
 	else if (fs->format & C_FLOAT)
-		status = convert_double(fs, va_arg(*ap, double));
+		status = convert_double(fs, va_arg(*ap, long double));
 	else if (fs->format & CMASK_CHAR)
 		status = convert_char(fs, (unsigned char) va_arg(*ap, int));
 	else if (fs->format & C_STRING)

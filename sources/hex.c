@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 00:20:05 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/19 03:43:45 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/19 10:17:41 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,28 @@
 #include <stdio.h>
 #define HEX_DIVIDEND 16
 #define HEX_BUFSIZE 32
+#define OCT_DIV 8
+#define OCT_BUFSIZE 32
 
 // Adds the correct hex prefix to a string
-static void	add_hex_prefix(char *buf, char type)
+void	add_hex_prefix(t_fstring *fs)
 {
-	char	prefix[2];
+	char	*prepended;
 
-	prefix[0] = '0';
-	if (type == 'X')
-		prefix[1] = 'X';
+	prepended = ft_strnew(ft_strlen(fs->string) + 2);
+	if (!prepended)
+		return ;
+	prepended[0] = '0';
+	if (*fs->type == 'X')
+		prepended[1] = 'X';
 	else
-		prefix[1] = 'x';
-	ft_strncpy(buf, &prefix[0], 2);
+		prepended[1] = 'x';
+	ft_strcpy(prepended + 2, fs->string);
+	free(fs->string);
+	fs->string = prepended;
 }
 
-static char	*build_hex(unsigned long arg, char *buf, int is_upper)
+static char	*build_hex(unsigned long arg, char *buf, int is_uppercase)
 {
 	char	current;
 	int		remainder;
@@ -40,7 +47,7 @@ static char	*build_hex(unsigned long arg, char *buf, int is_upper)
 		remainder = arg % HEX_DIVIDEND;
 		if (remainder >= 10)
 		{
-			if (is_upper)
+			if (is_uppercase)
 				current = remainder + 55; // 10 -> A
 			else
 				current = remainder + 87; // 10 -> a
@@ -55,28 +62,56 @@ static char	*build_hex(unsigned long arg, char *buf, int is_upper)
 
 // Convert a clean integer value to a hex format string.
 // First one to call on hex conversions (before precision and fwidth)
-char	*format_hex(unsigned long long arg, t_fstring *fstring)
+char	*format_hex(unsigned long long arg, t_fstring *fs)
 {
 	char	buf[HEX_BUFSIZE]; // max hex format length is about 16 bytes
 	char	*rev_base;
 
-	ft_bzero(buf, HEX_BUFSIZE);
-	if (fstring->format & MASK_HEX_PREFIX)
-		add_hex_prefix(&buf[0], *fstring->type);
-	rev_base = build_hex(arg, &buf[2], (fstring->format & C_UHEX_CAP));
-	ft_strcpy(&buf[2], rev_base);
+	if (arg == 0)
+		return (ft_strdup("0"));
+	ft_bzero(&buf[0], HEX_BUFSIZE);
+	rev_base = build_hex(arg, &buf[0], (fs->format & C_UHEX_CAP));
+	ft_strcpy(&buf[0], rev_base);
 	free(rev_base);
 	return (ft_strdup(&buf[0]));
 }
 
-// TODO NOT WORKING
-int	convert_void(t_fstring *fstring, void *arg)
+// Convert decimal to octal representation. The resulting string is
+// reversed, and is reversed back in caller.
+static int	build_oct(unsigned long long int arg, uint8_t div, char *buf)
+{
+	if (!arg)
+		return (div);
+	*buf = build_oct(arg / OCT_DIV, arg % OCT_DIV, buf + 1) + '0';
+	return (div);
+}
+
+char	*format_oct(unsigned long long int arg, t_fstring *fs)
+{
+	char	buf[OCT_BUFSIZE];
+
+	ft_bzero(&buf[0], OCT_BUFSIZE);
+	build_oct(arg, arg % OCT_DIV, &buf[0]);
+	fs->string = ft_strrev(&buf[0]);
+	if (fs->format & F_ALT_FORM && arg != 0)
+		prepend_sign(fs);
+#ifdef DEBUG
+	ft_putstr("Fstring in OCTAL conversion: ");
+	ft_putstr(fs->string);
+#endif
+	return (fs->string);
+}
+
+int	convert_void(t_fstring *fs, void *arg)
 {
 	const long long	address = (long long)*((long long *)arg);
+	char			*temp_str;
 
-	printf("\nAddress:\n\tOwn:\t0x%llx\n\tActual:\t%p\n", address, arg);
-	fstring->string = format_hex(address, fstring);
-	ft_putstr(fstring->string);
-	printf("\nAddress:\n\tOwn:\t0x%llx\n\tActual:\t%p\n", address, arg);
+	fs->string = format_hex(address, fs);
+	if (!fs->string)
+		return (0);
+	temp_str = ft_strsub(fs->string, 0, 14);
+	free(fs->string);
+	fs->string = temp_str;
 	return (6);
 }

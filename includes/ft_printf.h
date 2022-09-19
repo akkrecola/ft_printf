@@ -6,13 +6,13 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 17:00:21 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/19 05:23:16 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/19 09:52:17 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_PRINTF_H
 # define FT_PRINTF_H
-// # define DEBUG
+//# define DEBUG
 
 # include <stdarg.h>
 # include <stdint.h>
@@ -104,13 +104,15 @@ int	convert_signed_int(t_fstring *fs, long long int arg);
 int	convert_unsigned_int(t_fstring *fs, unsigned long long int arg);
 int	convert_string(t_fstring *fs, const char *arg);
 int	convert_char(t_fstring *fs, unsigned char arg);
-int	convert_double(t_fstring *fs, double arg);
+int	convert_double(t_fstring *fs, long double arg);
 int	convert_void(t_fstring *fs, void *arg);
 int	give_percent(t_fstring *fs);
 
 char	*format_hex(unsigned long long arg, t_fstring *fs);
+char	*format_oct(unsigned long long arg, t_fstring *fs);
 
 int		align_left(t_fstring *fs, char *left_adjusted_str);
 int		expand_to_field_width(t_fstring *fs);
 void	prepend_sign(t_fstring *fs);
+void	add_hex_prefix(t_fstring *fs);
 #endif
