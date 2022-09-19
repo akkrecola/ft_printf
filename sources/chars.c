@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 22:37:42 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/19 11:32:26 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/19 11:46:09 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ int	convert_char(t_fstring *fs, unsigned char arg)
 {
 	fs->string = ft_strnew(1);
 	*fs->string = arg;
+	if (fs->field_width > 1)
+		expand_to_field_width(fs);
 	return (4);
 }
 
