@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/19 20:40:43 by elehtora          #+#    #+#             */
-/*   Updated: 2022/06/19 20:54:10 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/19 11:14:04 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,12 @@
  */
 char	*ft_strndup(const char *s, size_t n)
 {
-	char	*new;
+	const size_t	len = ft_strnlen(s, n);
+	char			*new;
 
-	new = ft_strnew(ft_strnlen(s, n));
+	new = ft_strnew(len);
 	if (new == NULL)
 		return (NULL);
-	ft_memcpy(new, s, n);
+	ft_memmove(new, s, len);
 	return (new);
 }

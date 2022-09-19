@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 01:18:59 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/19 09:13:08 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/19 11:31:29 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ char	*set_field_width(const char *init, const char *delim, t_fstring *fs)
 	char		buf[FWIDTH_MAXCHARS]; // INT_MAX is 10 in length
 	uint8_t		i;
 
-	if (!iterator)
+	if (!iterator || iterator >= delim)
 		return ((char *)delim); // No field width
 	ft_bzero(&buf[0], FWIDTH_MAXCHARS);
 	i = 0;
