@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 21:39:27 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/19 10:17:25 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/20 00:15:57 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ static void	pad_integer_precision(t_fstring *fs)
 	char			*str_expanded;
 	uint8_t			sign;
 
-	/*(void)corrected_precision;*/
 	str_expanded = NULL;
 	sign = 0;
 	if (fs->sign)
@@ -101,16 +100,13 @@ int	convert_unsigned_int(t_fstring *fs, unsigned long long int arg)
 // TODO
 int	convert_signed_int(t_fstring *fs, long long int arg)
 {
-	// TODO
 	fs->string = ft_ltoa(arg);
 	if (arg < 0)
 		fs->sign = fs->string; // Pointer to the sign char
 	pad_integer_precision(fs);
 	if (fs->format & (F_FORCE_SIGN + F_SPACE_SIGN))
 		prepend_sign(fs);
-	// TODO Field width
 	if (fs->field_width > ft_strlen(fs->string))
 		expand_to_field_width(fs);
-	/*correct_sign(fs, ft_strpbrk(fs->string, "-+ "));*/ //TODO Decide fate
 	return (1);
 }

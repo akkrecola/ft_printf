@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/03 16:00:26 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/19 03:38:39 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/19 12:20:59 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,7 @@ void		ft_striter(char *s, void (*f)(char *));
 void		ft_striteri(char *s, void (*f)(unsigned int, char *));
 char		*ft_strmap(char const *s, char (*f)(char));
 char		*ft_strmapi(char const *s, char (*f)(unsigned int, char));
-char		*ft_strgetset(const char *s, char *targetset,\
-		char *delimset, size_t len);
+char		*ft_strgetset(const char *s, char *tset, char *dset, size_t maxlen);
 int			ft_strequ(char const *s1, char const *s2);
 int			ft_strnequ(char const *s1, char const *s2, size_t n);
 char		*ft_strsub(char const *s, unsigned int start, size_t len);
@@ -103,7 +102,9 @@ void		ft_putnbr_fd(int n, int fd);
 void		ft_putbits(void *var, uint8_t bytes);
 
 /* Math */
-uint64_t	ft_pow(unsigned base, unsigned exponent);
+double		ft_pow(double base, double exp);
+float		ft_powf(float base, float exp);
+int			ft_powi(int base, int exp);
 int			ft_abs(int x);
 
 /* Bonus part function prototypes */
