@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 01:18:59 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/19 11:31:29 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/20 02:23:49 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,8 @@ void	set_flags(const char *init, const char *delim, t_fstring *fs)
 {
 	const char	*flagset = ft_strgetset(init, FLAGS, "", delim - init);
 
-	if (!flagset) // strgetset returns with malloc
+	if (!flagset)
 		return ;
-#ifdef DEBUG
-	ft_putstr(flagset);
-#endif
-	// Setting formatting bitmap
 	if (ft_strchr(flagset, '#'))
 		fs->format ^= F_ALT_FORM;
 	if (ft_strchr(flagset, '-'))
@@ -61,58 +57,31 @@ void	set_flags(const char *init, const char *delim, t_fstring *fs)
 		fs->format ^= F_SPACE_SIGN;
 	if (fs->format & MASK_FLAGS)
 		fs->format ^= EXPL_FLAGS;
-#ifdef DEBUG
-	if (fs->format & MASK_FLAGS) // FIXME Debug
-		ft_putstr("Flags set.\n");
-	if (fs->format & F_ALT_FORM)
-		ft_putstr("ALT FORM FLAG set.\n");
-	if (fs->format & F_LEFT_ALIGN)
-		ft_putstr("LEFT ALIGN FLAG set.\n");
-	if (fs->format & F_ZERO_PAD)
-		ft_putstr("ZERO PAD FLAG set.\n");
-	if (fs->format & F_FORCE_SIGN)
-		ft_putstr("FORCE SIGN FLAG set.\n");
-	if (fs->format & F_SPACE_SIGN)
-		ft_putstr("SPACE SIGN FLAG set.\n");
-#endif
 	free((char *)flagset);
 }
 
-// TODO
 #define FWIDTH_MAXCHARS 10
 char	*set_field_width(const char *init, const char *delim, t_fstring *fs)
 {
 	const char	*iterator = ft_strpbrk(init, FWIDTH_DIGITS); // Find a starting digit (nonzero)
-	char		buf[FWIDTH_MAXCHARS]; // INT_MAX is 10 in length
+	char		buf[FWIDTH_MAXCHARS];
 	uint8_t		i;
 
 	if (!iterator || iterator >= delim)
-		return ((char *)delim); // No field width
+		return ((char *)delim);
 	ft_bzero(&buf[0], FWIDTH_MAXCHARS);
 	i = 0;
 	while (ft_isdigit(*iterator) && iterator != delim)
 		buf[i++] = *iterator++;
-	if (buf[0] != 0) // fwidth catched
+	if (buf[0] != 0)
 	{
 		fs->field_width = ft_atoi(&buf[0]);
 		fs->format ^= EXPL_FIELD_WIDTH;
-#ifdef DEBUG
-	ft_putstr("Field width:\t");
-	ft_putnbr(fs->field_width);
-	ft_putchar('\n');
-	if (fs->format & EXPL_FIELD_WIDTH)
-		ft_putstr("Explicit field width SET\n");
-#endif
 	}
-#ifdef DEBUG
-	ft_putstr("Set_field_width returns: ");
-	ft_putstr((char *)iterator - i);
-	ft_putchar('\n');
-#endif
-	return ((char *)iterator - i); // first digit
+	return ((char *)iterator - i);
 }
 
-#define PRECISION_BUF_SIZE 10 // TODO Check if this can be overflown
+#define PRECISION_BUF_SIZE 10
 // Sets the precision for a format string.
 // Returns a pointer to character after the last digit.
 char	*set_precision(const char *init, const char *delim, t_fstring *fs)
@@ -123,22 +92,18 @@ char	*set_precision(const char *init, const char *delim, t_fstring *fs)
 	uint32_t	i;
 
 	dot = ft_memchr(init, '.', delim - init);
-	if (!dot || *(dot + 1) == '-') // No dot or negative input == omit
-		return ((char *)delim); // fs->type
+	if (!dot || *(dot + 1) == '-')
+		return ((char *)delim);
 	fs->format ^= EXPL_PRECISION;
-#ifdef DEBUG
-	if (fs->format & EXPL_PRECISION)
-		ft_putstr("EXPL_PRECISION SET\n");
-#endif
 	ft_bzero(&precision_str[0], PRECISION_BUF_SIZE);
-	i = 1; // Skip dot
+	i = 1;
 	while (ft_isdigit(dot[i]) && i < PRECISION_BUF_SIZE)
 	{
 		precision_str[i - 1] = dot[i];
 		i++;
 	}
-	precision_val = (uint64_t)ft_atoi(&precision_str[0]); // FIXME atol()
+	precision_val = (uint64_t)ft_atoi(&precision_str[0]);
 	if (precision_val < MAX_PRECISION)
 		fs->precision = precision_val;
-	return (dot); // Dot
+	return (dot);
 }

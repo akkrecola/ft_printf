@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 11:10:19 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/19 12:34:50 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/20 02:35:10 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,9 @@ static t_fstring	*init_fstring(void)
 		return (NULL);
 	fs->format = 0x0;
 	fs->field_width = 0;
-	fs->precision = DEFAULT_PRECISION;
+	fs->precision = 0;
 	fs->string = NULL;
 	fs->sign = NULL;
-
 	return (fs);
 }
 
@@ -43,7 +42,6 @@ static void	free_fstring(t_fstring *fs)
 // string.
 // Most of the format setting functions return a pointer to the format string
 // position where that specific modification has been cleared.
-// TODO Literal %
 static t_fstring	*get_next_format(const char *initializer)
 {
 	const char	*type = ft_strpbrk(initializer + 1, SPEC_TYPES);
@@ -53,10 +51,10 @@ static t_fstring	*get_next_format(const char *initializer)
 	fs = init_fstring();
 	if (!fs || !type)
 		return (NULL);
-	fs->format |= set_type(type); // TODO add error check (if format == FORMAT_ERROR)
+	fs->format |= set_type(type);
 	fs->type = (char *)type;
 	delimiter = set_precision(initializer, type, fs);
-	delimiter = set_field_width(initializer, delimiter, fs); // FIXME hex segfault
+	delimiter = set_field_width(initializer, delimiter, fs);
 	set_flags(initializer, delimiter, fs);
 	return (fs);
 }
@@ -64,11 +62,9 @@ static t_fstring	*get_next_format(const char *initializer)
 // Applies the previously gathered format information to the parameter.
 static int			convert_fstring(t_fstring *fs, va_list *ap)
 {
-	// On error: status == 0
 	int	status;
 
 	status = 0;
-	// Dispatch formatting based on type
 	if (fs->format & C_SDEC)
 		status = convert_signed_int(fs, va_arg(*ap, long long int));
 	else if (fs->format & CMASK_UDEC)
@@ -88,41 +84,30 @@ static int			convert_fstring(t_fstring *fs, va_list *ap)
 
 int					ft_printf(const char *format, ...)
 {
-	va_list		ap; // Variable arguments list (see: man stdarg)
-	char		*initializer; // Pointer to % character that inits conversion
-	size_t		printed; // Bytes printed
+	va_list		ap;
+	char		*initializer;
+	size_t		printed;
 	t_fstring	*fs;
 
-	// Start the variable argument list
 	va_start(ap, format);
-	initializer = NULL;
 	printed = 0;
 	fs = NULL;
-	// Print/format through the format string until we hit null byte
 	while (1)
 	{
-		free_fstring(fs); // Need a breakdown function for fs->string alloc
-		// Look for a format initializer
+		free_fstring(fs);
 		initializer = ft_strchr(format, '%');
-		// Print until initializer or null byte
-		if (initializer != NULL)
+		if (!initializer)
 		{
-			// Write until format initializer
-			printed += write(1, format, initializer - format);
-			fs = get_next_format(initializer);
-			if (!fs || !convert_fstring(fs, &ap))
-				return (-1);
-			write(1, fs->string, ft_strlen(fs->string)); //output formatted
-			format = fs->type + 1;
-		}
-		else
-		{
-			// If no format initializer, print the rest of the string, then break.
 			printed += write(1, format, ft_strlen(format));
 			break;
 		}
+		printed += write(1, format, initializer - format);
+		fs = get_next_format(initializer);
+		if (!fs || !convert_fstring(fs, &ap))
+			return (-1);
+		printed += write(1, fs->string, ft_strlen(fs->string));
+		format = fs->type + 1;
 		va_end(ap);
 	}
-	// Return number of characters printed
-	return (printed);
+	return ((int)printed);
 }

@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/17 23:54:27 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/19 08:27:24 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/20 02:22:23 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 // i.e. F_LEFT_ALIGN is set!
 int	align_left(t_fstring *fs, char *left_adjusted_str)
 {
-	// If left justification specified and field width allows space
 	if (fs->field_width > ft_strlen(fs->string))
 	{
 		if (!left_adjusted_str)
@@ -37,7 +36,7 @@ int	expand_to_field_width(t_fstring *fs)
 		expanded = ft_strnew(fs->field_width);
 		if (!expanded)
 			return (-1);
-		if (fs->format & F_ZERO_PAD) // any precision overrides zero flag (GNU printf) TODO TEST THE EXPL_PRECISION CHECK MOVE TO MODIFIERS.C
+		if (fs->format & F_ZERO_PAD)
 			ft_memset(expanded, '0', fs->field_width);
 		else
 			ft_memset(expanded, ' ', fs->field_width);

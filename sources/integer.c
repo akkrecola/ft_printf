@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 21:39:27 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/20 00:15:57 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/20 02:22:03 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,6 @@ static void	pad_integer_precision(t_fstring *fs)
 		if (sign)
 			fs->string[0] = '0'; // Swap out minus (precision pad always 0)
 		fs->format ^= EXPL_EXPAND_PRECISION;
-#ifdef DEBUG
-	if (fs->format & EXPL_EXPAND_PRECISION)
-		ft_putstr("EXPL_EXPAND_PRECISION SET\n");
-#endif
 		str_expanded = ft_strnew(corrected_precision);
 		ft_memset(str_expanded, '0', corrected_precision);
 		ft_memmove(str_expanded + (corrected_precision - initial_len),\
@@ -84,11 +80,6 @@ int	convert_unsigned_int(t_fstring *fs, unsigned long long int arg)
 		fs->string = ft_ltoa_unsigned(arg);
 	if (!fs->string)
 		return (0);
-#ifdef DEBUG
-	ft_putstr("Initial fstring: ");
-	ft_putstr(fs->string);
-	ft_putstr("\n");
-#endif
 	pad_integer_precision(fs);
 	if (fs->format & MASK_HEX_PREFIX && !(fs->format & C_UOCT) && arg != 0)
 		add_hex_prefix(fs);
@@ -97,7 +88,6 @@ int	convert_unsigned_int(t_fstring *fs, unsigned long long int arg)
 	return (2);
 }
 
-// TODO
 int	convert_signed_int(t_fstring *fs, long long int arg)
 {
 	fs->string = ft_ltoa(arg);
