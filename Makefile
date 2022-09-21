@@ -6,7 +6,7 @@
 #    By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/18 11:10:47 by elehtora          #+#    #+#              #
-#    Updated: 2022/09/21 21:58:42 by elehtora         ###   ########.fr        #
+#    Updated: 2022/09/22 01:00:09 by elehtora         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,9 +30,9 @@ SRCDIR		:= sources
 
 LIBFT_DIR	:= libft
 LIBFT		:= $(addprefix $(LIBFT_DIR), libft.a)
-LIBFT_OBJS	:= $(shell find $(LIBFT_DIR) -type f -regex '.*/*.o')
+LIBFT_OBJS	= $(shell find $(LIBFT_DIR) -type f -regex '.*/*.o')
 OBJDIR		:= objects
-OBJS		:= $(SRCS:.c=.o) $(LIBFT_SRCS:.c=.o)
+OBJS		:= $(SRCS:.c=.o)
 OBJS		:= $(addprefix $(OBJDIR)/,$(OBJS))
 
 INCL		:= -Iincludes -I$(LIBFT_DIR)
@@ -40,7 +40,7 @@ INCL		:= -Iincludes -I$(LIBFT_DIR)
 # The libft library is included from ./lib (see header)
 
 CC			:= gcc
-CFLAGS		:= -Wall -Werror -Wextra -g
+CFLAGS		:= -Wall -Werror -Wextra
 RM			:= /bin/rm -rf
 
 
@@ -51,7 +51,6 @@ all : $(NAME)
 
 $(NAME) : $(OBJDIR) $(LIBFT) $(OBJS)
 	@ar -rcs $@ $(OBJS) $(LIBFT_OBJS)
-	#$(info $(LIBFT_OBJS))
 	@echo "Library archive $(NAME) created successfully."
 
 $(OBJDIR) :
@@ -80,7 +79,7 @@ re : fclean all
 
 # Testing utilities
 TEST_DIR	:= tests
-TEST_SRCS	:= char_test.c
+TEST_SRCS	:= int_test.c
 TEST_SRCS	:= $(addprefix $(TEST_DIR)/,$(TEST_SRCS))
 TEST_INCL	:= -I$(TEST_DIR)
 TEST_NAME	:= printf.test

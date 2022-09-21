@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 17:00:21 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/21 21:27:46 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/22 01:10:28 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,4 +118,5 @@ int		align_left(t_fstring *fs, char *left_adjusted_str);
 int		expand_to_field_width(t_fstring *fs);
 void	prepend_sign(t_fstring *fs);
 void	add_hex_prefix(t_fstring *fs);
+void	set_explicit_zero(t_fstring *fs);
 #endif

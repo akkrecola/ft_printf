@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/17 23:54:27 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/21 22:04:33 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/22 00:30:25 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,23 @@ int	align_left(t_fstring *fs, char *left_adjusted_str)
 	return (0);
 }
 
+void	reset_sign(t_fstring *fs)
+{
+	char	*p_sign;
+	char	sign_char;
+
+	p_sign = ft_strpbrk(fs->string, "+-o");
+	if (p_sign && p_sign != fs->string && fs->format & F_ZERO_PAD)
+	{
+		sign_char = *p_sign;
+		*p_sign = *(p_sign - 1);
+		fs->string[0] = sign_char;
+	}
+}
+
 int	expand_to_field_width(t_fstring *fs)
 {
-	char			*expanded;
+	char	*expanded;
 
 	if (fs->field_width > fs->len)
 	{
@@ -44,10 +58,11 @@ int	expand_to_field_width(t_fstring *fs)
 			align_left(fs, expanded);
 		else
 		{
-			ft_memcpy(expanded + (fs->field_width - fs->len),\
+			ft_memmove(expanded + (fs->field_width - fs->len),\
 					fs->string, fs->len);
 			free(fs->string);
 			fs->string = expanded;
+			reset_sign(fs);
 		}
 		fs->len = fs->field_width;
 	}

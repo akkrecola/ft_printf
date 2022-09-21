@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 00:20:05 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/19 10:17:41 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/22 01:16:45 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ char	*format_hex(unsigned long long arg, t_fstring *fs)
 }
 
 // Convert decimal to octal representation. The resulting string is
-// reversed, and is reversed back in caller.
+// collected reversed, and is reversed back in caller.
 static int	build_oct(unsigned long long int arg, uint8_t div, char *buf)
 {
 	if (!arg)
@@ -91,14 +91,16 @@ char	*format_oct(unsigned long long int arg, t_fstring *fs)
 	char	buf[OCT_BUFSIZE];
 
 	ft_bzero(&buf[0], OCT_BUFSIZE);
-	build_oct(arg, arg % OCT_DIV, &buf[0]);
-	fs->string = ft_strrev(&buf[0]);
+	if (arg == 0)
+		set_explicit_zero(fs);
+	else
+	{
+		build_oct(arg, arg % OCT_DIV, &buf[0]);
+		fs->string = ft_strrev(&buf[0]);
+	}
 	if (fs->format & F_ALT_FORM && arg != 0)
 		prepend_sign(fs);
-#ifdef DEBUG
-	ft_putstr("Fstring in OCTAL conversion: ");
-	ft_putstr(fs->string);
-#endif
+	fs->len = ft_strlen(fs->string);
 	return (fs->string);
 }
 

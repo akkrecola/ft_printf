@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 01:18:59 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/21 21:33:13 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/22 00:42:23 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,8 @@ void	set_flags(const char *init, const char *delim, t_fstring *fs)
 		fs->format ^= F_ALT_FORM;
 	if (ft_strchr(flagset, '-'))
 		fs->format ^= F_LEFT_ALIGN;
-	if (ft_strchr(flagset, '0') && !(fs->format & (F_LEFT_ALIGN + EXPL_PRECISION)))
+	if (ft_strchr(flagset, '0')\
+			&& !(fs->format & (F_LEFT_ALIGN + EXPL_PRECISION)))
 		fs->format ^= F_ZERO_PAD;
 	if (ft_strchr(flagset, '+'))
 		fs->format ^= F_FORCE_SIGN;
