@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 04:41:53 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/19 13:09:15 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/20 22:34:09 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	count_digits(unsigned long long n)
 	return ((int)digits);
 }
 
-char		*ft_ltoa(long long n)
+char	*ft_ltoa(long long n)
 {
 	char	buf[FT_LTOA_BUFLEN];
 	uint8_t	len;
@@ -53,7 +53,7 @@ char		*ft_ltoa(long long n)
 }
 
 // Converts an (unsigned long long) integer to a string format
-char		*ft_ltoa_unsigned(unsigned long long n)
+char	*ft_ltoa_unsigned(unsigned long long n)
 {
 	int		len;
 	char	*str;

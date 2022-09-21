@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/23 16:07:24 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/19 12:21:53 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/20 22:33:58 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ float	ft_powf(float base, float exp)
 	return (result);
 }
 
-int		ft_powi(int base, int exp)
+int	ft_powi(int base, int exp)
 {
 	int	result;
 

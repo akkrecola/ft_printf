@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 11:10:19 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/20 02:35:10 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/21 02:57:19 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,20 +42,30 @@ static void	free_fstring(t_fstring *fs)
 // string.
 // Most of the format setting functions return a pointer to the format string
 // position where that specific modification has been cleared.
-static t_fstring	*get_next_format(const char *initializer)
+static t_fstring	*get_next_format(const char *init)
 {
-	const char	*type = ft_strpbrk(initializer + 1, SPEC_TYPES);
-	const char	*delimiter;
+	const char	*type = ft_strpbrk(init + 1, SPEC_TYPES);
+	const char	*delimiter = init + ft_strspn(init, ALL_FCHARS);
 	t_fstring	*fs;
 
 	fs = init_fstring();
-	if (!fs || !type)
+	if (!fs)
 		return (NULL);
+
+	if (!type || type > delimiter) //fallback;
+	{
+		/*if (*delimiter == '\0')*/
+			/*ft_putstr("Is null\n");*/
+		/*ft_putstr(delimiter);*/
+		/*ft_putnbr(ft_strspn(init, ALL_FCHARS));*/
+		fs->type = (char *)delimiter;
+		return (fs);
+	}
 	fs->format |= set_type(type);
 	fs->type = (char *)type;
-	delimiter = set_precision(initializer, type, fs);
-	delimiter = set_field_width(initializer, delimiter, fs);
-	set_flags(initializer, delimiter, fs);
+	delimiter = set_precision(init, type, fs);
+	delimiter = set_field_width(init, delimiter, fs);
+	set_flags(init, delimiter, fs);
 	return (fs);
 }
 
@@ -71,7 +81,7 @@ static int			convert_fstring(t_fstring *fs, va_list *ap)
 		status = convert_unsigned_int(fs, va_arg(*ap, unsigned long long int));
 	else if (fs->format & C_FLOAT)
 		status = convert_double(fs, va_arg(*ap, double));
-	else if (fs->format & CMASK_CHAR)
+	else if (fs->format & C_CHAR)
 		status = convert_char(fs, (unsigned char) va_arg(*ap, int));
 	else if (fs->format & C_STRING)
 		status = convert_string(fs, va_arg(*ap, const char *));
@@ -96,13 +106,36 @@ int					ft_printf(const char *format, ...)
 	{
 		free_fstring(fs);
 		initializer = ft_strchr(format, '%');
+#define DEBUG
+#ifdef DEBUG
+		/*if (*format == '\0')*/
+			/*ft_putstr("format is null\n");*/
+		/*ft_putstr("Initializer: ");*/
+		/*ft_putstr(initializer);*/
+		/*ft_putstr("\n");*/
+#endif
 		if (!initializer)
 		{
+			/*printed += write(1, format, 0);*/
 			printed += write(1, format, ft_strlen(format));
 			break;
 		}
+#ifdef DEBUG
+		/*ft_putstr("Format: ");*/
+		/*ft_putstr(format);*/
+		/*ft_putstr("\n");*/
+#endif
 		printed += write(1, format, initializer - format);
 		fs = get_next_format(initializer);
+		if (!(fs->format & CMASK_ALL))
+		{
+			/*ft_putstr("Yeehaw!\n");*/
+			format = fs->type;
+			if (!format) // fs allocation failed
+				return (-1);
+			/*ft_putstr(format);*/
+			continue ;
+		}
 		if (!fs || !convert_fstring(fs, &ap))
 			return (-1);
 		printed += write(1, fs->string, ft_strlen(fs->string));

@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 01:18:59 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/20 02:23:49 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/21 01:15:09 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	set_flags(const char *init, const char *delim, t_fstring *fs)
 {
 	const char	*flagset = ft_strgetset(init, FLAGS, "", delim - init);
 
-	if (!flagset)
+	if (!flagset || !ft_strlen(flagset))
 		return ;
 	if (ft_strchr(flagset, '#'))
 		fs->format ^= F_ALT_FORM;
@@ -63,7 +63,7 @@ void	set_flags(const char *init, const char *delim, t_fstring *fs)
 #define FWIDTH_MAXCHARS 10
 char	*set_field_width(const char *init, const char *delim, t_fstring *fs)
 {
-	const char	*iterator = ft_strpbrk(init, FWIDTH_DIGITS); // Find a starting digit (nonzero)
+	const char	*iterator = ft_strpbrk(init, FWIDTH_DIGITS);
 	char		buf[FWIDTH_MAXCHARS];
 	uint8_t		i;
 

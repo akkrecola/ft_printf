@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 11:10:23 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/19 03:44:19 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/20 22:30:05 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
  * than the length of 's'.
  */
 #define GETSET_BUFSIZE 256
+
 char	*ft_strgetset(const char *s, char *tset, char *dset, size_t maxlen)
 {
 	char			resultset[GETSET_BUFSIZE];

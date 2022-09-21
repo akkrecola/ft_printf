@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 00:16:33 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/20 02:17:25 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/20 21:02:07 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,21 +35,21 @@ char	*join_double(const char *base, const char *fraction, t_fstring *fs)
 }
 
 // Round to nearest
-void	round_fraction(char *fraction, double arg, t_fstring *fs)
-{
-	uint8_t	i;
+/*void	round_fraction(char *fraction, double arg, t_fstring *fs)*/
+/*{*/
+	/*uint8_t	i;*/
 
-	(void)arg;
-	ft_printf("Char at the end of fraction:\t%c\n", fraction[fs->precision - 1]);
-	i = fs->precision;
-	while (--i)
-	{
-		arg = arg * 10;
-		//ft_printf("Argument in loop: %d\n", (int)arg);
-		arg = arg - (arg / 1.0);
-	}
-	ft_printf("\n");
-}
+	/*(void)arg;*/
+	/*ft_printf("Char at the end of fraction:\t%c\n", fraction[fs->precision - 1]);*/
+	/*i = fs->precision;*/
+	/*while (--i)*/
+	/*{*/
+		/*arg = arg * 10;*/
+		/*//ft_printf("Argument in loop: %d\n", (int)arg);*/
+		/*arg = arg - (arg / 1.0);*/
+	/*}*/
+	/*ft_printf("\n");*/
+/*}*/
 
 // Extract the fractional part of a double. The function extracts with the
 // 'precision' of 18 fractional digits, not considering whether they are
@@ -66,8 +66,6 @@ static char	*extract_fraction(t_fstring *fs, double arg)
 	if (!fraction)
 		return (fraction);
 	arg = arg - (long)arg;
-#include <stdio.h>
-	printf("Argument OUTSIDE loop: %f\n", arg);
 	i = 0;
 	while (i < fs->precision)
 	{
@@ -77,9 +75,6 @@ static char	*extract_fraction(t_fstring *fs, double arg)
 		arg = arg - (int)arg; // floor()
 		i++;
 	}
-	ft_printf("Fraction BEFORE rounding:\t%s\n", fraction);
-	/*round_fraction(fraction, arg, fs);*/
-	ft_printf("Fraction AFTER rounding:\t%s\n", fraction);
 	return (fraction);
 }
 

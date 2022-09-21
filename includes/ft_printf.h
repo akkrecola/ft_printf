@@ -6,13 +6,13 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 17:00:21 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/19 22:35:23 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/21 01:56:50 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_PRINTF_H
 # define FT_PRINTF_H
-# define DEBUG
+// # define DEBUG
 
 # include <stdarg.h>
 # include <stdint.h>
@@ -40,7 +40,7 @@
 # define C_VOIDHEX 0x80
 # define C_FLOAT 0x100
 # define C_INIT 0x200
-# define CMASK_CHAR 0x220
+# define CMASK_ALL 0x3FF
 // padding until bit position 12
 // Conversion (F)lags. Some of these are mutually exclusive.
 // #0-(space)+' bit positions 12-16
@@ -68,11 +68,13 @@
 
 
 # define SPEC_TYPES "diouxXfcsp%"
+# define NOT_SPEC_TYPES "#0- + 123456789."
 # define FLAGS "#0- +"
 # define FWIDTH_DIGITS "123456789"
 // Delimiting characters for each format parser function (set_*())
 # define FLAG_DELIMS "123456789.lhLdiouxXfcsp%"
 # define FWIDTH_DELIMS ".lhLdiouxXfcsp%" // Precision id + length mods
+# define ALL_FCHARS "#0- + 123456789.lhLdiouxXfcsp%"
 
 // Default values for format information
 # define DEFAULT_PRECISION 0
