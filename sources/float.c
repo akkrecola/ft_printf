@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 00:16:33 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/20 21:02:07 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/21 22:08:31 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,13 +94,14 @@ char	*format_double(t_fstring *fs, double arg)
 int	convert_double(t_fstring *fs, double arg)
 {
 	fs->string = format_double(fs, arg);
-	if (arg < 0.0)
-		fs->sign = fs->string;
 	if (!fs->string)
 		return (0);
+	fs->len = ft_strlen(fs->string);
+	if (arg < 0.0)
+		fs->sign = fs->string;
 	if (fs->format & (F_FORCE_SIGN + F_SPACE_SIGN))
 		prepend_sign(fs);
-	if (fs->field_width > ft_strlen(fs->string))
+	if (fs->field_width > fs->len)
 		expand_to_field_width(fs);
 	return (5);
 }

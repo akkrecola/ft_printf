@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 11:10:19 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/21 20:32:53 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/21 21:59:52 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ static t_fstring	*init_fstring(void)
 	fs->precision = 0;
 	fs->string = NULL;
 	fs->sign = NULL;
+	fs->len = 0;
 	return (fs);
 }
 
@@ -133,7 +134,11 @@ int					ft_printf(const char *format, ...)
 		}
 		if (!fs || !convert_fstring(fs, &ap))
 			return (-1);
-		printed += write(1, fs->string, ft_strlen(fs->string));
+		/*if (!(fs->format & C_CHAR))*/
+			/*printed += write(1, fs->string, ft_strlen(fs->string));*/
+		/*else*/
+			printed += write(1, fs->string, fs->len);
+		/*ft_putnbr(fs->len);*/
 		format = fs->type + 1;
 		va_end(ap);
 	}

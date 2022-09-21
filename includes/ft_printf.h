@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 17:00:21 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/21 04:08:11 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/21 21:27:46 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ typedef struct s_fstring
 	uint32_t	format;
 	uint32_t	field_width;
 	uint32_t	precision;
+	uint32_t	len;
 }	t_fstring;
 
 int	ft_printf(const char *format, ...) __attribute__ ((format (printf, 1, 2)));

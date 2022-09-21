@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 21:39:27 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/21 20:09:29 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/21 22:00:06 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ void	prepend_sign(t_fstring *fs)
 		ft_strcpy(sign_prepended_str + 1, fs->string);
 		free(fs->string);
 		fs->string = sign_prepended_str;
+		fs->len += 1;
+		/*ft_putnbr(fs->len);*/
 	}
 }
 
@@ -59,6 +61,9 @@ static void	pad_integer_precision(t_fstring *fs)
 		fs->string = str_expanded;
 		if (sign)
 			fs->string[0] = '-'; // Prepend minus
+		if (fs->len < corrected_precision)
+			fs->len = corrected_precision;
+		/*ft_putnbr(fs->len);*/
 	}
 }
 
@@ -67,7 +72,10 @@ static void	set_explicit_zero(t_fstring *fs)
 	if (fs->format & EXPL_PRECISION && fs->precision == 0)
 		fs->string = ft_strdup("");
 	else
+	{
 		fs->string = ft_strdup("0");
+		fs->len = 1;
+	}
 }
 
 // TODO
@@ -83,6 +91,7 @@ int	convert_unsigned_int(t_fstring *fs, unsigned long long int arg)
 		fs->string = ft_ltoa_unsigned(arg);
 	if (!fs->string)
 		return (0);
+	fs->len = ft_strlen(fs->string);
 	pad_integer_precision(fs);
 	if (fs->format & MASK_HEX_PREFIX && !(fs->format & C_UOCT) && arg != 0)
 		add_hex_prefix(fs);
@@ -96,12 +105,12 @@ int	convert_signed_int(t_fstring *fs, long long int arg)
 	if (arg == 0)
 		set_explicit_zero(fs);
 	else
-	{
 		fs->string = ft_ltoa(arg);
-		if (arg < 0)
-			fs->sign = fs->string; // Pointer to the sign char
-		pad_integer_precision(fs);
-	}
+	fs->len = ft_strlen(fs->string);
+	/*ft_putnbr(fs->len);*/
+	if (arg < 0)
+		fs->sign = fs->string; // Pointer to the sign char
+	pad_integer_precision(fs);
 	if (fs->format & (F_FORCE_SIGN + F_SPACE_SIGN))
 		prepend_sign(fs);
 	if (fs->field_width > ft_strlen(fs->string))
