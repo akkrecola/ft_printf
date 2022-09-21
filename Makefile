@@ -6,7 +6,7 @@
 #    By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/18 11:10:47 by elehtora          #+#    #+#              #
-#    Updated: 2022/09/20 20:20:25 by elehtora         ###   ########.fr        #
+#    Updated: 2022/09/21 19:46:14 by elehtora         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,7 @@ INCL		:= -Iincludes -I$(LIBFT_DIR)
 # The libft library is included from ./lib (see header)
 
 CC			:= gcc
-CFLAGS		:= -Wall -Werror -Wextra
+CFLAGS		:= -Wall -Werror -Wextra -g
 RM			:= /bin/rm -rf
 
 
@@ -80,11 +80,11 @@ re : fclean all
 
 # Testing utilities
 TEST_DIR	:= tests
-TEST_SRCS	:= float_test.c
+TEST_SRCS	:= int_test.c
 TEST_SRCS	:= $(addprefix $(TEST_DIR)/,$(TEST_SRCS))
 TEST_INCL	:= -I$(TEST_DIR)
 TEST_NAME	:= printf.test
 
 test : all
-	$(CC) $(TEST_SRCS) $(INCL) $(TEST_INCL) \
+	$(CC) -g $(TEST_SRCS) $(INCL) $(TEST_INCL) \
 		-L. -l$(BIN_LIB) -o $(TEST_NAME)

@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 11:10:19 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/21 02:57:19 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/21 20:32:53 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,13 +51,8 @@ static t_fstring	*get_next_format(const char *init)
 	fs = init_fstring();
 	if (!fs)
 		return (NULL);
-
 	if (!type || type > delimiter) //fallback;
 	{
-		/*if (*delimiter == '\0')*/
-			/*ft_putstr("Is null\n");*/
-		/*ft_putstr(delimiter);*/
-		/*ft_putnbr(ft_strspn(init, ALL_FCHARS));*/
 		fs->type = (char *)delimiter;
 		return (fs);
 	}
@@ -76,9 +71,9 @@ static int			convert_fstring(t_fstring *fs, va_list *ap)
 
 	status = 0;
 	if (fs->format & C_SDEC)
-		status = convert_signed_int(fs, va_arg(*ap, long long int));
+		status = convert_signed_int(fs, va_arg(*ap, int));
 	else if (fs->format & CMASK_UDEC)
-		status = convert_unsigned_int(fs, va_arg(*ap, unsigned long long int));
+		status = convert_unsigned_int(fs, va_arg(*ap, unsigned int));
 	else if (fs->format & C_FLOAT)
 		status = convert_double(fs, va_arg(*ap, double));
 	else if (fs->format & C_CHAR)
@@ -89,6 +84,22 @@ static int			convert_fstring(t_fstring *fs, va_list *ap)
 		status = convert_void(fs, va_arg(*ap, void *));
 	else if (fs->format & C_INIT)
 		status = give_percent(fs); // TODO function just to set fs->string to '%'
+#ifdef DEBUG
+	if (fs->format & C_SDEC)
+		ft_putstr("Converting signed decimal.\n");
+	else if (fs->format & CMASK_UDEC)
+		ft_putstr("Converting unsigned decimal.\n");
+	else if (fs->format & C_FLOAT)
+		ft_putstr("Converting float.\n");
+	else if (fs->format & C_CHAR)
+		ft_putstr("Converting char.\n");
+	else if (fs->format & C_STRING)
+		ft_putstr("Converting string.\n");
+	else if (fs->format & C_VOIDHEX)
+		ft_putstr("Converting void pointer.\n");
+	else if (fs->format & C_INIT)
+		ft_putstr("Converting literal %.\n");
+#endif
 	return (status);
 }
 
@@ -106,34 +117,18 @@ int					ft_printf(const char *format, ...)
 	{
 		free_fstring(fs);
 		initializer = ft_strchr(format, '%');
-#define DEBUG
-#ifdef DEBUG
-		/*if (*format == '\0')*/
-			/*ft_putstr("format is null\n");*/
-		/*ft_putstr("Initializer: ");*/
-		/*ft_putstr(initializer);*/
-		/*ft_putstr("\n");*/
-#endif
 		if (!initializer)
 		{
-			/*printed += write(1, format, 0);*/
 			printed += write(1, format, ft_strlen(format));
 			break;
 		}
-#ifdef DEBUG
-		/*ft_putstr("Format: ");*/
-		/*ft_putstr(format);*/
-		/*ft_putstr("\n");*/
-#endif
 		printed += write(1, format, initializer - format);
 		fs = get_next_format(initializer);
 		if (!(fs->format & CMASK_ALL))
 		{
-			/*ft_putstr("Yeehaw!\n");*/
 			format = fs->type;
 			if (!format) // fs allocation failed
 				return (-1);
-			/*ft_putstr(format);*/
 			continue ;
 		}
 		if (!fs || !convert_fstring(fs, &ap))
