@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 21:39:27 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/22 23:34:32 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/22 23:42:32 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	prepend_sign(t_fstring *fs)
 		else if (fs->format & F_SPACE_SIGN)
 			sign_prepended_str[0] = ' ';
 		else if (fs->format & (F_ALT_FORM + C_UOCT))
-			sign_prepended_str[0] = '0'; // Octal
+			sign_prepended_str[0] = '0';
 		ft_strcpy(sign_prepended_str + 1, fs->string);
 		free(fs->string);
 		fs->string = sign_prepended_str;
@@ -36,33 +36,33 @@ void	prepend_sign(t_fstring *fs)
 // Applies a precision greater than the number,
 // i.e. left pads the number with 0's.
 // Forced signs come only after this, so we only account for negative sign.
-static void	pad_integer_precision(t_fstring *fs)
+static int	pad_integer_precision(t_fstring *fs)
 {
-	const size_t	initial_len = ft_strlen(fs->string);
-	size_t			corrected_precision;
 	char			*str_expanded;
 	uint8_t			sign;
 
-	str_expanded = NULL;
 	sign = 0;
 	if (fs->sign)
 		sign = 1;
-	corrected_precision = fs->precision + sign;
-	if (corrected_precision > initial_len - sign)
+	if (fs->precision > fs->len - sign)
 	{
+		fs->precision += sign;
 		if (sign)
 			fs->string[0] = '0';
-		str_expanded = ft_strnew(corrected_precision);
-		ft_memset(str_expanded, '0', corrected_precision);
-		ft_memmove(str_expanded + (corrected_precision - initial_len), \
-				fs->string, initial_len);
+		str_expanded = ft_strnew(fs->precision);
+		if (!str_expanded)
+			return (0);
+		ft_memset(str_expanded, '0', fs->precision);
+		ft_memmove(str_expanded + (fs->precision - fs->len), \
+				fs->string, fs->len);
 		free(fs->string);
 		fs->string = str_expanded;
 		if (sign)
 			fs->string[0] = '-';
-		if (fs->len < corrected_precision)
-			fs->len = corrected_precision;
+		if (fs->len < fs->precision)
+			fs->len = fs->precision;
 	}
+	return (1);
 }
 
 void	set_explicit_zero(t_fstring *fs)
