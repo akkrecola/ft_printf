@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 01:18:59 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/22 00:42:23 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/22 23:24:01 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	set_flags(const char *init, const char *delim, t_fstring *fs)
 		fs->format ^= F_ALT_FORM;
 	if (ft_strchr(flagset, '-'))
 		fs->format ^= F_LEFT_ALIGN;
-	if (ft_strchr(flagset, '0')\
+	if (ft_strchr(flagset, '0') \
 			&& !(fs->format & (F_LEFT_ALIGN + EXPL_PRECISION)))
 		fs->format ^= F_ZERO_PAD;
 	if (ft_strchr(flagset, '+'))
@@ -62,6 +62,7 @@ void	set_flags(const char *init, const char *delim, t_fstring *fs)
 }
 
 #define FWIDTH_MAXCHARS 10
+
 char	*set_field_width(const char *init, const char *delim, t_fstring *fs)
 {
 	const char	*iterator = ft_strpbrk(init, FWIDTH_DIGITS);

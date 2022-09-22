@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/17 23:54:27 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/22 00:30:25 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/22 23:23:21 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,30 +41,38 @@ void	reset_sign(t_fstring *fs)
 	}
 }
 
+static void	expand_zeros(t_fstring *fs, char *expanded)
+{
+	ft_memset(expanded, '0', fs->field_width);
+	if (fs->format & MASK_HEX_PREFIX \
+			&& (fs->string[1] == 'X' || fs->string[1] == 'x'))
+	{
+		ft_memmove(expanded, fs->string, 2);
+		ft_memset(fs->string, '0', 2);
+	}
+}
+
 int	expand_to_field_width(t_fstring *fs)
 {
 	char	*expanded;
 
-	if (fs->field_width > fs->len)
+	expanded = ft_strnew(fs->field_width);
+	if (!expanded)
+		return (-1);
+	if (fs->format & F_ZERO_PAD)
+		expand_zeros(fs, expanded);
+	else
+		ft_memset(expanded, ' ', fs->field_width);
+	if (fs->format & F_LEFT_ALIGN)
+		align_left(fs, expanded);
+	else
 	{
-		expanded = ft_strnew(fs->field_width);
-		if (!expanded)
-			return (-1);
-		if (fs->format & F_ZERO_PAD)
-			ft_memset(expanded, '0', fs->field_width);
-		else
-			ft_memset(expanded, ' ', fs->field_width);
-		if (fs->format & F_LEFT_ALIGN)
-			align_left(fs, expanded);
-		else
-		{
-			ft_memmove(expanded + (fs->field_width - fs->len),\
-					fs->string, fs->len);
-			free(fs->string);
-			fs->string = expanded;
-			reset_sign(fs);
-		}
-		fs->len = fs->field_width;
+		ft_memmove(expanded + (fs->field_width - fs->len), \
+				fs->string, fs->len);
+		free(fs->string);
+		fs->string = expanded;
+		reset_sign(fs);
 	}
+	fs->len = fs->field_width;
 	return (0);
 }
