@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 00:16:33 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/21 22:08:31 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/23 00:56:23 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,10 @@ char	*format_double(t_fstring *fs, double arg)
 	return (join_double(base, fraction, fs));
 }
 
-int	convert_double(t_fstring *fs, double arg)
+int	convert_double(t_fstring *fs, va_list *ap)
 {
+	const double	arg = (const double)va_arg(*ap, double);
+
 	fs->string = format_double(fs, arg);
 	if (!fs->string)
 		return (0);

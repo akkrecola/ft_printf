@@ -6,7 +6,7 @@
 #    By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/03 15:27:40 by elehtora          #+#    #+#              #
-#    Updated: 2022/09/21 23:36:54 by elehtora         ###   ########.fr        #
+#    Updated: 2022/09/23 02:10:57 by elehtora         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -104,7 +104,7 @@ SRCS		=	ft_atoi.c			\
 OBJS = $(SRCS:.c=.o)
 
 CC=clang
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
 LIB=ar rcs
 RM=/bin/rm -f
 

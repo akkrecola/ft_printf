@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 01:18:59 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/22 23:24:01 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/23 02:10:10 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,8 @@ void	set_flags(const char *init, const char *delim, t_fstring *fs)
 		fs->format ^= F_FORCE_SIGN;
 	if (ft_strchr(flagset, ' ') && !(fs->format & F_FORCE_SIGN))
 		fs->format ^= F_SPACE_SIGN;
-	if (fs->format & MASK_FLAGS)
-		fs->format ^= EXPL_FLAGS;
+	/*if (fs->format & MASK_FLAGS)*/
+		/*fs->format ^= EXPL_FLAGS;*/
 	free((char *)flagset);
 }
 
@@ -76,10 +76,7 @@ char	*set_field_width(const char *init, const char *delim, t_fstring *fs)
 	while (ft_isdigit(*iterator) && iterator != delim)
 		buf[i++] = *iterator++;
 	if (buf[0] != 0)
-	{
 		fs->field_width = ft_atoi(&buf[0]);
-		fs->format ^= EXPL_FIELD_WIDTH;
-	}
 	return ((char *)iterator - i);
 }
 

@@ -6,12 +6,11 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 00:20:05 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/22 22:00:59 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/23 00:54:40 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#include <stdio.h>
 #define HEX_DIVIDEND 16
 #define HEX_BUFSIZE 32
 #define OCT_DIV 8
@@ -113,8 +112,9 @@ int	format_oct(unsigned long long int arg, t_fstring *fs)
 	return (1);
 }
 
-int	convert_void(t_fstring *fs, void *arg)
+int	convert_void(t_fstring *fs, va_list *ap)
 {
+	const void		*arg = (const void *)va_arg(*ap, void *);
 	const long long	address = (long long)*((long long *)arg);
 	char			*temp_str;
 

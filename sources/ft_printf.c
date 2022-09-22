@@ -6,11 +6,12 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 11:10:19 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/21 21:59:52 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/23 02:32:52 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+#include "dispatch.h"
 
 static t_fstring	*init_fstring(void)
 {
@@ -68,40 +69,7 @@ static t_fstring	*get_next_format(const char *init)
 // Applies the previously gathered format information to the parameter.
 static int			convert_fstring(t_fstring *fs, va_list *ap)
 {
-	int	status;
-
-	status = 0;
-	if (fs->format & C_SDEC)
-		status = convert_signed_int(fs, va_arg(*ap, int));
-	else if (fs->format & CMASK_UDEC)
-		status = convert_unsigned_int(fs, va_arg(*ap, unsigned int));
-	else if (fs->format & C_FLOAT)
-		status = convert_double(fs, va_arg(*ap, double));
-	else if (fs->format & C_CHAR)
-		status = convert_char(fs, (unsigned char) va_arg(*ap, int));
-	else if (fs->format & C_STRING)
-		status = convert_string(fs, va_arg(*ap, const char *));
-	else if (fs->format & C_VOIDHEX)
-		status = convert_void(fs, va_arg(*ap, void *));
-	else if (fs->format & C_INIT)
-		status = give_percent(fs); // TODO function just to set fs->string to '%'
-#ifdef DEBUG
-	if (fs->format & C_SDEC)
-		ft_putstr("Converting signed decimal.\n");
-	else if (fs->format & CMASK_UDEC)
-		ft_putstr("Converting unsigned decimal.\n");
-	else if (fs->format & C_FLOAT)
-		ft_putstr("Converting float.\n");
-	else if (fs->format & C_CHAR)
-		ft_putstr("Converting char.\n");
-	else if (fs->format & C_STRING)
-		ft_putstr("Converting string.\n");
-	else if (fs->format & C_VOIDHEX)
-		ft_putstr("Converting void pointer.\n");
-	else if (fs->format & C_INIT)
-		ft_putstr("Converting literal %.\n");
-#endif
-	return (status);
+	return (g_convert[(fs->format & CMASK_ALL) - 1](fs, ap)); // TODO requires header convspec formatting
 }
 
 int					ft_printf(const char *format, ...)
@@ -121,7 +89,7 @@ int					ft_printf(const char *format, ...)
 		if (!initializer)
 		{
 			printed += write(1, format, ft_strlen(format));
-			break;
+			break ;
 		}
 		printed += write(1, format, initializer - format);
 		fs = get_next_format(initializer);
@@ -132,13 +100,9 @@ int					ft_printf(const char *format, ...)
 				return (-1);
 			continue ;
 		}
-		if (!fs || !convert_fstring(fs, &ap))
+		if (!fs || !convert_fstring(fs, &ap)) // TODO Collapse convert_fstring straight as convert[]()
 			return (-1);
-		/*if (!(fs->format & C_CHAR))*/
-			/*printed += write(1, fs->string, ft_strlen(fs->string));*/
-		/*else*/
-			printed += write(1, fs->string, fs->len);
-		/*ft_putnbr(fs->len);*/
+		printed += write(1, fs->string, fs->len);
 		format = fs->type + 1;
 		va_end(ap);
 	}

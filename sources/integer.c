@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 21:39:27 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/22 23:42:32 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/23 01:34:53 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,12 +79,14 @@ void	set_explicit_zero(t_fstring *fs)
 	fs->len = ft_strlen(fs->string);
 }
 
-// TODO
-int	convert_unsigned_int(t_fstring *fs, unsigned long long int arg)
+// TODO Length modifiers
+int	convert_unsigned_int(t_fstring *fs, va_list *ap)
 {
+	const int	arg = va_arg(*ap, unsigned int); // TODO Figure out lenconv assignment
+
 	if (arg == 0 && !(fs->format & C_UOCT))
 		set_explicit_zero(fs);
-	else if (fs->format & CMASK_HEX)
+	else if (fs->format & (C_UHEX_CAP ^ C_UHEX_LOW)) // FIXME check condition after refactoring
 		format_hex(arg, fs);
 	else if (fs->format & C_UOCT)
 		format_oct(arg, fs);
@@ -101,8 +103,11 @@ int	convert_unsigned_int(t_fstring *fs, unsigned long long int arg)
 	return (2);
 }
 
-int	convert_signed_int(t_fstring *fs, long long int arg)
+// TODO Length modifiers
+int	convert_signed_int(t_fstring *fs, va_list *ap)
 {
+	const int	arg = va_arg(*ap, int); // TODO Figure out lenconv assignment
+
 	if (arg == 0)
 		set_explicit_zero(fs);
 	else
