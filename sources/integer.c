@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 21:39:27 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/23 01:34:53 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/23 05:20:22 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	prepend_sign(t_fstring *fs)
 			sign_prepended_str[0] = '+';
 		else if (fs->format & F_SPACE_SIGN)
 			sign_prepended_str[0] = ' ';
-		else if (fs->format & (F_ALT_FORM + C_UOCT))
+		else if ((fs->format & (CMASK | F_ALT_FORM)) == (F_ALT_FORM | C_UOCT))
 			sign_prepended_str[0] = '0';
 		ft_strcpy(sign_prepended_str + 1, fs->string);
 		free(fs->string);
@@ -69,7 +69,7 @@ void	set_explicit_zero(t_fstring *fs)
 {
 	if (fs->format & EXPL_PRECISION && fs->precision == 0)
 	{
-		if (fs->format & C_UOCT && fs->format & F_ALT_FORM)
+		if ((fs->format & (CMASK | F_ALT_FORM)) == (C_UOCT | F_ALT_FORM))
 			fs->string = ft_strdup("0");
 		else
 			fs->string = ft_strdup("");
@@ -79,16 +79,20 @@ void	set_explicit_zero(t_fstring *fs)
 	fs->len = ft_strlen(fs->string);
 }
 
+/*unsigned int	cast_unsigned(t_fstring *fs, va_list *ap)*/
+/*{*/
+
+/*}*/
+
 // TODO Length modifiers
 int	convert_unsigned_int(t_fstring *fs, va_list *ap)
 {
-	const int	arg = va_arg(*ap, unsigned int); // TODO Figure out lenconv assignment
-
-	if (arg == 0 && !(fs->format & C_UOCT))
+	const unsigned int	arg = va_arg(*ap, unsigned int); // cast_unsigned(fs, ap); // TODO Figure out lenconv assignment
+	if (arg == 0 && ((fs->format & CMASK) != C_UOCT))
 		set_explicit_zero(fs);
-	else if (fs->format & (C_UHEX_CAP ^ C_UHEX_LOW)) // FIXME check condition after refactoring
+	else if (fs->format & CMASK & HEX_MASK) // FIXME check condition after refactoring
 		format_hex(arg, fs);
-	else if (fs->format & C_UOCT)
+	else if ((fs->format & CMASK) == C_UOCT)
 		format_oct(arg, fs);
 	else
 		fs->string = ft_ltoa_unsigned(arg);
@@ -96,7 +100,9 @@ int	convert_unsigned_int(t_fstring *fs, va_list *ap)
 		return (0);
 	fs->len = ft_strlen(fs->string);
 	pad_integer_precision(fs);
-	if (fs->format & MASK_HEX_PREFIX && !(fs->format & C_UOCT) && arg != 0)
+	if ((fs->format & MASK_HEX_PREFIX) \
+			&& (fs->format & CMASK & HEX_MASK) \
+			&& arg != 0)
 		add_hex_prefix(fs);
 	if (fs->field_width > fs->len)
 		expand_to_field_width(fs);

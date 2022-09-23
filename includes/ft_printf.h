@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 17:00:21 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/23 02:26:22 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/23 05:02:29 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,14 @@
 # include <unistd.h>
 # include "libft.h"
 # define FORMAT_ERROR 0xFFFFFFFF
-// TODO FIXME HOXHOX Refactor convspecs to enumerative representation
-// for dispatcher indexing
 // Following bits act as indices for the conversion dispatch table.
 // (C)onversion specifiers as bit enumeration. These are all mutually EXCLUSIVE.
 // NOTE: 0x0 is reserved for empty format string (default).
 # define SPEC_TYPES "diouxXfcsp%"
 // [d|i]uoxX (bits 0-4 enumerated)
 # define C_SDEC 0x1
-# define C_UDEC 0x2
-# define C_UOCT 0x3
+# define C_UOCT 0x2
+# define C_UDEC 0x3
 # define C_UHEX_LOW 0x4
 # define C_UHEX_CAP 0x5
 // cspf, (bit indices )
@@ -40,7 +38,8 @@
 # define C_FLOAT 0x9
 # define C_INIT 0xA
 // Masks
-# define CMASK_ALL 0xF
+# define CMASK 0xF // TODO reformat to CMASK
+# define HEX_MASK 0x4
 //# define CMASK_HEX 0x18
 //# define CMASK_UDEC 0x1F
 // padding until bit index 4

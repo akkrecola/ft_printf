@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 11:10:19 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/23 02:32:52 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/23 04:41:06 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ static t_fstring	*get_next_format(const char *init)
 // Applies the previously gathered format information to the parameter.
 static int			convert_fstring(t_fstring *fs, va_list *ap)
 {
-	return (g_convert[(fs->format & CMASK_ALL) - 1](fs, ap)); // TODO requires header convspec formatting
+	return (g_convert[(fs->format & CMASK) - 1](fs, ap)); // TODO requires header convspec formatting
 }
 
 int					ft_printf(const char *format, ...)
@@ -93,7 +93,7 @@ int					ft_printf(const char *format, ...)
 		}
 		printed += write(1, format, initializer - format);
 		fs = get_next_format(initializer);
-		if (!(fs->format & CMASK_ALL))
+		if (!(fs->format & CMASK))
 		{
 			format = fs->type;
 			if (!format) // fs allocation failed

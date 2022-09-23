@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 00:20:05 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/23 00:54:40 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/23 04:37:14 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,9 +74,9 @@ int	format_hex(unsigned long long int arg, t_fstring *fs)
 	}
 	else
 	{
-		fs->string = build_hex(arg, (fs->format & C_UHEX_CAP));
+		fs->string = build_hex(arg, ((fs->format & CMASK) == C_UHEX_CAP));
 		if (!fs->string)
-			return (0); // malloc prot
+			return (0); // malloc protecc
 		return (2);
 	}
 	return (0);
