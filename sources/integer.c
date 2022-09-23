@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 21:39:27 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/23 07:59:23 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/23 08:57:17 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	prepend_sign(t_fstring *fs)
 // Applies a precision greater than the number,
 // i.e. left pads the number with 0's.
 // Forced signs come only after this, so we only account for negative sign.
-static int	pad_integer_precision(t_fstring *fs)
+int	pad_integer_precision(t_fstring *fs)
 {
 	char			*str_expanded;
 	uint8_t			sign;

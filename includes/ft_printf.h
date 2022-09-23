@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 17:00:21 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/23 06:28:25 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/23 08:57:50 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,5 +119,6 @@ int		expand_to_field_width(t_fstring *fs);
 void	prepend_sign(t_fstring *fs);
 int		add_hex_prefix(t_fstring *fs);
 void	set_explicit_zero(t_fstring *fs);
+int		pad_integer_precision(t_fstring *fs);
 
 #endif

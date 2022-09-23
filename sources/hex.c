@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 00:20:05 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/23 04:37:14 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/23 09:01:14 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ int	format_hex(unsigned long long int arg, t_fstring *fs)
 		fs->string = build_hex(arg, ((fs->format & CMASK) == C_UHEX_CAP));
 		if (!fs->string)
 			return (0); // malloc protecc
+		fs->len = ft_strlen(fs->string);
 		return (2);
 	}
 	return (0);
@@ -114,16 +115,22 @@ int	format_oct(unsigned long long int arg, t_fstring *fs)
 
 int	convert_void(t_fstring *fs, va_list *ap)
 {
-	const void		*arg = (const void *)va_arg(*ap, void *);
-	const long long	address = (long long)*((long long *)arg);
+	const long long	arg = (long long)(long long *)va_arg(*ap, void *);
 	char			*temp_str;
 
-	format_hex(address, fs);
+	format_hex(arg, fs);
 	if (!fs->string)
 		return (0);
 	temp_str = ft_strsub(fs->string, 0, 14);
+	if (!temp_str)
+		return (0);
 	free(fs->string);
 	fs->string = temp_str;
 	fs->len = ft_strlen(fs->string);
+	pad_integer_precision(fs);
+	add_hex_prefix(fs);
+	fs->len = ft_strlen(fs->string);
+	if (fs->field_width > fs->len)
+		expand_to_field_width(fs);
 	return (6);
 }
