@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 17:00:21 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/23 05:02:29 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/23 06:28:25 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include <string.h>
 # include <unistd.h>
 # include "libft.h"
-# define FORMAT_ERROR 0xFFFFFFFF
+# define FORMAT_ERROR 0xF
 // Following bits act as indices for the conversion dispatch table.
 // (C)onversion specifiers as bit enumeration. These are all mutually EXCLUSIVE.
 // NOTE: 0x0 is reserved for empty format string (default).
@@ -34,11 +34,11 @@
 // cspf, (bit indices )
 # define C_CHAR 0x6
 # define C_STRING 0x7
-# define C_VOIDHEX 0x8 // This is lucky; no other bit is SET if VOIDHEX is the convspec => mask below SHOULD work(0b1000) (TODO check)
+# define C_VOIDHEX 0x8
 # define C_FLOAT 0x9
 # define C_INIT 0xA
 // Masks
-# define CMASK 0xF // TODO reformat to CMASK
+# define CMASK 0xF
 # define HEX_MASK 0x4
 //# define CMASK_HEX 0x18
 //# define CMASK_UDEC 0x1F
@@ -55,10 +55,11 @@
 # define MASK_HEX_PREFIX 0x18
 // Padding until 20
 // Length modifiers hh, h, l, ll. (20-23)
+# define LENMODS "hl"
 # define M_CHAR 0x200
-# define M_SHORT 0x400
+# define M_SHRT 0x400
 # define M_LONG 0x800
-# define M_LONGLONG 0x1000
+# define M_LLONG 0x1000
 // Explicitly set flags for modifiers
 # define EXPL_PRECISION 0x2000
 # define EXPL_LENGTH_MOD 0x4000 // TODO Check if needed
@@ -95,10 +96,11 @@ typedef struct s_fstring
 int	ft_printf(const char *format, ...) __attribute__ ((format (printf, 1, 2)));
 
 // Format string parsers and data collectors
-uint32_t	set_type(const char *type); // FIXME Unify with other setting functions
+uint16_t	set_type(const char *type); // FIXME Unify with other setting functions
 void		set_flags(const char *init, const char *delim, t_fstring *fs);
-char		*set_field_width(const char *init, const char *delim, t_fstring *fs);
-char		*set_precision(const char *init, const char *delim, t_fstring *fs);
+const char	*set_field_width(const char *init, const char *delim, t_fstring *fs);
+const char	*set_precision(const char *init, const char *delim, t_fstring *fs);
+const char	*set_length_modifier(const char *init, const char *delim, t_fstring *fs);
 
 // Conversion handlers
 int	convert_signed_int(t_fstring *fs, va_list *ap);
