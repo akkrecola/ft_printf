@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 00:08:13 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/23 03:53:43 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/23 05:29:22 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,10 @@ convert	*g_convert[CONVERSIONS] =
 	convert_unsigned_int,
 	convert_unsigned_int,
 	convert_unsigned_int,
-	convert_double,
 	convert_char,
 	convert_string,
 	convert_void,
+	convert_double,
 	give_percent,
 };
 
