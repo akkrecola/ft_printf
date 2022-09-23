@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 21:39:27 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/23 05:20:22 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/23 07:59:23 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,18 +79,27 @@ void	set_explicit_zero(t_fstring *fs)
 	fs->len = ft_strlen(fs->string);
 }
 
-/*unsigned int	cast_unsigned(t_fstring *fs, va_list *ap)*/
-/*{*/
-
-/*}*/
+static unsigned long long	cast_unsigned(t_fstring *fs, va_list *ap)
+{
+	if (fs->format & M_CHAR)
+		return ((unsigned char)va_arg(*ap, unsigned int));
+	if (fs->format & M_SHRT)
+		return ((unsigned short)va_arg(*ap, unsigned int));
+	if (fs->format & M_LONG)
+		return ((unsigned long)va_arg(*ap, unsigned long int));
+	if (fs->format & M_LLONG)
+		return ((unsigned long long)va_arg(*ap, unsigned long long int));
+	return (va_arg(*ap, unsigned int));
+}
 
 // TODO Length modifiers
 int	convert_unsigned_int(t_fstring *fs, va_list *ap)
 {
-	const unsigned int	arg = va_arg(*ap, unsigned int); // cast_unsigned(fs, ap); // TODO Figure out lenconv assignment
+	const unsigned long long arg = cast_unsigned(fs, ap); // cast_unsigned(fs, ap); // TODO Figure out lenconv assignment
+
 	if (arg == 0 && ((fs->format & CMASK) != C_UOCT))
 		set_explicit_zero(fs);
-	else if (fs->format & CMASK & HEX_MASK) // FIXME check condition after refactoring
+	else if (fs->format & CMASK & HEX_MASK)
 		format_hex(arg, fs);
 	else if ((fs->format & CMASK) == C_UOCT)
 		format_oct(arg, fs);
@@ -109,10 +118,23 @@ int	convert_unsigned_int(t_fstring *fs, va_list *ap)
 	return (2);
 }
 
+static long long	cast_signed(t_fstring *fs, va_list *ap)
+{
+	if (fs->format & M_CHAR)
+		return ((char)va_arg(*ap, int));
+	if (fs->format & M_SHRT)
+		return ((short)va_arg(*ap, int));
+	if (fs->format & M_LONG)
+		return ((long)va_arg(*ap, long));
+	if (fs->format & M_LLONG)
+		return ((long long)va_arg(*ap, long long));
+	return (va_arg(*ap, int));
+}
+
 // TODO Length modifiers
 int	convert_signed_int(t_fstring *fs, va_list *ap)
 {
-	const int	arg = va_arg(*ap, int); // TODO Figure out lenconv assignment
+	const long long	arg = cast_signed(fs, ap);
 
 	if (arg == 0)
 		set_explicit_zero(fs);
