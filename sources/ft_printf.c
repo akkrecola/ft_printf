@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 11:10:19 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/23 06:04:46 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/23 09:44:14 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,8 @@ int					ft_printf(const char *format, ...)
 			printed += write(1, format, ft_strlen(format));
 			break ;
 		}
+		else if (*(initializer + 1) == '\0')
+			break ;
 		printed += write(1, format, initializer - format);
 		fs = get_next_format(initializer);
 		if (fs->format == FORMAT_ERROR)
