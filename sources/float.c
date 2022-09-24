@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 00:16:33 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/23 06:46:49 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/24 14:01:13 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,20 +35,9 @@ char	*join_double(const char *base, const char *fraction, t_fstring *fs)
 }
 
 // Round to nearest
-/*void	round_fraction(char *fraction, double arg, t_fstring *fs)*/
+/*static double	_round(double d)*/
 /*{*/
-	/*uint8_t	i;*/
-
-	/*(void)arg;*/
-	/*ft_printf("Char at the end of fraction:\t%c\n", fraction[fs->precision - 1]);*/
-	/*i = fs->precision;*/
-	/*while (--i)*/
-	/*{*/
-		/*arg = arg * 10;*/
-		/*//ft_printf("Argument in loop: %d\n", (int)arg);*/
-		/*arg = arg - (arg / 1.0);*/
-	/*}*/
-	/*ft_printf("\n");*/
+	
 /*}*/
 
 // Extract the fractional part of a double. The function extracts with the
