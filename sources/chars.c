@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 22:37:42 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/24 14:34:27 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/24 16:40:15 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	convert_string(t_fstring *fs, va_list *ap)
 	if (!fs->string)
 		return (0);
 	fs->len = ft_strlen(fs->string);
-	if (fs->field_width > ft_strlen(fs->string))
+	if (fs->field_width > fs->len)
 		expand_to_field_width(fs);
 	return (3);
 }

@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 01:18:59 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/23 06:35:56 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/24 15:53:06 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	set_flags(const char *init, const char *delim, t_fstring *fs)
 {
 	const char	*flagset = ft_strgetset(init, FLAGS, "", delim - init);
 
-	if (!flagset || !ft_strlen(flagset))
+	if (!flagset)
 		return ;
 	if (ft_strchr(flagset, '#'))
 		fs->format ^= F_ALT_FORM;
