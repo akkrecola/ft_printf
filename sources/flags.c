@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/17 23:54:27 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/23 03:37:24 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/24 16:00:43 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,11 @@ void	reset_sign(t_fstring *fs)
 static void	expand_zeros(t_fstring *fs, char *expanded)
 {
 	ft_memset(expanded, '0', fs->field_width);
+	if (fs->format & (F_SPACE_SIGN | F_ZERO_PAD) && fs->string[0] == ' ')
+	{
+		expanded[0] = ' ';
+		fs->string[0] = '0';
+	}
 	if (fs->format & MASK_HEX_PREFIX \
 			&& (fs->string[1] == 'X' || fs->string[1] == 'x'))
 	{
