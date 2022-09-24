@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 17:00:21 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/23 08:57:50 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/24 15:42:40 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include <string.h>
 # include <unistd.h>
 # include "libft.h"
-# define FORMAT_ERROR 0xF
+# define FORMAT_ERROR 0xFFFF
 // Following bits act as indices for the conversion dispatch table.
 // (C)onversion specifiers as bit enumeration. These are all mutually EXCLUSIVE.
 // NOTE: 0x0 is reserved for empty format string (default).

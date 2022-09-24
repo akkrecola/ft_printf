@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 11:10:19 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/24 15:10:23 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/24 15:47:10 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,11 @@ static t_fstring	*get_next_format(const char *init)
 	if (!type || type > delimiter) //fallback;
 	{
 		fs->type = (char *)delimiter;
+		return (fs);
+	}
+	if (ft_memchr(init, '*', type - init)) // Ain't handing that
+	{
+		fs->format |= FORMAT_ERROR;
 		return (fs);
 	}
 	fs->format |= set_type(type);
