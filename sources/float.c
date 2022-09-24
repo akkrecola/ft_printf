@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 00:16:33 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/24 22:25:31 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/25 02:27:05 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,46 +31,31 @@
  * 6. Get the precision shift value (long double shift = pow(10, precision))
  * 7. Extract the integral part (long base = (long)arg)
  * 8. Extract the fractional part
- *  a. 
  *
  */
 
 #include <stdio.h>
+#include <math.h>
+/*#define DEBUG*/
 // TODO TESTING
 static long double	round_even(t_fstring *fs, long double arg)
 {
-	const unsigned long	shift = (long)ft_powl(10, fs->precision);
+	const unsigned long	shift = ft_exp10(fs->precision);
 	const long double	rounded = ft_roundl(arg * shift) / shift;
 	const long double	unrounded = ft_truncl(arg * shift) / shift;
 	const long double	diff = (arg - unrounded) - (rounded - arg);
-	long double			result;
 
-	/*printf("Arg: %Lf\n", arg);*/
-	/*printf("Shift: %ld\n", shift);*/
-	/*printf("Precision: %u\n", fs->precision);*/
-	result = (arg * shift);
 	if (arg >= 0.0) // Positive
 	{
-/*#define DEBUG*/
-/*#ifdef DEBUG*/
-		/*printf("Positive value: %Lf\n", arg);*/
-/*#endif*/
-		if (diff > 0.0 || (diff == 0.0 && (long)result % 2 != 0))
-			result += 0.5;
+		if (diff > 0.0 || (diff == 0.0 && (long)(arg * shift) % 2 != 0))
+			arg += (0.5 / shift);
 	}
 	else // Negative
 	{
-/*#ifdef DEBUG*/
-		/*printf("Negative value: %Lf\n", arg);*/
-/*#endif*/
-		if (diff < 0.0 || (diff == 0.0 && (int)result % 2 != 0))
-			result -= 0.5;
+		if (diff < 0.0 || (diff == 0.0 && (long)(arg * shift) % 2 != 0))
+			arg -= (0.5 / shift);
 	}
-	result = ft_truncl(result);
-/*#ifdef DEBUG*/
-		/*printf("Result in ROUNDING function: %Lf\n", result / shift);*/
-/*#endif*/
-	return (result /= shift);
+	return (arg);
 }
 
 static int	pad_zero_fraction(uint32_t precision, char	**fraction)
@@ -86,25 +71,45 @@ static int	pad_zero_fraction(uint32_t precision, char	**fraction)
 	return (1);
 }
 
+// Frees memory allocated to either or both strings, and joins them together,
+// returning a newly allocated concatenation of a and b.
+// select values 'a' and 'b' free strings a and b respectively, and
+// value 'c' frees both. Misusing this selection causes a segmentation fault.
+// If the allocation of the new string fails, no memory is freed and the
+// function returns NULL.
+static char	*ft_freejoin(const char *a, const char *b, uint8_t select)
+{
+	char	*joined;
+
+	joined = ft_strjoin(a, b);
+	if (!joined)
+		return (NULL);
+	if (select == 'a')
+		free((void *)a);
+	else if (select == 'b')
+		free((void *)b);
+	else if (select == 'c')
+	{
+		free((void *)a);
+		free((void *)b);
+	}
+	return (joined);
+}
 
 // TODO make life easier with itof
 static int	format_double(t_fstring *fs, long double arg)
 {
 	char	*base;
 	char	*fraction;
-	uint8_t	representable;
 
 	if (!(fs->format & EXPL_PRECISION))
 		fs->precision = 6;
-	if (fs->precision <= MAX_FRAC_DIGS)
-		representable = fs->precision;
-	else
-		representable = MAX_FRAC_DIGS;
 	arg = round_even(fs, arg);
-	/*printf("Result in FORMAT function: %Lf\n", arg);*/
 	base = ft_ltoa((long)arg);
-	fraction = ft_ltoa(\
-			ft_labs((long)((arg - (long)arg) * ft_exp10(representable))));
+	if ((arg < 0.0 && ft_strequ(base, "0")))
+		base = ft_freejoin("-", base, 'b');
+	fraction = ft_ltoa( \
+			ft_labs((long)((arg - (long)arg) * ft_exp10(fs->precision))));
 	if (!base || !fraction)
 		return (0); // FIXME add erroring
 	if (arg == 0.0)
@@ -120,7 +125,7 @@ static int	format_double(t_fstring *fs, long double arg)
 	return (1);
 }
 
-static long double	cast_double(va_list *ap, t_fstring *fs)
+static double	cast_double(va_list *ap, t_fstring *fs)
 {
 	if (fs->format & M_DLONG)
 		return ((long double)va_arg(*ap, long double));
@@ -135,9 +140,9 @@ int	convert_double(t_fstring *fs, va_list *ap)
 	if (!format_double(fs, arg) || !fs->string)
 		return (0);
 	fs->len = ft_strlen(fs->string);
-	if (arg < 0.0)
+	if (arg < 0.0 || arg == -1.0 / 0.0) // (2) Negative inf, add sign
 		fs->sign = fs->string;
-	if (fs->format & (F_FORCE_SIGN | F_SPACE_SIGN) || (fs->sign))
+	if (fs->format & (F_FORCE_SIGN | F_SPACE_SIGN))
 		prepend_sign(fs);
 	if (fs->field_width > fs->len)
 		expand_to_field_width(fs);

@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 21:39:27 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/24 20:35:55 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/25 02:55:24 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	prepend_sign(t_fstring *fs)
 	else if ((fs->format & (C_FLOAT)) && fs->sign)
 		sign_prepended_str[0] = '-';
 	ft_strcpy(sign_prepended_str + 1, fs->string);
-	free(fs->string);
+	ft_strdel(&fs->string);
 	fs->string = sign_prepended_str;
 	fs->len += 1;
 }
@@ -54,7 +54,7 @@ int	pad_integer_precision(t_fstring *fs)
 		ft_memset(str_expanded, '0', fs->precision);
 		ft_memmove(str_expanded + (fs->precision - fs->len), \
 				fs->string, fs->len);
-		free(fs->string);
+		ft_strdel(&fs->string);
 		fs->string = str_expanded;
 		if (sign)
 			fs->string[0] = '-';

@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 17:00:21 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/24 22:08:14 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/25 01:47:55 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 // (C)onversion specifiers as bit enumeration. These are all mutually EXCLUSIVE.
 // NOTE: 0x0 is reserved for empty format string (default).
 # define SPEC_TYPES "diouxXfcsp%"
+# define NUM_TYPES "diouxX"
 // [d|i]uoxX (bits 0-4 enumerated)
 # define C_SDEC 0x1
 # define C_UOCT 0x2

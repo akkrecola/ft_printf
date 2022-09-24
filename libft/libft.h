@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/03 16:00:26 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/24 22:21:43 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/24 22:55:11 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,7 @@ long long	ft_llabs(long long x);
 double		ft_fabs(double x);
 long double	ft_lfabs(long double x);
 long double	ft_truncl(long double x);
+double		ft_trunc(double x);
 long double	ft_roundl(long double x);
 
 /* Bonus part function prototypes */
