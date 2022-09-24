@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/17 23:54:27 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/24 16:00:43 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/24 21:46:10 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	align_left(t_fstring *fs, char *left_adjusted_str)
 		if (!left_adjusted_str)
 			return (-1);
 		ft_memmove(left_adjusted_str, fs->string, fs->len);
-		free(fs->string);
+		ft_strdel(&fs->string);
 		fs->string = left_adjusted_str;
 	}
 	return (0);
@@ -74,7 +74,7 @@ int	expand_to_field_width(t_fstring *fs)
 	{
 		ft_memmove(expanded + (fs->field_width - fs->len), \
 				fs->string, fs->len);
-		free(fs->string);
+		ft_strdel(&fs->string);
 		fs->string = expanded;
 		reset_sign(fs);
 	}

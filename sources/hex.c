@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 00:20:05 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/23 09:01:14 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/24 21:42:18 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	add_hex_prefix(t_fstring *fs)
 	else
 		prepended[1] = 'x';
 	ft_memmove(prepended + 2, fs->string, fs->len);
-	free(fs->string);
+	ft_strdel(&fs->string);
 	fs->string = prepended;
 	fs->len += 2;
 	return (1);
@@ -107,7 +107,7 @@ int	format_oct(unsigned long long int arg, t_fstring *fs)
 		if (!fs->string)
 			return (0);
 	}
-	if (fs->format & F_ALT_FORM && arg != 0)
+	if (fs->format & F_ALT_FORM && arg != 0 && !fs->sign)
 		prepend_sign(fs);
 	fs->len = ft_strlen(fs->string);
 	return (1);
@@ -124,7 +124,7 @@ int	convert_void(t_fstring *fs, va_list *ap)
 	temp_str = ft_strsub(fs->string, 0, 14);
 	if (!temp_str)
 		return (0);
-	free(fs->string);
+	ft_strdel(&fs->string);
 	fs->string = temp_str;
 	fs->len = ft_strlen(fs->string);
 	pad_integer_precision(fs);

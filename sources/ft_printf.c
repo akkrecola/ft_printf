@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 11:10:19 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/24 16:39:42 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/24 21:43:19 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ int					ft_printf(const char *format, ...)
 		if (!convert_fstring(&fs, &ap)) // TODO Collapse convert_fstring straight as convert[]()
 			return (-1);
 		printed += write(1, fs.string, fs.len);
+		ft_strdel(&fs.string);
 		format = fs.type + 1;
 	}
 	teardown(&fs);

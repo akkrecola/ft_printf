@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 21:39:27 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/23 08:57:17 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/24 20:35:55 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,20 +17,19 @@ void	prepend_sign(t_fstring *fs)
 {
 	char		*sign_prepended_str;
 
-	if (!fs->sign)
-	{
-		sign_prepended_str = ft_strnew(ft_strlen(fs->string) + 1);
-		if (fs->format & F_FORCE_SIGN)
-			sign_prepended_str[0] = '+';
-		else if (fs->format & F_SPACE_SIGN)
-			sign_prepended_str[0] = ' ';
-		else if ((fs->format & (CMASK | F_ALT_FORM)) == (F_ALT_FORM | C_UOCT))
-			sign_prepended_str[0] = '0';
-		ft_strcpy(sign_prepended_str + 1, fs->string);
-		free(fs->string);
-		fs->string = sign_prepended_str;
-		fs->len += 1;
-	}
+	sign_prepended_str = ft_strnew(ft_strlen(fs->string) + 1);
+	if (fs->format & F_FORCE_SIGN)
+		sign_prepended_str[0] = '+';
+	else if (fs->format & F_SPACE_SIGN)
+		sign_prepended_str[0] = ' ';
+	else if ((fs->format & (CMASK | F_ALT_FORM)) == (F_ALT_FORM | C_UOCT))
+		sign_prepended_str[0] = '0';
+	else if ((fs->format & (C_FLOAT)) && fs->sign)
+		sign_prepended_str[0] = '-';
+	ft_strcpy(sign_prepended_str + 1, fs->string);
+	free(fs->string);
+	fs->string = sign_prepended_str;
+	fs->len += 1;
 }
 
 // Applies a precision greater than the number,
@@ -144,7 +143,7 @@ int	convert_signed_int(t_fstring *fs, va_list *ap)
 	if (arg < 0)
 		fs->sign = fs->string;
 	pad_integer_precision(fs);
-	if (fs->format & (F_FORCE_SIGN + F_SPACE_SIGN))
+	if (fs->format & (F_FORCE_SIGN + F_SPACE_SIGN) && !fs->sign)
 		prepend_sign(fs);
 	if (fs->field_width > fs->len)
 		expand_to_field_width(fs);
