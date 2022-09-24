@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 11:10:19 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/23 09:44:14 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/24 15:10:23 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ int					ft_printf(const char *format, ...)
 			return (-1);
 		printed += write(1, fs->string, fs->len);
 		format = fs->type + 1;
-		va_end(ap);
 	}
+	va_end(ap); // Call from teardown() TODO
 	return ((int)printed);
 }
