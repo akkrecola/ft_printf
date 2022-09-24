@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 11:10:19 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/23 09:44:14 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/24 15:47:10 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,11 @@ static t_fstring	*get_next_format(const char *init)
 		fs->type = (char *)delimiter;
 		return (fs);
 	}
+	if (ft_memchr(init, '*', type - init)) // Ain't handing that
+	{
+		fs->format |= FORMAT_ERROR;
+		return (fs);
+	}
 	fs->format |= set_type(type);
 	fs->type = (char *)type;
 	delimiter = set_length_modifier(init, type, fs);
@@ -105,7 +110,7 @@ int					ft_printf(const char *format, ...)
 			return (-1);
 		printed += write(1, fs->string, fs->len);
 		format = fs->type + 1;
-		va_end(ap);
 	}
+	va_end(ap); // Call from teardown() TODO
 	return ((int)printed);
 }
