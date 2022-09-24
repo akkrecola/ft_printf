@@ -6,7 +6,7 @@
 #    By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/03 15:27:40 by elehtora          #+#    #+#              #
-#    Updated: 2022/09/24 14:17:23 by elehtora         ###   ########.fr        #
+#    Updated: 2022/09/24 18:30:11 by elehtora         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -99,7 +99,9 @@ SRCS		=	ft_atoi.c			\
 				ft_strtrim.c		\
 				ft_nat_sqrt.c		\
 				ft_tolower.c		\
-				ft_toupper.c
+				ft_toupper.c		\
+				ft_trunc.c			\
+				ft_round.c
 
 OBJS = $(SRCS:.c=.o)
 
