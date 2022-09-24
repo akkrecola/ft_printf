@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 17:00:21 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/24 15:42:40 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/24 20:16:56 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,14 +55,15 @@
 # define MASK_HEX_PREFIX 0x18
 // Padding until 20
 // Length modifiers hh, h, l, ll. (20-23)
-# define LENMODS "hl"
+# define LENMODS "hlL"
 # define M_CHAR 0x200
 # define M_SHRT 0x400
 # define M_LONG 0x800
 # define M_LLONG 0x1000
+# define M_DLONG 0x2000
 // Explicitly set flags for modifiers
-# define EXPL_PRECISION 0x2000
-# define EXPL_LENGTH_MOD 0x4000 // TODO Check if needed
+# define EXPL_PRECISION 0x4000
+# define EXPL_LENGTH_MOD 0x8000
 // Limits TODO needed?
 # define MAX_FIELD_WIDTH 2147483647 // INT_MAX
 # define MAX_PRECISION 2147483647 // INT_MAX

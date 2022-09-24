@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 01:18:59 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/24 15:53:06 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/24 20:16:29 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,5 +127,7 @@ const char	*set_length_modifier(const char *init, const char *delim, t_fstring *
 		else
 			fs->format |= M_LONG;
 	}
+	else if (mod[0] == 'L')
+		fs->format |= M_DLONG;
 	return (mod);
 }
