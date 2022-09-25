@@ -6,7 +6,7 @@
 #    By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/18 11:10:47 by elehtora          #+#    #+#              #
-#    Updated: 2022/09/25 05:09:27 by elehtora         ###   ########.fr        #
+#    Updated: 2022/09/25 05:26:49 by elehtora         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,9 @@ SRCS		:= ft_printf.c \
 			   hex.c \
 			   modifiers.c \
 			   flags.c \
-			   error.c
+			   error.c \
+			   numerical_utils.c \
+			   oct.c
 SRCDIR		:= sources
 
 LIBFT_DIR	:= libft

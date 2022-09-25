@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 01:18:59 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/25 02:35:47 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/25 05:28:24 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,9 @@ void	set_flags(const char *init, const char *delim, t_fstring *fs)
 	if (ft_strchr(flagset, '-'))
 		fs->format ^= F_LEFT_ALIGN;
 	if (ft_strchr(flagset, '0') \
-			&& !(fs->format & (F_LEFT_ALIGN))
-			&& !((fs->format & EXPL_PRECISION)
-				&& ft_strchr(NUM_TYPES, *fs->type) )) // :D 0pad only for numerics
+		&& !(fs->format & (F_LEFT_ALIGN))
+		&& !((fs->format & EXPL_PRECISION)
+			&& ft_strchr(NUM_TYPES, *fs->type)))
 		fs->format ^= F_ZERO_PAD;
 	if (ft_strchr(flagset, '+'))
 		fs->format ^= F_FORCE_SIGN;
@@ -101,7 +101,7 @@ const char	*set_precision(const char *init, const char *delim, t_fstring *fs)
 		precision_str[i - 1] = dot[i];
 		i++;
 	}
-	precision_val = ft_atoi(&precision_str[0]); // TODO atol
+	precision_val = ft_atoi(&precision_str[0]);
 	if (precision_val < MAX_PRECISION)
 		fs->precision = precision_val;
 	return (dot);
@@ -109,12 +109,13 @@ const char	*set_precision(const char *init, const char *delim, t_fstring *fs)
 
 // Seeks and sets the length modifiers hh, h, l, and ll; char, short, long and
 // long long, respectively.
-const char	*set_length_modifier(const char *init, const char *delim, t_fstring *fs)
+const char	*set_length_modifier(const char *init, \
+		const char *delim, t_fstring *fs)
 {
 	const char	*mod = ft_strpbrk(init, LENMODS);
 
 	if (!mod || !(mod + 1 == delim || mod + 2 == delim))
-		return (delim); // No (valid) lenmod chars
+		return (delim);
 	if (mod[0] == 'h')
 	{
 		if (mod[1] == 'h')

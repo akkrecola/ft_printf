@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 00:20:05 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/24 21:42:18 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/25 05:23:50 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,14 +51,14 @@ static char	*build_hex(unsigned long arg, int is_uppercase)
 		if (remainder >= 10)
 		{
 			if (is_uppercase)
-				current = remainder + 55; // 10 -> A
+				current = remainder + 55;
 			else
-				current = remainder + 87; // 10 -> a
+				current = remainder + 87;
 		}
 		else
-			current = remainder + '0'; // 9 -> 7
+			current = remainder + '0';
 		ft_charappend(buf, current);
-		arg /= HEX_DIVIDEND; // NOTE: integer division
+		arg /= HEX_DIVIDEND;
 	}
 	return (ft_strrev(buf));
 }
@@ -76,41 +76,11 @@ int	format_hex(unsigned long long int arg, t_fstring *fs)
 	{
 		fs->string = build_hex(arg, ((fs->format & CMASK) == C_UHEX_CAP));
 		if (!fs->string)
-			return (0); // malloc protecc
+			return (0);
 		fs->len = ft_strlen(fs->string);
 		return (2);
 	}
 	return (0);
-}
-
-// Convert decimal to octal representation. The resulting string is
-// collected reversed, and is reversed back in caller.
-static int	build_oct(unsigned long long int arg, uint8_t div, char *buf)
-{
-	if (!arg)
-		return (div);
-	*buf = build_oct(arg / OCT_DIV, arg % OCT_DIV, buf + 1) + '0';
-	return (div);
-}
-
-int	format_oct(unsigned long long int arg, t_fstring *fs)
-{
-	char	buf[OCT_BUFSIZE];
-
-	ft_bzero(&buf[0], OCT_BUFSIZE);
-	if (arg == 0)
-		set_explicit_zero(fs);
-	else
-	{
-		build_oct(arg, arg % OCT_DIV, &buf[0]);
-		fs->string = ft_strrev(&buf[0]);
-		if (!fs->string)
-			return (0);
-	}
-	if (fs->format & F_ALT_FORM && arg != 0 && !fs->sign)
-		prepend_sign(fs);
-	fs->len = ft_strlen(fs->string);
-	return (1);
 }
 
 int	convert_void(t_fstring *fs, va_list *ap)

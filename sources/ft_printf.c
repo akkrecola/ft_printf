@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 11:10:19 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/25 05:01:39 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/25 05:19:37 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,12 @@ static void	get_next_format(t_fstring *fs, const char *init)
 	const char	*type = ft_strpbrk(init + 1, SPEC_TYPES);
 	const char	*delimiter = init + ft_strspn(init, ALL_FCHARS);
 
-	if (!type || type > delimiter) //fallback;
+	if (!type || type > delimiter)
 	{
 		fs->type = (char *)delimiter;
 		return ;
 	}
-	if (ft_memchr(init, '*', type - init)) // Ain't handing that
+	if (ft_memchr(init, '*', type - init))
 	{
 		fs->format |= FORMAT_ERROR;
 		return ;
@@ -83,7 +83,7 @@ int	ft_printf(const char *format, ...)
 			format = initializer + 1;
 			continue ;
 		}
-		if (!g_convert[(fs.format & CMASK) - 1](&fs, &ap)) // TODO Collapse convert_fstring straight as convert[]()
+		if (!g_convert[(fs.format & CMASK) - 1](&fs, &ap))
 			return (error(&fs));
 		printed += write(1, fs.string, fs.len);
 		ft_strdel(&fs.string);

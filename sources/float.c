@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 00:16:33 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/25 04:45:43 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/25 05:19:10 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,6 @@
  *
  */
 
-#include <stdio.h>
-#include <math.h>
-/*#define DEBUG*/
-// TODO TESTING
 static long double	round_even(t_fstring *fs, long double arg)
 {
 	const unsigned long	shift = ft_exp10(fs->precision);
@@ -45,12 +41,12 @@ static long double	round_even(t_fstring *fs, long double arg)
 	const long double	unrounded = ft_truncl(arg * shift) / shift;
 	const long double	diff = (arg - unrounded) - (rounded - arg);
 
-	if (arg >= 0.0) // Positive
+	if (arg >= 0.0)
 	{
 		if (diff > 0.0 || (diff == 0.0 && (long)(arg * shift) % 2 != 0))
 			arg += (0.5 / shift);
 	}
-	else // Negative
+	else
 	{
 		if (diff < 0.0 || (diff == 0.0 && (long)(arg * shift) % 2 != 0))
 			arg -= (0.5 / shift);
@@ -60,7 +56,7 @@ static long double	round_even(t_fstring *fs, long double arg)
 
 static int	pad_zero_fraction(uint32_t precision, char	**fraction)
 {
-	char *padded;
+	char	*padded;
 
 	padded = ft_strnew(precision);
 	if (!padded)
@@ -83,12 +79,12 @@ static int	format_double(t_fstring *fs, long double arg)
 	base = ft_ltoa((long)arg);
 	if ((arg < 0.0 && ft_strequ(base, "0")))
 		base = ft_freejoin("-", base, 'b');
-	fraction = ft_ltoa( \
+	fraction = ft_ltoa(\
 			ft_labs((long)((arg - (long)arg) * ft_exp10(fs->precision))));
 	if (!base || !fraction)
-		return (0); // FIXME add erroring
+		return (0);
 	if (arg == 0.0)
-		pad_zero_fraction(fs->precision, &fraction); // TODO error handle malloc
+		pad_zero_fraction(fs->precision, &fraction);
 	if (fs->format & EXPL_PRECISION && fs->precision == 0)
 		fs->string = ft_strdup(base);
 	else
@@ -96,7 +92,7 @@ static int	format_double(t_fstring *fs, long double arg)
 	ft_strdel(&base);
 	ft_strdel(&fraction);
 	if (!fs->string)
-		return (0); // FIXME erroring
+		return (0);
 	return (1);
 }
 
@@ -115,7 +111,7 @@ int	convert_double(t_fstring *fs, va_list *ap)
 	if (!format_double(fs, arg) || !fs->string)
 		return (0);
 	fs->len = ft_strlen(fs->string);
-	if (arg < 0.0 || arg == -1.0 / 0.0) // (2) Negative inf, add sign
+	if (arg < 0.0 || arg == -1.0 / 0.0)
 		fs->sign = fs->string;
 	if (fs->format & (F_FORCE_SIGN | F_SPACE_SIGN))
 		prepend_sign(fs);
