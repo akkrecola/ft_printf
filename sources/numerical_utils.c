@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 05:25:03 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/25 05:28:32 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/25 10:28:02 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	prepend_sign(t_fstring *fs)
 	char		*sign_prepended_str;
 
 	sign_prepended_str = ft_strnew(ft_strlen(fs->string) + 1);
-	if (fs->format & F_FORCE_SIGN)
+	if (fs->format & F_FORCE_SIGN && !fs->sign)
 		sign_prepended_str[0] = '+';
 	else if (fs->format & F_SPACE_SIGN)
 		sign_prepended_str[0] = ' ';
