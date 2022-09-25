@@ -6,11 +6,13 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 01:18:59 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/25 02:35:47 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/25 05:13:11 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+#define FWIDTH_MAXCHARS 10
+#define PRECISION_BUF_SIZE 10
 
 uint16_t	set_type(const char *type)
 {
@@ -61,7 +63,6 @@ void	set_flags(const char *init, const char *delim, t_fstring *fs)
 	free((char *)flagset);
 }
 
-#define FWIDTH_MAXCHARS 10
 
 const char	*set_field_width(const char *init, const char *delim, t_fstring *fs)
 {
@@ -80,9 +81,9 @@ const char	*set_field_width(const char *init, const char *delim, t_fstring *fs)
 	return ((char *)iterator - i);
 }
 
-#define PRECISION_BUF_SIZE 10
-// Sets the precision for a format string.
-// Returns a pointer to character after the last digit.
+/* Sets the precision for a format string.
+ * Returns a pointer to character after the last digit.
+ */
 const char	*set_precision(const char *init, const char *delim, t_fstring *fs)
 {
 	char		*dot;
@@ -101,20 +102,26 @@ const char	*set_precision(const char *init, const char *delim, t_fstring *fs)
 		precision_str[i - 1] = dot[i];
 		i++;
 	}
-	precision_val = ft_atoi(&precision_str[0]); // TODO atol
+	if (dot[i] == '*')
+	{
+		error(fs);
+		exit(EXIT_FAILURE);
+	}
+	precision_val = ft_atoi(&precision_str[0]);
 	if (precision_val < MAX_PRECISION)
 		fs->precision = precision_val;
 	return (dot);
 }
 
-// Seeks and sets the length modifiers hh, h, l, and ll; char, short, long and
-// long long, respectively.
+/* Seeks and sets the length modifiers hh, h, l, ll and L; char, short,
+ * long, long long and long double, respectively.
+ */
 const char	*set_length_modifier(const char *init, const char *delim, t_fstring *fs)
 {
 	const char	*mod = ft_strpbrk(init, LENMODS);
 
 	if (!mod || !(mod + 1 == delim || mod + 2 == delim))
-		return (delim); // No (valid) lenmod chars
+		return (delim);
 	if (mod[0] == 'h')
 	{
 		if (mod[1] == 'h')
