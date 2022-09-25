@@ -6,13 +6,15 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 11:10:19 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/25 08:22:20 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/25 15:09:52 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 #include "dispatch.h"
 
+/* Initializes default/falseish values for the struct
+ */
 static void	init_fstring(t_fstring *fs, va_list *ap)
 {
 	fs->format = 0x0;
@@ -24,10 +26,13 @@ static void	init_fstring(t_fstring *fs, va_list *ap)
 	fs->ap = ap;
 }
 
-// Gets the formatting information for the next argument, read from the format
-// string.
-// Most of the format setting functions return a pointer to the format string
-// position where that specific modification has been cleared.
+/* Extracts formatting information for the next argument, read from the format
+ * string 'format', saving everything to the format string struct type
+ * t_fstring.
+ *
+ * Most of the format setting functions (set_*) return a pointer to the
+ * format string position where that specific modification has been cleared.
+ */
 static const char	*get_next_format(t_fstring *fs, const char *init)
 {
 	const char	*type = ft_strpbrk(init + 1, SPEC_TYPES);
@@ -50,6 +55,8 @@ static const char	*get_next_format(t_fstring *fs, const char *init)
 	return (type + 1);
 }
 
+/* Deconstructs allocated structures and the variable argument list.
+ */
 void	teardown(t_fstring *fs)
 {
 	if (fs->string)
@@ -57,6 +64,19 @@ void	teardown(t_fstring *fs)
 	va_end(*fs->ap);
 }
 
+/* Entry function.
+ *
+ * Iterates through the format string by seeking a format
+ * string initializing character '%', writing literal string
+ * before and after the conversion takes place. Format
+ * string is 'walked' by pointer returns from get_next_format().
+ *
+ * g_convert[]() is a function dispatcher, that centralizes
+ * the variable argument type distribution to respective handlers
+ * (prefixes 'convert*').
+ *
+ * Returns the total amount of bytes written to stdout.
+ */
 int	ft_printf(const char *format, ...)
 {
 	va_list		ap;

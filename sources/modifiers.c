@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 01:18:59 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/25 08:22:18 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/25 15:07:40 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 #define FWIDTH_MAXCHARS 10
 #define PRECISION_BUF_SIZE 10
 
+/* Matches a type/conversion specifier at the end of a format string and
+ * sets a corresponding bitflag.
+ */
 uint16_t	set_type(const char *type)
 {
 	if (*type == 'd' || *type == 'i')
@@ -41,6 +44,9 @@ uint16_t	set_type(const char *type)
 	return (FORMAT_ERROR);
 }
 
+/* Sets flags from set "-+ #0" to the proper bits, with certain rules
+ * (see: man 3 printf; flags) in case of overlaps.
+ */
 void	set_flags(const char *init, const char *delim, t_fstring *fs)
 {
 	const char	*flagset = ft_strgetset(init, FLAGS, "", delim - init);
@@ -63,6 +69,11 @@ void	set_flags(const char *init, const char *delim, t_fstring *fs)
 	free((char *)flagset);
 }
 
+/* Sets the maximum field width of a format string, limited by INT_MAX.
+ * Field width never truncates a value.
+ * Returns a pointer to the character after the last digit of the field width
+ * string.
+ */
 const char	*set_field_width(const char *init, const char *delim, t_fstring *fs)
 {
 	const char	*iterator = ft_strpbrk(init, FWIDTH_DIGITS);
@@ -81,7 +92,7 @@ const char	*set_field_width(const char *init, const char *delim, t_fstring *fs)
 }
 
 /* Sets the precision for a format string.
- * Returns a pointer to character after the last digit.
+ * Returns a pointer to the precision specifying dot before the first digit.
  */
 const char	*set_precision(const char *init, const char *delim, t_fstring *fs)
 {
@@ -108,7 +119,9 @@ const char	*set_precision(const char *init, const char *delim, t_fstring *fs)
 }
 
 /* Seeks and sets the length modifiers hh, h, l, ll and L; char, short,
- * long, long long and long double, respectively.
+ * long, long long and long double, respectively, in a bit field.
+ * Returns a pointer to the first modifier character, or NULL,
+ * if no length modifer was found.
  */
 const char	*set_length_modifier(const char *init, \
 		const char *delim, t_fstring *fs)

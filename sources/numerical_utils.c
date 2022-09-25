@@ -6,12 +6,16 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 05:25:03 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/25 12:17:18 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/25 16:11:38 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
+/* Pads a specified fraction string (extracted from an (long) double argument)
+ * with zeroes on the right. This is needed when a literal 0 fractional part
+ * is truncated to .0 ending, but the lesser zero digits need to be represented.
+ */
 int	pad_zero_fraction(uint32_t precision, char **fraction)
 {
 	char	*padded;
@@ -25,6 +29,9 @@ int	pad_zero_fraction(uint32_t precision, char **fraction)
 	return (1);
 }
 
+/* Banker's rounding function. Rounds to nearest and ties (remainder
+ * EXACTLY 0.5) to EVEN. (0.5 -> 0, 1.5 -> 2).
+ */
 long double	round_even(t_fstring *fs, long double arg)
 {
 	const unsigned long	shift = ft_exp10(fs->precision);
@@ -45,7 +52,8 @@ long double	round_even(t_fstring *fs, long double arg)
 	return (arg);
 }
 
-// Adds a sign for a '+' flag signed conversion.
+ /* Prepends a sign based on formatting information, often due to + flag.
+  */
 void	prepend_sign(t_fstring *fs)
 {
 	char		*sign_prepended_str;
@@ -65,9 +73,9 @@ void	prepend_sign(t_fstring *fs)
 	fs->len += 1;
 }
 
-// Applies a precision greater than the number,
-// i.e. left pads the number with 0's.
-// Forced signs come only after this, so we only account for negative sign.
+/* Applies a precision greater than the numbers total digits (+ sign),
+ * i.e. left pads the number with 0's.
+ */
 int	pad_integer_precision(t_fstring *fs)
 {
 	char			*str_expanded;

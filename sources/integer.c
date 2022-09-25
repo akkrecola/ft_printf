@@ -6,12 +6,14 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 21:39:27 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/25 05:26:14 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/25 16:04:11 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
+/* Sets literal 0 input via conditional formatting options.
+ */
 void	set_explicit_zero(t_fstring *fs)
 {
 	if (fs->format & EXPL_PRECISION && fs->precision == 0)
@@ -26,6 +28,9 @@ void	set_explicit_zero(t_fstring *fs)
 	fs->len = ft_strlen(fs->string);
 }
 
+/* Casts an unsigned integer argument to a type length specified by length
+ * modifiers.
+ */
 static unsigned long long	cast_unsigned(t_fstring *fs, va_list *ap)
 {
 	if (fs->format & M_CHAR)
@@ -39,6 +44,8 @@ static unsigned long long	cast_unsigned(t_fstring *fs, va_list *ap)
 	return (va_arg(*ap, unsigned int));
 }
 
+/* Converts an unsigned int argument to a string notation.
+ */
 int	convert_unsigned_int(t_fstring *fs, va_list *ap)
 {
 	const unsigned long long	arg = cast_unsigned(fs, ap);
@@ -64,6 +71,9 @@ int	convert_unsigned_int(t_fstring *fs, va_list *ap)
 	return (2);
 }
 
+/* Casts an signed integer argument to a type length specified by length
+ * modifiers.
+ */
 static long long	cast_signed(t_fstring *fs, va_list *ap)
 {
 	if (fs->format & M_CHAR)
@@ -77,6 +87,9 @@ static long long	cast_signed(t_fstring *fs, va_list *ap)
 	return (va_arg(*ap, int));
 }
 
+/* Converts an signed int argument to a string representation with
+ * specified formatting.
+ */
 int	convert_signed_int(t_fstring *fs, va_list *ap)
 {
 	const long long	arg = cast_signed(fs, ap);

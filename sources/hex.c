@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 00:20:05 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/25 06:52:28 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/25 16:00:07 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 #define HEX_DIVIDEND 16
 #define HEX_BUFSIZE 32
 
-// Adds the correct hex prefix to a string
+/* Adds the correct (upper- or lowercase) hex notation prefix to a string.
+ */
 int	add_hex_prefix(t_fstring *fs)
 {
 	char	*prepended;
@@ -34,6 +35,8 @@ int	add_hex_prefix(t_fstring *fs)
 	return (1);
 }
 
+/* Converts a decimal (base-10) notation to base-16, and returns it in a string.
+ */
 static char	*build_hex(unsigned long arg, int is_uppercase)
 {
 	char	buf[HEX_BUFSIZE];
@@ -61,8 +64,9 @@ static char	*build_hex(unsigned long arg, int is_uppercase)
 	return (ft_strrev(buf));
 }
 
-// Convert a clean integer value to a hex format string.
-// First one to call on hex conversions (before precision and fwidth)
+/* Convert a clean integer value to a hex format string. Basically an outside 
+ * caller for build_hex(), but handles a 0 input on top.
+ */
 int	format_hex(unsigned long long int arg, t_fstring *fs)
 {
 	if (arg == 0)
@@ -81,6 +85,9 @@ int	format_hex(unsigned long long int arg, t_fstring *fs)
 	return (0);
 }
 
+/* Converts a void * argument into an hex memory address
+ * notation.
+ */
 int	convert_void(t_fstring *fs, va_list *ap)
 {
 	const long long	arg = (long long)(long long *)va_arg(*ap, void *);

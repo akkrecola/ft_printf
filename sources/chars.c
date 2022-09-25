@@ -6,12 +6,16 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 22:37:42 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/25 05:17:57 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/25 15:17:53 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
+/* Applies format string data to a string conversion 's', and saves a resulting
+ * string to fs->string. (All result values end up in fs->string - naming is
+ * coincidental).
+ */
 int	convert_string(t_fstring *fs, va_list *ap)
 {
 	const char	*arg = (const char *)va_arg(*ap, char *);
@@ -35,6 +39,8 @@ int	convert_string(t_fstring *fs, va_list *ap)
 	return (3);
 }
 
+/* Applies format string data to a char 'c' conversion, saving the result.
+ */
 int	convert_char(t_fstring *fs, va_list *ap)
 {
 	const unsigned char	c = (const unsigned char)va_arg(*ap, int);
@@ -49,6 +55,9 @@ int	convert_char(t_fstring *fs, va_list *ap)
 	return (4);
 }
 
+/* Literal percent character '%', with formatting data applied is saved to
+ * fs->string.
+ */
 int	give_percent(t_fstring *fs, va_list *ap)
 {
 	(void)ap;

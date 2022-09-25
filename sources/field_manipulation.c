@@ -6,12 +6,15 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/17 23:54:27 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/25 12:06:37 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/25 15:45:37 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
+/* Seeks a sign character misaligned in a result string, resetting it to the
+ * front of the non-whitespace result string.
+ */
 void	reset_sign(t_fstring *fs)
 {
 	char	*p_sign;
@@ -26,8 +29,11 @@ void	reset_sign(t_fstring *fs)
 	}
 }
 
-// HOX Only call this function if you know that an alignment needs to be done,
-// i.e. F_LEFT_ALIGN is set!
+/* (Re)aligns a right-justified (default) strign to the border of the field,
+ * if sufficient space is available.
+ *
+ * Returns 0 on success, -1 on provided NULL pointer.
+ */
 int	align_left(t_fstring *fs, char *left_adjusted_str)
 {
 	if (fs->field_width > fs->len)
@@ -41,6 +47,9 @@ int	align_left(t_fstring *fs, char *left_adjusted_str)
 	return (0);
 }
 
+/* Helper to expand_to_field_width: expands to field width by
+ * writing zero padding instead of default <space>.
+ */
 static void	expand_zeros(t_fstring *fs, char *expanded)
 {
 	ft_memset(expanded, '0', fs->field_width);
@@ -57,6 +66,10 @@ static void	expand_zeros(t_fstring *fs, char *expanded)
 	}
 }
 
+/* Expand the area of writing to the field width set in
+ * format struct 'fs'. Different alignment and notation 
+ * options apply based on gathered formatting data.
+ */
 int	expand_to_field_width(t_fstring *fs)
 {
 	char	*expanded;

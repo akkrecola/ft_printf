@@ -6,33 +6,16 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 00:16:33 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/25 14:34:54 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/25 15:54:42 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 #define MAX_FRAC_DIGS 256
 
-/*
- * Floatmap:
- * PREPARATION
- * 1. Cast to long double
- * ROUNDING
- * 2. Realign with precision by multiplying with pow(10, fs->precision)
- * 3. Create 1) rounded (away from zero) and 2) unrounded (truncated)
- *    variables, and compare their distance from the original 'arg'
- * 4. Round up if the difference towards the original value is GREATER in
- *    the UNROUNDED than the ROUNDED.
- *    Also round up if DIFFERENCE IS EXACTLY 0 (distances are equal == fraction
- *    is exactly 0.5).
- * 5. Return the value with correct rounding applied.
- * FTOA - float (long double) to int
- * 6. Get the precision shift value (long double shift = pow(10, precision))
- * 7. Extract the integral part (long base = (long)arg)
- * 8. Extract the fractional part
- *
+/* Extracts a fraction of a given (long) double argument and feeds it
+ * into a char buffer, returning an allocated string (or NULL on failure).
  */
-
 static char	*extract_fraction(t_fstring *fs, long double arg)
 {
 	char		buf[MAX_FRAC_DIGS + 1];
@@ -52,6 +35,11 @@ static char	*extract_fraction(t_fstring *fs, long double arg)
 	return (ft_strdup(buf));
 }
 
+/* Handle floating point rounding notations, e.g. explicit dot '.'
+ * on # flag, or special values -infinity, +infinity and NaN (not a number).
+ *
+ * Reassigns the previously allocated result string fs->string.
+ */
 static void	determine_double_format(long double arg, t_fstring *fs, \
 		char *base, char *fraction)
 {
@@ -73,6 +61,11 @@ static void	determine_double_format(long double arg, t_fstring *fs, \
 	fs->len = ft_strlen(fs->string);
 }
 
+/* Apply formatting to a given double argument, and save the
+ * result in the fstring struct variable.
+ *
+ * Returns 0 on allocation failure, 1 on success.
+ */
 static int	format_double(t_fstring *fs, long double arg)
 {
 	char	*base;
@@ -97,6 +90,13 @@ static int	format_double(t_fstring *fs, long double arg)
 	return (1);
 }
 
+/* Cast the variable argument double to long double,
+ * if length modifier 'L' has been presented.
+ *
+ * NOTE: both the double and long double arguments
+ * are handled internally as long double, but the cast
+ * affects the initial value that the argument assumes.
+ */
 static double	cast_double(va_list *ap, t_fstring *fs)
 {
 	if (fs->format & M_DLONG)
@@ -105,6 +105,8 @@ static double	cast_double(va_list *ap, t_fstring *fs)
 		return (va_arg(*ap, double));
 }
 
+/* Handle an 'f' conversion.
+ */
 int	convert_double(t_fstring *fs, va_list *ap)
 {
 	const long double	arg = cast_double(ap, fs);

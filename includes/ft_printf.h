@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 17:00:21 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/25 12:17:41 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/25 15:13:20 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@
 # include "libft.h"
 
 # define FORMAT_ERROR 0xFFFF
-// Following bits act as indices for the conversion dispatch table.
+// Following bits act as indices for the function dispatch table g_dispatcher.
 // (C)onversion specifiers as bit enumeration. These are all mutually EXCLUSIVE.
-// NOTE: 0x0 is reserved for empty format string (default).
+// 0x0 is reserved for empty format value (default).
 # define SPEC_TYPES "diouxXfcsp%"
 # define NUM_TYPES "diouxX"
 // [d|i]uoxX (bits 0-4 enumerated) (numerics)
@@ -53,7 +53,7 @@
 # define MASK_FLAGS 0x1F0
 # define MASK_HEX_PREFIX 0x18
 
-// Length modifiers hh, h, l, ll. (20-23)
+// Length (M)odifiers hh, h, l, ll and L.
 # define LENMODS "hlL"
 # define M_CHAR 0x200
 # define M_SHRT 0x400
