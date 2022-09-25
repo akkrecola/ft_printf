@@ -6,15 +6,13 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 00:20:05 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/25 05:23:50 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/25 06:52:28 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 #define HEX_DIVIDEND 16
 #define HEX_BUFSIZE 32
-#define OCT_DIV 8
-#define OCT_BUFSIZE 32
 
 // Adds the correct hex prefix to a string
 int	add_hex_prefix(t_fstring *fs)

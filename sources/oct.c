@@ -6,11 +6,13 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 05:21:34 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/25 05:28:38 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/25 05:45:36 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+#define OCT_DIV 8
+#define OCT_BUFSIZE 32
 
 // Convert decimal to octal representation. The resulting string is
 // collected reversed, and is reversed back in caller.

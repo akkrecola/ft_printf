@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 01:18:59 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/25 06:15:36 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/25 08:22:18 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ void	set_flags(const char *init, const char *delim, t_fstring *fs)
 	free((char *)flagset);
 }
 
-
 const char	*set_field_width(const char *init, const char *delim, t_fstring *fs)
 {
 	const char	*iterator = ft_strpbrk(init, FWIDTH_DIGITS);
@@ -101,11 +100,6 @@ const char	*set_precision(const char *init, const char *delim, t_fstring *fs)
 	{
 		precision_str[i - 1] = dot[i];
 		i++;
-	}
-	if (dot[i] == '*')
-	{
-		error(fs);
-		exit(EXIT_FAILURE);
 	}
 	precision_val = ft_atoi(&precision_str[0]);
 	if (precision_val < MAX_PRECISION)
