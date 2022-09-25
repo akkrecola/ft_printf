@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 21:39:27 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/25 16:04:11 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/25 16:42:04 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 /* Sets literal 0 input via conditional formatting options.
  */
-void	set_explicit_zero(t_fstring *fs)
+int	set_explicit_zero(t_fstring *fs)
 {
 	if (fs->format & EXPL_PRECISION && fs->precision == 0)
 	{
@@ -25,7 +25,10 @@ void	set_explicit_zero(t_fstring *fs)
 	}
 	else
 		fs->string = ft_strdup("0");
+	if (!fs->string)
+		return (-1);
 	fs->len = ft_strlen(fs->string);
+	return (0);
 }
 
 /* Casts an unsigned integer argument to a type length specified by length
@@ -59,16 +62,21 @@ int	convert_unsigned_int(t_fstring *fs, va_list *ap)
 	else
 		fs->string = ft_ltoa_unsigned(arg);
 	if (!fs->string)
-		return (0);
+		return (-1);
 	fs->len = ft_strlen(fs->string);
-	pad_integer_precision(fs);
+	if (pad_integer_precision(fs))
+		return (-1);
 	if ((fs->format & MASK_HEX_PREFIX) \
 			&& (fs->format & CMASK & HEX_MASK) \
 			&& arg != 0)
 		add_hex_prefix(fs);
+	if (!fs->string)
+		return (-1);
 	if (fs->field_width > fs->len)
 		expand_to_field_width(fs);
-	return (2);
+	if (!fs->string)
+		return (-1);
+	return (0);
 }
 
 /* Casts an signed integer argument to a type length specified by length
@@ -98,13 +106,21 @@ int	convert_signed_int(t_fstring *fs, va_list *ap)
 		set_explicit_zero(fs);
 	else
 		fs->string = ft_ltoa(arg);
+	if (!fs->string)
+		return (-1);
 	fs->len = ft_strlen(fs->string);
 	if (arg < 0)
 		fs->sign = fs->string;
-	pad_integer_precision(fs);
+	if (!pad_integer_precision(fs))
+		return (-1);
 	if (fs->format & (F_FORCE_SIGN + F_SPACE_SIGN) && !fs->sign)
-		prepend_sign(fs);
+	{
+		if (!prepend_sign(fs))
+			return (-1);
+	}
 	if (fs->field_width > fs->len)
 		expand_to_field_width(fs);
-	return (1);
+	if (!fs->string)
+		return (-1);
+	return (0);
 }

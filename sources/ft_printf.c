@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 11:10:19 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/25 15:09:52 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/25 16:38:24 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,8 @@ void	teardown(t_fstring *fs)
  * the variable argument type distribution to respective handlers
  * (prefixes 'convert*').
  *
- * Returns the total amount of bytes written to stdout.
+ * Returns the total amount of bytes written to stdout, negative
+ * (-1) on error.
  */
 int	ft_printf(const char *format, ...)
 {
@@ -96,7 +97,7 @@ int	ft_printf(const char *format, ...)
 		format = get_next_format(&fs, initializer);
 		if (fs.format == FORMAT_ERROR)
 			continue ;
-		if (!g_convert[(fs.format & CMASK) - 1](&fs, &ap))
+		if (g_convert[(fs.format & CMASK) - 1](&fs, &ap))
 			return (error(&fs));
 		printed += write(1, fs.string, fs.len);
 		ft_strdel(&fs.string);

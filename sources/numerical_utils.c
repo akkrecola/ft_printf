@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 05:25:03 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/25 16:11:38 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/25 16:35:54 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,11 @@ int	pad_zero_fraction(uint32_t precision, char **fraction)
 
 	padded = ft_strnew(precision);
 	if (!padded)
-		return (0);
+		return (-1);
 	ft_memset(padded, '0', precision);
 	free(*fraction);
 	*fraction = padded;
-	return (1);
+	return (0);
 }
 
 /* Banker's rounding function. Rounds to nearest and ties (remainder
@@ -52,13 +52,15 @@ long double	round_even(t_fstring *fs, long double arg)
 	return (arg);
 }
 
- /* Prepends a sign based on formatting information, often due to + flag.
-  */
-void	prepend_sign(t_fstring *fs)
+/* Prepends a sign based on formatting information, often due to + flag.
+ */
+int	prepend_sign(t_fstring *fs)
 {
 	char		*sign_prepended_str;
 
 	sign_prepended_str = ft_strnew(ft_strlen(fs->string) + 1);
+	if (!sign_prepended_str)
+		return (-1);
 	if (fs->format & F_FORCE_SIGN && !fs->sign)
 		sign_prepended_str[0] = '+';
 	else if (fs->format & F_SPACE_SIGN)
@@ -71,6 +73,7 @@ void	prepend_sign(t_fstring *fs)
 	ft_strdel(&fs->string);
 	fs->string = sign_prepended_str;
 	fs->len += 1;
+	return (0);
 }
 
 /* Applies a precision greater than the numbers total digits (+ sign),
@@ -91,7 +94,7 @@ int	pad_integer_precision(t_fstring *fs)
 			fs->string[0] = '0';
 		str_expanded = ft_strnew(fs->precision);
 		if (!str_expanded)
-			return (0);
+			return (-1);
 		ft_memset(str_expanded, '0', fs->precision);
 		ft_memmove(str_expanded + (fs->precision - fs->len), \
 				fs->string, fs->len);
@@ -102,5 +105,5 @@ int	pad_integer_precision(t_fstring *fs)
 		if (fs->len < fs->precision)
 			fs->len = fs->precision;
 	}
-	return (1);
+	return (0);
 }

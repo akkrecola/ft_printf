@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 00:16:33 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/25 15:54:42 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/25 16:31:02 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static void	determine_double_format(long double arg, t_fstring *fs, \
 /* Apply formatting to a given double argument, and save the
  * result in the fstring struct variable.
  *
- * Returns 0 on allocation failure, 1 on success.
+ * Returns -1 on allocation failure, 0 on success.
  */
 static int	format_double(t_fstring *fs, long double arg)
 {
@@ -79,15 +79,15 @@ static int	format_double(t_fstring *fs, long double arg)
 		base = ft_freejoin("-", base, 'b');
 	fraction = extract_fraction(fs, arg);
 	if (!base || !fraction)
-		return (0);
+		return (-1);
 	if (arg == 0.0)
 		pad_zero_fraction(fs->precision, &fraction);
 	determine_double_format(arg, fs, base, fraction);
 	ft_strdel(&base);
 	ft_strdel(&fraction);
 	if (!fs->string)
-		return (0);
-	return (1);
+		return (-1);
+	return (0);
 }
 
 /* Cast the variable argument double to long double,
@@ -112,14 +112,18 @@ int	convert_double(t_fstring *fs, va_list *ap)
 	const long double	arg = cast_double(ap, fs);
 
 	if (!format_double(fs, arg) || !fs->string)
-		return (0);
+		return (-1);
 	fs->len = ft_strlen(fs->string);
 	if (arg < 0.0 || arg == -1.0 / 0.0)
 		fs->sign = fs->string;
 	if (fs->format & (F_FORCE_SIGN | F_SPACE_SIGN)
 		&& !ft_strchr("+-n", fs->string[0]))
 		prepend_sign(fs);
+	if (!fs->string)
+		return (-1);
 	if (fs->field_width > fs->len)
 		expand_to_field_width(fs);
-	return (5);
+	if (!fs->string)
+		return (-1);
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 22:37:42 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/25 15:17:53 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/25 16:33:59 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,11 @@ int	convert_string(t_fstring *fs, va_list *ap)
 	else
 		fs->string = ft_strdup(arg);
 	if (!fs->string)
-		return (0);
+		return (-1);
 	fs->len = ft_strlen(fs->string);
 	if (fs->field_width > fs->len)
 		expand_to_field_width(fs);
-	return (3);
+	return (0);
 }
 
 /* Applies format string data to a char 'c' conversion, saving the result.
@@ -47,12 +47,14 @@ int	convert_char(t_fstring *fs, va_list *ap)
 
 	fs->string = ft_strnew(1);
 	if (!fs->string)
-		return (0);
+		return (-1);
 	fs->string[0] = c;
 	fs->len = 1;
 	if (fs->field_width > fs->len)
 		expand_to_field_width(fs);
-	return (4);
+	if (!fs->string)
+		return (-1);
+	return (0);
 }
 
 /* Literal percent character '%', with formatting data applied is saved to
@@ -63,9 +65,11 @@ int	give_percent(t_fstring *fs, va_list *ap)
 	(void)ap;
 	fs->string = ft_strdup("%");
 	if (!fs->string)
-		return (0);
+		return (-1);
 	fs->len = 1;
 	if (fs->field_width > fs->len)
 		expand_to_field_width(fs);
-	return (7);
+	if (!fs->string)
+		return (-1);
+	return (0);
 }
