@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 22:37:42 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/25 16:33:59 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/25 17:43:30 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
  * string to fs->string. (All result values end up in fs->string - naming is
  * coincidental).
  */
-int	convert_string(t_fstring *fs, va_list *ap)
+void	convert_string(t_fstring *fs, va_list *ap)
 {
 	const char	*arg = (const char *)va_arg(*ap, char *);
 
@@ -32,44 +32,37 @@ int	convert_string(t_fstring *fs, va_list *ap)
 	else
 		fs->string = ft_strdup(arg);
 	if (!fs->string)
-		return (-1);
+		error(fs);
 	fs->len = ft_strlen(fs->string);
 	if (fs->field_width > fs->len)
 		expand_to_field_width(fs);
-	return (0);
 }
 
 /* Applies format string data to a char 'c' conversion, saving the result.
  */
-int	convert_char(t_fstring *fs, va_list *ap)
+void	convert_char(t_fstring *fs, va_list *ap)
 {
 	const unsigned char	c = (const unsigned char)va_arg(*ap, int);
 
 	fs->string = ft_strnew(1);
 	if (!fs->string)
-		return (-1);
+		error(fs);
 	fs->string[0] = c;
 	fs->len = 1;
 	if (fs->field_width > fs->len)
 		expand_to_field_width(fs);
-	if (!fs->string)
-		return (-1);
-	return (0);
 }
 
 /* Literal percent character '%', with formatting data applied is saved to
  * fs->string.
  */
-int	give_percent(t_fstring *fs, va_list *ap)
+void	give_percent(t_fstring *fs, va_list *ap)
 {
 	(void)ap;
 	fs->string = ft_strdup("%");
 	if (!fs->string)
-		return (-1);
+		error(fs);
 	fs->len = 1;
 	if (fs->field_width > fs->len)
 		expand_to_field_width(fs);
-	if (!fs->string)
-		return (-1);
-	return (0);
 }

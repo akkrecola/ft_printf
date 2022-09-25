@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 05:25:03 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/25 16:35:54 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/25 17:30:42 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,16 @@
  * with zeroes on the right. This is needed when a literal 0 fractional part
  * is truncated to .0 ending, but the lesser zero digits need to be represented.
  */
-int	pad_zero_fraction(uint32_t precision, char **fraction)
+void	pad_zero_fraction(t_fstring *fs, char **fraction)
 {
 	char	*padded;
 
-	padded = ft_strnew(precision);
+	padded = ft_strnew(fs->precision);
 	if (!padded)
-		return (-1);
-	ft_memset(padded, '0', precision);
+		error(fs);
+	ft_memset(padded, '0', fs->precision);
 	free(*fraction);
 	*fraction = padded;
-	return (0);
 }
 
 /* Banker's rounding function. Rounds to nearest and ties (remainder
@@ -54,13 +53,13 @@ long double	round_even(t_fstring *fs, long double arg)
 
 /* Prepends a sign based on formatting information, often due to + flag.
  */
-int	prepend_sign(t_fstring *fs)
+void	prepend_sign(t_fstring *fs)
 {
 	char		*sign_prepended_str;
 
 	sign_prepended_str = ft_strnew(ft_strlen(fs->string) + 1);
 	if (!sign_prepended_str)
-		return (-1);
+		error(fs);
 	if (fs->format & F_FORCE_SIGN && !fs->sign)
 		sign_prepended_str[0] = '+';
 	else if (fs->format & F_SPACE_SIGN)
@@ -73,13 +72,12 @@ int	prepend_sign(t_fstring *fs)
 	ft_strdel(&fs->string);
 	fs->string = sign_prepended_str;
 	fs->len += 1;
-	return (0);
 }
 
 /* Applies a precision greater than the numbers total digits (+ sign),
  * i.e. left pads the number with 0's.
  */
-int	pad_integer_precision(t_fstring *fs)
+void	pad_integer_precision(t_fstring *fs)
 {
 	char			*str_expanded;
 	uint8_t			sign;
@@ -94,7 +92,7 @@ int	pad_integer_precision(t_fstring *fs)
 			fs->string[0] = '0';
 		str_expanded = ft_strnew(fs->precision);
 		if (!str_expanded)
-			return (-1);
+			error(fs);
 		ft_memset(str_expanded, '0', fs->precision);
 		ft_memmove(str_expanded + (fs->precision - fs->len), \
 				fs->string, fs->len);
@@ -105,5 +103,4 @@ int	pad_integer_precision(t_fstring *fs)
 		if (fs->len < fs->precision)
 			fs->len = fs->precision;
 	}
-	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 00:20:05 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/25 16:34:57 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/25 17:28:18 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,13 @@
 
 /* Adds the correct (upper- or lowercase) hex notation prefix to a string.
  */
-int	add_hex_prefix(t_fstring *fs)
+void	add_hex_prefix(t_fstring *fs)
 {
 	char	*prepended;
 
 	prepended = ft_strnew(fs->len + 2);
 	if (!prepended)
-		return (-1);
+		error(fs);
 	prepended[0] = '0';
 	if (*fs->type == 'X')
 		prepended[1] = 'X';
@@ -32,7 +32,6 @@ int	add_hex_prefix(t_fstring *fs)
 	ft_strdel(&fs->string);
 	fs->string = prepended;
 	fs->len += 2;
-	return (0);
 }
 
 /* Converts a decimal (base-10) notation to base-16, and returns it in a string.
@@ -67,37 +66,29 @@ static char	*build_hex(unsigned long arg, int is_uppercase)
 /* Convert a clean integer value to a hex format string. Basically an outside 
  * caller for build_hex(), but handles a 0 input on top.
  */
-int	format_hex(unsigned long long int arg, t_fstring *fs)
+void	format_hex(unsigned long long int arg, t_fstring *fs)
 {
 	if (arg == 0)
-	{
 		set_explicit_zero(fs);
-		return (0);
-	}
 	else
-	{
 		fs->string = build_hex(arg, ((fs->format & CMASK) == C_UHEX_CAP));
-		if (!fs->string)
-			return (-1);
-		fs->len = ft_strlen(fs->string);
-		return (0);
-	}
+	if (!fs->string)
+		error(fs);
+	fs->len = ft_strlen(fs->string);
 }
 
 /* Converts a void * argument into an hex memory address
  * notation.
  */
-int	convert_void(t_fstring *fs, va_list *ap)
+void	convert_void(t_fstring *fs, va_list *ap)
 {
 	const long long	arg = (long long)(long long *)va_arg(*ap, void *);
 	char			*temp_str;
 
 	format_hex(arg, fs);
-	if (!fs->string)
-		return (-1);
 	temp_str = ft_strsub(fs->string, 0, 14);
 	if (!temp_str)
-		return (-1);
+		error(fs);
 	ft_strdel(&fs->string);
 	fs->string = temp_str;
 	fs->len = ft_strlen(fs->string);
@@ -106,5 +97,4 @@ int	convert_void(t_fstring *fs, va_list *ap)
 	fs->len = ft_strlen(fs->string);
 	if (fs->field_width > fs->len)
 		expand_to_field_width(fs);
-	return (0);
 }

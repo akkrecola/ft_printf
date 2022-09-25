@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/17 23:54:27 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/25 15:45:37 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/25 17:09:34 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,17 +34,14 @@ void	reset_sign(t_fstring *fs)
  *
  * Returns 0 on success, -1 on provided NULL pointer.
  */
-int	align_left(t_fstring *fs, char *left_adjusted_str)
+void	align_left(t_fstring *fs, char *left_adjusted_str)
 {
 	if (fs->field_width > fs->len)
 	{
-		if (!left_adjusted_str)
-			return (-1);
 		ft_memmove(left_adjusted_str, fs->string, fs->len);
 		ft_strdel(&fs->string);
 		fs->string = left_adjusted_str;
 	}
-	return (0);
 }
 
 /* Helper to expand_to_field_width: expands to field width by
@@ -70,13 +67,13 @@ static void	expand_zeros(t_fstring *fs, char *expanded)
  * format struct 'fs'. Different alignment and notation 
  * options apply based on gathered formatting data.
  */
-int	expand_to_field_width(t_fstring *fs)
+void	expand_to_field_width(t_fstring *fs)
 {
 	char	*expanded;
 
 	expanded = ft_strnew(fs->field_width);
 	if (!expanded)
-		return (-1);
+		error(fs);
 	if (fs->format & F_ZERO_PAD)
 		expand_zeros(fs, expanded);
 	else
@@ -92,5 +89,4 @@ int	expand_to_field_width(t_fstring *fs)
 		reset_sign(fs);
 	}
 	fs->len = fs->field_width;
-	return (0);
 }

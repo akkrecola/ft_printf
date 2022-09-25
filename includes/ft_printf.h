@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 17:00:21 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/25 16:43:06 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/25 17:48:16 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,8 @@
 # define FT_PRINTF_H
 
 # include <stdarg.h>
-# include <stdint.h>
 # include <stdlib.h>
-# include <string.h>
 # include <unistd.h>
-# include <limits.h>
 # include "libft.h"
 
 # define FORMAT_ERROR 0xFFFF
@@ -99,26 +96,26 @@ const char	*set_length_modifier(const char *init, \
 		const char *delim, t_fstring *fs);
 
 // Conversion handlers
-int			convert_signed_int(t_fstring *fs, va_list *ap);
-int			convert_unsigned_int(t_fstring *fs, va_list *ap);
-int			convert_string(t_fstring *fs, va_list *ap);
-int			convert_char(t_fstring *fs, va_list *ap);
-int			convert_double(t_fstring *fs, va_list *ap);
-int			convert_void(t_fstring *fs, va_list *ap);
-int			give_percent(t_fstring *fs, va_list *ap);
+void		convert_signed_int(t_fstring *fs, va_list *ap);
+void		convert_unsigned_int(t_fstring *fs, va_list *ap);
+void		convert_string(t_fstring *fs, va_list *ap);
+void		convert_char(t_fstring *fs, va_list *ap);
+void		convert_double(t_fstring *fs, va_list *ap);
+void		convert_void(t_fstring *fs, va_list *ap);
+void		give_percent(t_fstring *fs, va_list *ap);
 
 // Formatters
-int			format_hex(unsigned long long arg, t_fstring *fs);
-int			format_oct(unsigned long long arg, t_fstring *fs);
+void		format_hex(unsigned long long arg, t_fstring *fs);
+void		format_oct(unsigned long long arg, t_fstring *fs);
 
 // Conversion string manipulation
-int			align_left(t_fstring *fs, char *left_adjusted_str);
-int			expand_to_field_width(t_fstring *fs);
-int			add_hex_prefix(t_fstring *fs);
-int			pad_integer_precision(t_fstring *fs);
-int			prepend_sign(t_fstring *fs);
-int			set_explicit_zero(t_fstring *fs);
-int			pad_zero_fraction(uint32_t precision, char **fraction);
+void		align_left(t_fstring *fs, char *left_adjusted_str);
+void		expand_to_field_width(t_fstring *fs);
+void		add_hex_prefix(t_fstring *fs);
+void		pad_integer_precision(t_fstring *fs);
+void		prepend_sign(t_fstring *fs);
+void		set_explicit_zero(t_fstring *fs);
+void		pad_zero_fraction(t_fstring *fs, char **fraction);
 
 // Numerical manipualtion functions
 long double	round_even(t_fstring *fs, long double arg);
@@ -127,6 +124,6 @@ long double	round_even(t_fstring *fs, long double arg);
 void		teardown(t_fstring *fs);
 
 // Error handling function, invokes teardown().
-int			error(t_fstring *fs);
+void		error(t_fstring *fs);
 
 #endif

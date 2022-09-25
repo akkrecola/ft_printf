@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/23 00:08:13 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/25 16:20:34 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/25 17:33:09 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
  * parameters (t_fstring *fs, va_list *ap) and return t_fstring * format
  * struct.
  */
-typedef int				(*t_convert)(t_fstring *fs, va_list *ap);
+typedef void			(*t_convert)(t_fstring *fs, va_list *ap);
 
 /* Global function dispatch table. Duplicates cater to the indexing of 
  * fs->format (see: ft_printf.h)

@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 00:16:33 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/25 16:31:02 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/25 17:26:30 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ static void	determine_double_format(long double arg, t_fstring *fs, \
 	}
 	else
 		fs->string = ft_strdjoin(base, ".", fraction);
+	if (!fs->string)
+		error(fs);
 	fs->len = ft_strlen(fs->string);
 }
 
@@ -66,7 +68,7 @@ static void	determine_double_format(long double arg, t_fstring *fs, \
  *
  * Returns -1 on allocation failure, 0 on success.
  */
-static int	format_double(t_fstring *fs, long double arg)
+static void	format_double(t_fstring *fs, long double arg)
 {
 	char	*base;
 	char	*fraction;
@@ -79,15 +81,12 @@ static int	format_double(t_fstring *fs, long double arg)
 		base = ft_freejoin("-", base, 'b');
 	fraction = extract_fraction(fs, arg);
 	if (!base || !fraction)
-		return (-1);
+		error(fs);
 	if (arg == 0.0)
-		pad_zero_fraction(fs->precision, &fraction);
+		pad_zero_fraction(fs, &fraction);
 	determine_double_format(arg, fs, base, fraction);
 	ft_strdel(&base);
 	ft_strdel(&fraction);
-	if (!fs->string)
-		return (-1);
-	return (0);
 }
 
 /* Cast the variable argument double to long double,
@@ -107,23 +106,17 @@ static double	cast_double(va_list *ap, t_fstring *fs)
 
 /* Handle an 'f' conversion.
  */
-int	convert_double(t_fstring *fs, va_list *ap)
+void	convert_double(t_fstring *fs, va_list *ap)
 {
 	const long double	arg = cast_double(ap, fs);
 
-	if (!format_double(fs, arg) || !fs->string)
-		return (-1);
+	format_double(fs, arg);
 	fs->len = ft_strlen(fs->string);
 	if (arg < 0.0 || arg == -1.0 / 0.0)
 		fs->sign = fs->string;
 	if (fs->format & (F_FORCE_SIGN | F_SPACE_SIGN)
 		&& !ft_strchr("+-n", fs->string[0]))
 		prepend_sign(fs);
-	if (!fs->string)
-		return (-1);
 	if (fs->field_width > fs->len)
 		expand_to_field_width(fs);
-	if (!fs->string)
-		return (-1);
-	return (0);
 }

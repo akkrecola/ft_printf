@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 05:21:34 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/25 16:37:06 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/25 17:32:29 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	build_oct(unsigned long long int arg, uint8_t div, char *buf)
 /* Format an unsigned integer argument in octal notation.
  * Calls on recursive builder build_oct()
  */
-int	format_oct(unsigned long long int arg, t_fstring *fs)
+void	format_oct(unsigned long long int arg, t_fstring *fs)
 {
 	char	buf[OCT_BUFSIZE];
 
@@ -39,13 +39,10 @@ int	format_oct(unsigned long long int arg, t_fstring *fs)
 	{
 		build_oct(arg, arg % OCT_DIV, &buf[0]);
 		fs->string = ft_strrev(&buf[0]);
-		if (!fs->string)
-			return (0);
 	}
+	if (!fs->string)
+		error(fs);
 	if (fs->string && fs->format & F_ALT_FORM && arg != 0 && !fs->sign)
 		prepend_sign(fs);
-	if (!fs->string)
-		return (-1);
 	fs->len = ft_strlen(fs->string);
-	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 21:39:27 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/25 16:42:04 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/25 17:34:05 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 /* Sets literal 0 input via conditional formatting options.
  */
-int	set_explicit_zero(t_fstring *fs)
+void	set_explicit_zero(t_fstring *fs)
 {
 	if (fs->format & EXPL_PRECISION && fs->precision == 0)
 	{
@@ -26,9 +26,8 @@ int	set_explicit_zero(t_fstring *fs)
 	else
 		fs->string = ft_strdup("0");
 	if (!fs->string)
-		return (-1);
+		error(fs);
 	fs->len = ft_strlen(fs->string);
-	return (0);
 }
 
 /* Casts an unsigned integer argument to a type length specified by length
@@ -49,7 +48,7 @@ static unsigned long long	cast_unsigned(t_fstring *fs, va_list *ap)
 
 /* Converts an unsigned int argument to a string notation.
  */
-int	convert_unsigned_int(t_fstring *fs, va_list *ap)
+void	convert_unsigned_int(t_fstring *fs, va_list *ap)
 {
 	const unsigned long long	arg = cast_unsigned(fs, ap);
 
@@ -62,21 +61,15 @@ int	convert_unsigned_int(t_fstring *fs, va_list *ap)
 	else
 		fs->string = ft_ltoa_unsigned(arg);
 	if (!fs->string)
-		return (-1);
+		error(fs);
 	fs->len = ft_strlen(fs->string);
-	if (pad_integer_precision(fs))
-		return (-1);
+	pad_integer_precision(fs);
 	if ((fs->format & MASK_HEX_PREFIX) \
 			&& (fs->format & CMASK & HEX_MASK) \
 			&& arg != 0)
 		add_hex_prefix(fs);
-	if (!fs->string)
-		return (-1);
 	if (fs->field_width > fs->len)
 		expand_to_field_width(fs);
-	if (!fs->string)
-		return (-1);
-	return (0);
 }
 
 /* Casts an signed integer argument to a type length specified by length
@@ -98,7 +91,7 @@ static long long	cast_signed(t_fstring *fs, va_list *ap)
 /* Converts an signed int argument to a string representation with
  * specified formatting.
  */
-int	convert_signed_int(t_fstring *fs, va_list *ap)
+void	convert_signed_int(t_fstring *fs, va_list *ap)
 {
 	const long long	arg = cast_signed(fs, ap);
 
@@ -107,20 +100,13 @@ int	convert_signed_int(t_fstring *fs, va_list *ap)
 	else
 		fs->string = ft_ltoa(arg);
 	if (!fs->string)
-		return (-1);
+		error(fs);
 	fs->len = ft_strlen(fs->string);
 	if (arg < 0)
 		fs->sign = fs->string;
-	if (!pad_integer_precision(fs))
-		return (-1);
+	pad_integer_precision(fs);
 	if (fs->format & (F_FORCE_SIGN + F_SPACE_SIGN) && !fs->sign)
-	{
-		if (!prepend_sign(fs))
-			return (-1);
-	}
+		prepend_sign(fs);
 	if (fs->field_width > fs->len)
 		expand_to_field_width(fs);
-	if (!fs->string)
-		return (-1);
-	return (0);
 }
