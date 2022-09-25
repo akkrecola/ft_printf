@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 00:16:33 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/25 05:19:10 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/25 09:54:33 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ static int	pad_zero_fraction(uint32_t precision, char	**fraction)
 	return (1);
 }
 
-// TODO make life easier with itof
 static int	format_double(t_fstring *fs, long double arg)
 {
 	char	*base;
@@ -77,7 +76,8 @@ static int	format_double(t_fstring *fs, long double arg)
 		fs->precision = 6;
 	arg = round_even(fs, arg);
 	base = ft_ltoa((long)arg);
-	if ((arg < 0.0 && ft_strequ(base, "0")))
+	if ((arg < 0.0 && ft_strequ(base, "0"))
+		|| 1 / arg == -1 / 0.0)
 		base = ft_freejoin("-", base, 'b');
 	fraction = ft_ltoa(\
 			ft_labs((long)((arg - (long)arg) * ft_exp10(fs->precision))));
