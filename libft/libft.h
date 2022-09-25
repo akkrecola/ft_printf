@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/03 16:00:26 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/20 22:18:41 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/25 03:10:34 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,12 +80,14 @@ void		ft_striter(char *s, void (*f)(char *));
 void		ft_striteri(char *s, void (*f)(unsigned int, char *));
 char		*ft_strmap(char const *s, char (*f)(char));
 char		*ft_strmapi(char const *s, char (*f)(unsigned int, char));
-char		*ft_strgetset(const char *s, char *tset, char *dset, size_t maxlen);
+char		*ft_strmodify(char const *initial, char *(*f)(char const *));
+char		*ft_strgetset(char const *s, char *tset, char *dset, size_t maxlen);
 int			ft_strequ(char const *s1, char const *s2);
 int			ft_strnequ(char const *s1, char const *s2, size_t n);
 char		*ft_strsub(char const *s, unsigned int start, size_t len);
 char		*ft_strjoin(char const *s1, char const *s2);
 char		*ft_strdjoin(char const *head, char const *delim, char const *tail);
+char		*ft_freejoin(const char *a, const char *b, uint8_t select);
 char		*ft_strtrim(char const *s);
 char		**ft_strsplit(char const *s, char c);
 size_t		ft_strspn(const char *s, const char *charset);
@@ -104,9 +106,18 @@ void		ft_putbits(void *var, uint8_t bytes);
 
 /* Math */
 double		ft_pow(double base, double exp);
+long double	ft_powl(long double base, long double exp);
 float		ft_powf(float base, float exp);
 int			ft_powi(int base, int exp);
+uint64_t	ft_exp10(int exp);
 int			ft_abs(int x);
+long		ft_labs(long x);
+long long	ft_llabs(long long x);
+double		ft_fabs(double x);
+long double	ft_lfabs(long double x);
+long double	ft_truncl(long double x);
+double		ft_trunc(double x);
+long double	ft_roundl(long double x);
 
 /* Bonus part function prototypes */
 t_list		*ft_lstnew(void const *content, size_t content_size);

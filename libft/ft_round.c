@@ -1,19 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
+/*   ft_round.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/19 16:38:42 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/25 05:07:43 by elehtora         ###   ########.fr       */
+/*   Created: 2022/09/24 18:10:19 by elehtora          #+#    #+#             */
+/*   Updated: 2022/09/24 23:25:21 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "libft.h"
 
-int	error(t_fstring *fs)
+long double	ft_roundl(long double x)
 {
-	teardown(fs);
-	return (-1);
+	if (x < 0.0)
+		return (ft_truncl(x - 0.5));
+	else
+		return (ft_truncl(x + 0.5));
 }

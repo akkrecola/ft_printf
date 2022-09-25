@@ -6,7 +6,7 @@
 #    By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/03 15:27:40 by elehtora          #+#    #+#              #
-#    Updated: 2022/09/23 08:04:08 by elehtora         ###   ########.fr        #
+#    Updated: 2022/09/25 03:05:13 by elehtora         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -76,6 +76,7 @@ SRCS		=	ft_atoi.c			\
 				ft_striteri.c		\
 				ft_strjoin.c		\
 				ft_strdjoin.c		\
+				ft_freejoin.c		\
 				ft_strlen.c			\
 				ft_strdlen.c		\
 				ft_strmap.c			\
@@ -99,12 +100,14 @@ SRCS		=	ft_atoi.c			\
 				ft_strtrim.c		\
 				ft_nat_sqrt.c		\
 				ft_tolower.c		\
-				ft_toupper.c
+				ft_toupper.c		\
+				ft_trunc.c			\
+				ft_round.c
 
 OBJS = $(SRCS:.c=.o)
 
 CC=clang
-CFLAGS = -Wall -Wextra -Werror -O3
+CFLAGS = -Wall -Wextra -Werror -g
 LIB=ar rcs
 RM=/bin/rm -f
 

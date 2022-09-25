@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/14 22:37:42 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/24 14:56:36 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/25 05:17:57 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,9 @@ int	convert_char(t_fstring *fs, va_list *ap)
 	return (4);
 }
 
-int	give_percent(t_fstring *fs, va_list *ap) // No conversion -> ap is no-op
+int	give_percent(t_fstring *fs, va_list *ap)
 {
-	(void)ap; // no-op, shut up gcc
+	(void)ap;
 	fs->string = ft_strdup("%");
 	if (!fs->string)
 		return (0);

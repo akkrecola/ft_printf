@@ -1,19 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
+/*   ft_trunc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/19 16:38:42 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/25 05:07:43 by elehtora         ###   ########.fr       */
+/*   Created: 2022/09/24 18:00:11 by elehtora          #+#    #+#             */
+/*   Updated: 2022/09/25 01:01:38 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
-
-int	error(t_fstring *fs)
+long double	ft_truncl(long double x)
 {
-	teardown(fs);
-	return (-1);
+	return ((long double)(long long)x);
+}
+
+double	ft_trunc(double x)
+{
+	return ((double)(long)x);
 }
