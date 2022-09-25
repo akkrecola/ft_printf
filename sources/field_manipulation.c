@@ -6,11 +6,25 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/17 23:54:27 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/24 21:46:10 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/25 12:06:37 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+
+void	reset_sign(t_fstring *fs)
+{
+	char	*p_sign;
+	char	sign_char;
+
+	p_sign = ft_strpbrk(fs->string, "+-o");
+	if (p_sign && p_sign != fs->string && fs->format & F_ZERO_PAD)
+	{
+		sign_char = *p_sign;
+		*p_sign = *(p_sign - 1);
+		fs->string[0] = sign_char;
+	}
+}
 
 // HOX Only call this function if you know that an alignment needs to be done,
 // i.e. F_LEFT_ALIGN is set!
@@ -25,20 +39,6 @@ int	align_left(t_fstring *fs, char *left_adjusted_str)
 		fs->string = left_adjusted_str;
 	}
 	return (0);
-}
-
-void	reset_sign(t_fstring *fs)
-{
-	char	*p_sign;
-	char	sign_char;
-
-	p_sign = ft_strpbrk(fs->string, "+-o");
-	if (p_sign && p_sign != fs->string && fs->format & F_ZERO_PAD)
-	{
-		sign_char = *p_sign;
-		*p_sign = *(p_sign - 1);
-		fs->string[0] = sign_char;
-	}
 }
 
 static void	expand_zeros(t_fstring *fs, char *expanded)

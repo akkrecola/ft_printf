@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 17:00:21 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/25 11:11:16 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/25 12:17:41 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,10 @@ int			add_hex_prefix(t_fstring *fs);
 int			pad_integer_precision(t_fstring *fs);
 void		prepend_sign(t_fstring *fs);
 void		set_explicit_zero(t_fstring *fs);
+int			pad_zero_fraction(uint32_t precision, char **fraction);
+
+// Numerical manipualtion functions
+long double	round_even(t_fstring *fs, long double arg);
 
 // Deallocation at program termination.
 void		teardown(t_fstring *fs);

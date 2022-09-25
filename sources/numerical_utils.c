@@ -6,11 +6,44 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/25 05:25:03 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/25 10:28:02 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/25 12:17:18 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+
+int	pad_zero_fraction(uint32_t precision, char **fraction)
+{
+	char	*padded;
+
+	padded = ft_strnew(precision);
+	if (!padded)
+		return (0);
+	ft_memset(padded, '0', precision);
+	free(*fraction);
+	*fraction = padded;
+	return (1);
+}
+
+long double	round_even(t_fstring *fs, long double arg)
+{
+	const unsigned long	shift = ft_exp10(fs->precision);
+	const long double	rounded = ft_roundl(arg * shift) / shift;
+	const long double	unrounded = ft_truncl(arg * shift) / shift;
+	const long double	diff = (arg - unrounded) - (rounded - arg);
+
+	if (arg >= 0.0)
+	{
+		if (diff > 0.0 || (diff == 0.0 && (long)(arg * shift) % 2 != 0))
+			arg += (0.5 / shift);
+	}
+	else
+	{
+		if (diff < 0.0 || (diff == 0.0 && (long)(arg * shift) % 2 != 0))
+			arg -= (0.5 / shift);
+	}
+	return (arg);
+}
 
 // Adds a sign for a '+' flag signed conversion.
 void	prepend_sign(t_fstring *fs)

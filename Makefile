@@ -6,7 +6,7 @@
 #    By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/18 11:10:47 by elehtora          #+#    #+#              #
-#    Updated: 2022/09/25 11:34:16 by elehtora         ###   ########.fr        #
+#    Updated: 2022/09/25 12:18:34 by elehtora         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ SRCS		:= ft_printf.c \
 			   float.c \
 			   hex.c \
 			   modifiers.c \
-			   flags.c \
+			   field_manipulation.c \
 			   error.c \
 			   numerical_utils.c \
 			   oct.c
@@ -55,7 +55,6 @@ all : $(NAME)
 
 $(NAME) : $(OBJDIR) $(LIBFT) $(OBJS)
 	@ar -rcs $@ $(OBJS) $(LIBFT_OBJS)
-	@echo "Library archive $(NAME) created successfully."
 
 $(OBJDIR) :
 	mkdir -p $(@)
