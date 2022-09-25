@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/03 16:00:26 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/24 22:55:11 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/25 03:10:34 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ int			ft_strnequ(char const *s1, char const *s2, size_t n);
 char		*ft_strsub(char const *s, unsigned int start, size_t len);
 char		*ft_strjoin(char const *s1, char const *s2);
 char		*ft_strdjoin(char const *head, char const *delim, char const *tail);
+char		*ft_freejoin(const char *a, const char *b, uint8_t select);
 char		*ft_strtrim(char const *s);
 char		**ft_strsplit(char const *s, char c);
 size_t		ft_strspn(const char *s, const char *charset);
@@ -108,7 +109,7 @@ double		ft_pow(double base, double exp);
 long double	ft_powl(long double base, long double exp);
 float		ft_powf(float base, float exp);
 int			ft_powi(int base, int exp);
-unsigned long long	ft_exp10(int exp);
+uint64_t	ft_exp10(int exp);
 int			ft_abs(int x);
 long		ft_labs(long x);
 long long	ft_llabs(long long x);

@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/23 16:07:24 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/24 22:21:08 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/25 03:12:26 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,10 +71,10 @@ int	ft_powi(int base, int exp)
 }
 
 // Raises 10 to the power of parameter exp
-unsigned long long ft_exp10(int exp)
+uint64_t	ft_exp10(int exp)
 {
-	const int			base = 10;
-	unsigned long long	result;
+	const int	base = 10;
+	uint64_t	result;
 
 	if (exp == 0)
 		return (1);
