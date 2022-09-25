@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 17:00:21 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/25 04:44:56 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/25 05:01:21 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,9 @@ void		prepend_sign(t_fstring *fs);
 void		set_explicit_zero(t_fstring *fs);
 
 // Deallocation at program termination.
-//void		teardown(t_fstring *fs);
+void		teardown(t_fstring *fs);
+
+// Error handling function, invokes teardown.
+int			error(t_fstring *fs);
 
 #endif

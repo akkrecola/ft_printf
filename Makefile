@@ -6,7 +6,7 @@
 #    By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/18 11:10:47 by elehtora          #+#    #+#              #
-#    Updated: 2022/09/24 23:34:17 by elehtora         ###   ########.fr        #
+#    Updated: 2022/09/25 05:09:27 by elehtora         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,8 @@ SRCS		:= ft_printf.c \
 			   float.c \
 			   hex.c \
 			   modifiers.c \
-			   flags.c
+			   flags.c \
+			   error.c
 SRCDIR		:= sources
 
 LIBFT_DIR	:= libft
@@ -79,7 +80,7 @@ re : fclean all
 
 # Testing utilities
 TEST_DIR	:= tests
-TEST_SRCS	:= float_test.c
+TEST_SRCS	:= starspec_test.c
 TEST_SRCS	:= $(addprefix $(TEST_DIR)/,$(TEST_SRCS))
 TEST_INCL	:= -I$(TEST_DIR)
 TEST_NAME	:= printf.test

@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 11:10:19 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/24 21:43:19 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/25 05:01:39 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,19 +50,13 @@ static void	get_next_format(t_fstring *fs, const char *init)
 	set_flags(init, delimiter, fs);
 }
 
-static void	teardown(t_fstring *fs)
+void	teardown(t_fstring *fs)
 {
 	if (fs->string)
 		ft_strdel(&fs->string);
 }
 
-// Applies the previously gathered format information to the parameter.
-static int			convert_fstring(t_fstring *fs, va_list *ap)
-{
-	return (g_convert[(fs->format & CMASK) - 1](fs, ap)); // TODO requires header convspec formatting
-}
-
-int					ft_printf(const char *format, ...)
+int	ft_printf(const char *format, ...)
 {
 	va_list		ap;
 	char		*initializer;
@@ -89,8 +83,8 @@ int					ft_printf(const char *format, ...)
 			format = initializer + 1;
 			continue ;
 		}
-		if (!convert_fstring(&fs, &ap)) // TODO Collapse convert_fstring straight as convert[]()
-			return (-1);
+		if (!g_convert[(fs.format & CMASK) - 1](&fs, &ap)) // TODO Collapse convert_fstring straight as convert[]()
+			return (error(&fs));
 		printed += write(1, fs.string, fs.len);
 		ft_strdel(&fs.string);
 		format = fs.type + 1;
