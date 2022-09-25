@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 00:16:33 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/25 02:27:05 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/25 04:45:43 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,31 +69,6 @@ static int	pad_zero_fraction(uint32_t precision, char	**fraction)
 	free(*fraction);
 	*fraction = padded;
 	return (1);
-}
-
-// Frees memory allocated to either or both strings, and joins them together,
-// returning a newly allocated concatenation of a and b.
-// select values 'a' and 'b' free strings a and b respectively, and
-// value 'c' frees both. Misusing this selection causes a segmentation fault.
-// If the allocation of the new string fails, no memory is freed and the
-// function returns NULL.
-static char	*ft_freejoin(const char *a, const char *b, uint8_t select)
-{
-	char	*joined;
-
-	joined = ft_strjoin(a, b);
-	if (!joined)
-		return (NULL);
-	if (select == 'a')
-		free((void *)a);
-	else if (select == 'b')
-		free((void *)b);
-	else if (select == 'c')
-	{
-		free((void *)a);
-		free((void *)b);
-	}
-	return (joined);
 }
 
 // TODO make life easier with itof
