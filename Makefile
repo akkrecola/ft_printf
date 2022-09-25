@@ -6,7 +6,7 @@
 #    By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/18 11:10:47 by elehtora          #+#    #+#              #
-#    Updated: 2022/09/25 08:36:23 by elehtora         ###   ########.fr        #
+#    Updated: 2022/09/25 14:44:52 by elehtora         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ SRCS		:= ft_printf.c \
 			   float.c \
 			   hex.c \
 			   modifiers.c \
-			   flags.c \
+			   field_manipulation.c \
 			   error.c \
 			   numerical_utils.c \
 			   oct.c
@@ -55,7 +55,6 @@ all : $(NAME)
 
 $(NAME) : $(OBJDIR) $(LIBFT) $(OBJS)
 	@ar -rcs $@ $(OBJS) $(LIBFT_OBJS)
-	@echo "Library archive $(NAME) created successfully."
 
 $(OBJDIR) :
 	mkdir -p $(@)
@@ -83,7 +82,7 @@ re : fclean all
 
 # Testing utilities
 TEST_DIR	:= tests
-TEST_SRCS	:= simple_test.c
+TEST_SRCS	:= dot_test.c
 TEST_SRCS	:= $(addprefix $(TEST_DIR)/,$(TEST_SRCS))
 TEST_INCL	:= -I$(TEST_DIR)
 TEST_NAME	:= printf.test

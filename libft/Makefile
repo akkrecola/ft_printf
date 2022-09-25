@@ -6,7 +6,7 @@
 #    By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/03 15:27:40 by elehtora          #+#    #+#              #
-#    Updated: 2022/09/25 08:36:14 by elehtora         ###   ########.fr        #
+#    Updated: 2022/09/25 14:45:19 by elehtora         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,6 @@ SRCS		=	ft_atoi.c			\
 				ft_isupper.c		\
 				ft_iswhite.c		\
 				ft_arechars.c		\
-				ft_invalidchars.c	\
 				ft_itoa.c			\
 				ft_ltoa.c			\
 				ft_lstadd.c			\

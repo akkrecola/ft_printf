@@ -6,13 +6,12 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 00:16:33 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/25 05:19:10 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/25 14:34:54 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#define MAX_FRAC_DIGS 16
-#define DOUBLE_AS_STR_MAXLEN 40
+#define MAX_FRAC_DIGS 256
 
 /*
  * Floatmap:
@@ -34,40 +33,46 @@
  *
  */
 
-static long double	round_even(t_fstring *fs, long double arg)
+static char	*extract_fraction(t_fstring *fs, long double arg)
 {
-	const unsigned long	shift = ft_exp10(fs->precision);
-	const long double	rounded = ft_roundl(arg * shift) / shift;
-	const long double	unrounded = ft_truncl(arg * shift) / shift;
-	const long double	diff = (arg - unrounded) - (rounded - arg);
+	char		buf[MAX_FRAC_DIGS + 1];
+	uint32_t	i;
 
-	if (arg >= 0.0)
+	ft_bzero(buf, MAX_FRAC_DIGS);
+	i = 0;
+	if (arg < 0.0)
+		arg = ft_fabsl(arg);
+	while (i < fs->precision && i < MAX_FRAC_DIGS)
 	{
-		if (diff > 0.0 || (diff == 0.0 && (long)(arg * shift) % 2 != 0))
-			arg += (0.5 / shift);
+		buf[i] = (uint64_t)(arg * 10) % 10 + '0';
+		arg *= 10;
+		arg -= ft_truncl(arg);
+		i++;
+	}
+	return (ft_strdup(buf));
+}
+
+static void	determine_double_format(long double arg, t_fstring *fs, \
+		char *base, char *fraction)
+{
+	if (arg == 1.0 / 0.0)
+		fs->string = ft_strdup("inf");
+	else if (arg == -1.0 / 0.0)
+		fs->string = ft_strdup("-inf");
+	else if (arg != arg)
+		fs->string = ft_strdup("nan");
+	else if (fs->precision == 0 && fs->format & EXPL_PRECISION)
+	{
+		if (fs->format & F_ALT_FORM)
+			fs->string = ft_strjoin(base, ".");
+		else
+			fs->string = ft_strdup(base);
 	}
 	else
-	{
-		if (diff < 0.0 || (diff == 0.0 && (long)(arg * shift) % 2 != 0))
-			arg -= (0.5 / shift);
-	}
-	return (arg);
+		fs->string = ft_strdjoin(base, ".", fraction);
+	fs->len = ft_strlen(fs->string);
 }
 
-static int	pad_zero_fraction(uint32_t precision, char	**fraction)
-{
-	char	*padded;
-
-	padded = ft_strnew(precision);
-	if (!padded)
-		return (0);
-	ft_memset(padded, '0', precision);
-	free(*fraction);
-	*fraction = padded;
-	return (1);
-}
-
-// TODO make life easier with itof
 static int	format_double(t_fstring *fs, long double arg)
 {
 	char	*base;
@@ -77,18 +82,14 @@ static int	format_double(t_fstring *fs, long double arg)
 		fs->precision = 6;
 	arg = round_even(fs, arg);
 	base = ft_ltoa((long)arg);
-	if ((arg < 0.0 && ft_strequ(base, "0")))
+	if ((arg < 0.0 && ft_strequ(base, "0")) || (1 / arg == -1 / 0.0))
 		base = ft_freejoin("-", base, 'b');
-	fraction = ft_ltoa(\
-			ft_labs((long)((arg - (long)arg) * ft_exp10(fs->precision))));
+	fraction = extract_fraction(fs, arg);
 	if (!base || !fraction)
 		return (0);
 	if (arg == 0.0)
 		pad_zero_fraction(fs->precision, &fraction);
-	if (fs->format & EXPL_PRECISION && fs->precision == 0)
-		fs->string = ft_strdup(base);
-	else
-		fs->string = ft_strdjoin(base, ".", fraction);
+	determine_double_format(arg, fs, base, fraction);
 	ft_strdel(&base);
 	ft_strdel(&fraction);
 	if (!fs->string)
@@ -113,7 +114,8 @@ int	convert_double(t_fstring *fs, va_list *ap)
 	fs->len = ft_strlen(fs->string);
 	if (arg < 0.0 || arg == -1.0 / 0.0)
 		fs->sign = fs->string;
-	if (fs->format & (F_FORCE_SIGN | F_SPACE_SIGN))
+	if (fs->format & (F_FORCE_SIGN | F_SPACE_SIGN)
+		&& !ft_strchr("+-n", fs->string[0]))
 		prepend_sign(fs);
 	if (fs->field_width > fs->len)
 		expand_to_field_width(fs);

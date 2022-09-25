@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/03 16:00:26 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/25 07:24:25 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/25 10:59:48 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ char		*ft_strrev(const char *str);
 char		*ft_strstr(const char *haystack, const char *needle);
 char		*ft_strnstr(const char *haystack, const char *needle, size_t len);
 char		*ft_strpbrk(const char *s, const char *charset);
-char		*ft_invalidchars(const char *s, const char *charset, size_t len);
 int			ft_strcmp(const char *s1, const char *s2);
 int			ft_strncmp(const char *s1, const char *s2, size_t n);
 int			ft_atoi(const char *str);
@@ -115,7 +114,7 @@ int			ft_abs(int x);
 long		ft_labs(long x);
 long long	ft_llabs(long long x);
 double		ft_fabs(double x);
-long double	ft_lfabs(long double x);
+long double	ft_fabsl(long double x);
 long double	ft_truncl(long double x);
 double		ft_trunc(double x);
 long double	ft_roundl(long double x);
