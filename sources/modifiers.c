@@ -6,11 +6,13 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 01:18:59 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/25 05:28:24 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/25 08:22:18 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+#define FWIDTH_MAXCHARS 10
+#define PRECISION_BUF_SIZE 10
 
 uint16_t	set_type(const char *type)
 {
@@ -61,8 +63,6 @@ void	set_flags(const char *init, const char *delim, t_fstring *fs)
 	free((char *)flagset);
 }
 
-#define FWIDTH_MAXCHARS 10
-
 const char	*set_field_width(const char *init, const char *delim, t_fstring *fs)
 {
 	const char	*iterator = ft_strpbrk(init, FWIDTH_DIGITS);
@@ -80,9 +80,9 @@ const char	*set_field_width(const char *init, const char *delim, t_fstring *fs)
 	return ((char *)iterator - i);
 }
 
-#define PRECISION_BUF_SIZE 10
-// Sets the precision for a format string.
-// Returns a pointer to character after the last digit.
+/* Sets the precision for a format string.
+ * Returns a pointer to character after the last digit.
+ */
 const char	*set_precision(const char *init, const char *delim, t_fstring *fs)
 {
 	char		*dot;
@@ -107,8 +107,9 @@ const char	*set_precision(const char *init, const char *delim, t_fstring *fs)
 	return (dot);
 }
 
-// Seeks and sets the length modifiers hh, h, l, and ll; char, short, long and
-// long long, respectively.
+/* Seeks and sets the length modifiers hh, h, l, ll and L; char, short,
+ * long, long long and long double, respectively.
+ */
 const char	*set_length_modifier(const char *init, \
 		const char *delim, t_fstring *fs)
 {

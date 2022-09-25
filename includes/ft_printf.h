@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 17:00:21 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/25 05:01:21 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/25 08:18:35 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ typedef struct s_fstring
 	uint32_t	field_width;
 	uint32_t	precision;
 	uint32_t	len;
+	va_list		*ap;
 }	t_fstring;
 
 // Function entry
@@ -120,7 +121,7 @@ void		set_explicit_zero(t_fstring *fs);
 // Deallocation at program termination.
 void		teardown(t_fstring *fs);
 
-// Error handling function, invokes teardown.
+// Error handling function, invokes teardown().
 int			error(t_fstring *fs);
 
 #endif
