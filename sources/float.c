@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/15 00:16:33 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/25 12:16:52 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/25 14:34:54 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,16 @@ static void	determine_double_format(long double arg, t_fstring *fs, \
 		fs->string = ft_strdup("-inf");
 	else if (arg != arg)
 		fs->string = ft_strdup("nan");
-	else if (fs->format & EXPL_PRECISION && fs->precision == 0)
-		fs->string = ft_strdup(base);
+	else if (fs->precision == 0 && fs->format & EXPL_PRECISION)
+	{
+		if (fs->format & F_ALT_FORM)
+			fs->string = ft_strjoin(base, ".");
+		else
+			fs->string = ft_strdup(base);
+	}
 	else
 		fs->string = ft_strdjoin(base, ".", fraction);
+	fs->len = ft_strlen(fs->string);
 }
 
 static int	format_double(t_fstring *fs, long double arg)
