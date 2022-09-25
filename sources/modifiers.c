@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 01:18:59 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/25 05:13:11 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/25 06:15:36 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,9 @@ void	set_flags(const char *init, const char *delim, t_fstring *fs)
 	if (ft_strchr(flagset, '-'))
 		fs->format ^= F_LEFT_ALIGN;
 	if (ft_strchr(flagset, '0') \
-			&& !(fs->format & (F_LEFT_ALIGN))
-			&& !((fs->format & EXPL_PRECISION)
-				&& ft_strchr(NUM_TYPES, *fs->type) )) // :D 0pad only for numerics
+		&& !(fs->format & (F_LEFT_ALIGN))
+		&& !((fs->format & EXPL_PRECISION)
+			&& ft_strchr(NUM_TYPES, *fs->type)))
 		fs->format ^= F_ZERO_PAD;
 	if (ft_strchr(flagset, '+'))
 		fs->format ^= F_FORCE_SIGN;
@@ -116,7 +116,8 @@ const char	*set_precision(const char *init, const char *delim, t_fstring *fs)
 /* Seeks and sets the length modifiers hh, h, l, ll and L; char, short,
  * long, long long and long double, respectively.
  */
-const char	*set_length_modifier(const char *init, const char *delim, t_fstring *fs)
+const char	*set_length_modifier(const char *init, \
+		const char *delim, t_fstring *fs)
 {
 	const char	*mod = ft_strpbrk(init, LENMODS);
 

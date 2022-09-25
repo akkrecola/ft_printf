@@ -6,15 +6,14 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/19 16:38:42 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/23 03:37:24 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/09/25 05:07:43 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libftprintf.h"
+#include "ft_printf.h"
 
-int	error(int messageid)
+int	error(t_fstring *fs)
 {
-	ft_putstr("error: ");
-	ft_putendl(g_error[messageid]);
-	return (0);
+	teardown(fs);
+	return (-1);
 }
