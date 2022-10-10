@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 01:18:59 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/25 15:07:40 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/10/10 23:47:45 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,14 +80,22 @@ const char	*set_field_width(const char *init, const char *delim, t_fstring *fs)
 	char		buf[FWIDTH_MAXCHARS];
 	uint8_t		i;
 
+	i = 0;
 	if (!iterator || iterator >= delim)
 		return ((char *)delim);
-	ft_bzero(&buf[0], FWIDTH_MAXCHARS);
-	i = 0;
-	while (ft_isdigit(*iterator) && iterator != delim)
-		buf[i++] = *iterator++;
-	if (buf[0] != 0)
-		fs->field_width = ft_atoi(&buf[0]);
+	if (*iterator == '*')
+	{
+		fs->field_width = va_arg(*fs->ap, int);
+	}
+	else
+	{
+		ft_bzero(&buf[0], FWIDTH_MAXCHARS);
+		i = 0;
+		while (ft_isdigit(*iterator) && iterator != delim)
+			buf[i++] = *iterator++;
+		if (buf[0] != 0)
+			fs->field_width = ft_atoi(&buf[0]);
+	}
 	return ((char *)iterator - i);
 }
 
@@ -105,16 +113,21 @@ const char	*set_precision(const char *init, const char *delim, t_fstring *fs)
 	if (!dot || *(dot + 1) == '-')
 		return ((char *)delim);
 	fs->format ^= EXPL_PRECISION;
-	ft_bzero(&precision_str[0], PRECISION_BUF_SIZE);
-	i = 1;
-	while (ft_isdigit(dot[i]) && i < PRECISION_BUF_SIZE)
+	if (ft_memchr(dot, '*', delim - dot))
+		fs->precision = va_arg(*fs->ap, int);
+	else
 	{
-		precision_str[i - 1] = dot[i];
-		i++;
+		ft_bzero(&precision_str[0], PRECISION_BUF_SIZE);
+		i = 1;
+		while (ft_isdigit(dot[i]) && i < PRECISION_BUF_SIZE)
+		{
+			precision_str[i - 1] = dot[i];
+			i++;
+		}
+		precision_val = ft_atoi(&precision_str[0]);
+		if (precision_val < MAX_PRECISION)
+			fs->precision = precision_val;
 	}
-	precision_val = ft_atoi(&precision_str[0]);
-	if (precision_val < MAX_PRECISION)
-		fs->precision = precision_val;
 	return (dot);
 }
 

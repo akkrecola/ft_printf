@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 17:00:21 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/25 17:48:16 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/10/10 23:41:34 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,8 @@
 # define MAX_PRECISION 2147483647 // INT_MAX
 
 // Delimiter string constants for parsing the format string
-# define FWIDTH_DIGITS "123456789"
-# define ALL_FCHARS "#0- + 123456789.lhLdiouxXfcsp%"
+# define FWIDTH_DIGITS "123456789*"
+# define ALL_FCHARS "#0- + 123456789.lhLdiouxXfcsp%*"
 
 // A conversion specification has format values at least at the bit area that
 // is appointed to holding the (mandatory) conversion specifier.
