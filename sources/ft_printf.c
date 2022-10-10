@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 11:10:19 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/25 17:11:18 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/10/11 00:46:26 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,22 +36,22 @@ static void	init_fstring(t_fstring *fs, va_list *ap)
 static const char	*get_next_format(t_fstring *fs, const char *init)
 {
 	const char	*type = ft_strpbrk(init + 1, SPEC_TYPES);
-	const char	*delimiter = init + ft_strspn(init, ALL_FCHARS);
+	const char	*confirm = init + ft_strspn(init, ALL_FCHARS);
 
-	if (!type || type > delimiter)
+	if (!type || type > confirm)
 	{
 		fs->format = FORMAT_ERROR;
-		if (*delimiter == '\0')
-			return (delimiter);
+		if (*confirm == '\0')
+			return (confirm);
 		else
-			return (delimiter + 1);
+			return (confirm + 1);
 	}
 	fs->format |= set_type(type);
 	fs->type = (char *)type;
-	delimiter = set_length_modifier(init, type, fs);
-	delimiter = set_precision(init, delimiter, fs);
-	delimiter = set_field_width(init, delimiter, fs);
-	set_flags(init, delimiter, fs);
+	init = set_flags(init + 1, fs);
+	init = set_field_width(init, fs);
+	init = set_precision(init, fs);
+	set_length_modifier(init, fs);
 	return (type + 1);
 }
 

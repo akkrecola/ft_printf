@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/17 23:54:27 by elehtora          #+#    #+#             */
-/*   Updated: 2022/09/25 17:09:34 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/10/11 01:23:21 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	expand_to_field_width(t_fstring *fs)
 	expanded = ft_strnew(fs->field_width);
 	if (!expanded)
 		error(fs);
-	if (fs->format & F_ZERO_PAD)
+	if ((fs->format & F_ZERO_PAD) && !(fs->format & EXPL_PRECISION))
 		expand_zeros(fs, expanded);
 	else
 		ft_memset(expanded, ' ', fs->field_width);
