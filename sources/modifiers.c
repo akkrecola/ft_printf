@@ -6,7 +6,7 @@
 /*   By: elehtora <elehtora@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 01:18:59 by elehtora          #+#    #+#             */
-/*   Updated: 2022/10/11 01:25:26 by elehtora         ###   ########.fr       */
+/*   Updated: 2022/10/11 02:26:28 by elehtora         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,14 +80,16 @@ const char	*set_field_width(const char *init, t_fstring *fs)
 {
 	const char	*iterator = ft_strpbrk(init, FWIDTH_DIGITS);
 	char		buf[FWIDTH_MAXCHARS];
-	uint8_t		i;
+	int			i;
 
-	i = 0;
 	if (!iterator || ft_strspn(init, FWIDTH_DIGITS) == 0)
 		return ((char *)init);
 	if (*iterator == '*')
 	{
-		fs->field_width = va_arg(*fs->ap, int);
+		i = va_arg(*fs->ap, int);
+		if (i < 0)
+			fs->format |= F_LEFT_ALIGN;
+		fs->field_width = (int)ft_labs((long)i);
 	}
 	else
 	{
@@ -108,28 +110,25 @@ const char	*set_precision(const char *init, t_fstring *fs)
 {
 	const char	*dot = ft_memchr(init, '.', fs->type - init);
 	char		precision_str[PRECISION_BUF_SIZE];
-	uint32_t	precision_val;
-	uint8_t		i;
+	int			i;
 
-	i = 0;
 	if (!dot || *(dot + 1) == '-')
 		return ((char *)init);
-	fs->format ^= EXPL_PRECISION;
 	if (ft_memchr(dot, '*', fs->type - dot))
-		fs->precision = va_arg(*fs->ap, int);
-	else
 	{
-		ft_bzero(&precision_str[0], PRECISION_BUF_SIZE);
-		i = 1;
-		while (ft_isdigit(dot[i]) && i < PRECISION_BUF_SIZE)
-		{
-			precision_str[i - 1] = dot[i];
-			i++;
-		}
-		precision_val = ft_atoi(&precision_str[0]);
-		if (precision_val < MAX_PRECISION)
-			fs->precision = precision_val;
+		i = va_arg(*fs->ap, int);
+		if (i < 0)
+			return (dot);
+		fs->precision = i;
+		fs->format ^= EXPL_PRECISION;
+		return (dot);
 	}
+	fs->format ^= EXPL_PRECISION;
+	ft_bzero(&precision_str[0], PRECISION_BUF_SIZE);
+	i = 0;
+	while (ft_isdigit(dot[++i]) && i < PRECISION_BUF_SIZE)
+		precision_str[i - 1] = dot[i];
+	fs->precision = ft_atoi(&precision_str[0]);
 	return (dot + i);
 }
 
